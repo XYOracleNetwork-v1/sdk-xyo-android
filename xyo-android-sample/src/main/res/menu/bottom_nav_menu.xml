@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_ble_client"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_ble_client" />
+
+    <item
+        android:id="@+id/navigation_ble_server"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_ble_server" />
+
+    <item
+        android:id="@+id/navigation_tcpip_client"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_tcpip_client" />
+
+    <item
+        android:id="@+id/navigation_tcpip_server"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_tcpip_server" />
+
+</menu>

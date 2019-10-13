@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_ble_client">
+
+    <fragment
+        android:id="@+id/navigation_ble_client"
+        android:name="network.xyo.sdk.sample.ui.ble_server.BleServerFragment"
+        android:label="@string/title_ble_client"
+        tools:layout="@layout/fragment_ble_client" />
+
+    <fragment
+        android:id="@+id/navigation_ble_server"
+        android:name="network.xyo.sdk.sample.ui.ble_client.BleClientFragment"
+        android:label="@string/title_ble_server"
+        tools:layout="@layout/fragment_ble_server" />
+
+    <fragment
+        android:id="@+id/navigation_tcpip_client"
+        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipServerFragment"
+        android:label="@string/title_tcpip_client"
+        tools:layout="@layout/fragment_tcpip_client" />
+
+    <fragment
+        android:id="@+id/navigation_tcpip_server"
+        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipServerFragment"
+        android:label="@string/title_tcpip_server"
+        tools:layout="@layout/fragment_tcpip_server" />
+</navigation>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">XYO SDK Sample</string>
+    <string name="title_ble_client">BLE Client</string>
+    <string name="title_ble_server">BLE Server</string>
+    <string name="title_tcpip_client">TcpIp Client</string>
+    <string name="title_tcpip_server">TcpIp Server</string>
+</resources>
