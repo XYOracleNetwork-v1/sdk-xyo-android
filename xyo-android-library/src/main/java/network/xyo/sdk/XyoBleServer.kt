@@ -1,11 +1,16 @@
 package network.xyo.sdk
 
+import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
+import network.xyo.sdkcorekotlin.node.XyoRelayNode
+
 class XyoBleServer(
+    relayNode: XyoRelayNode,
+    procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
     listen: Boolean,
     override val payloadCallback: (() -> ByteArray)? = null
-) : XyoServer() {
+) : XyoServer(relayNode, procedureCatalog) {
 
     override var autoBridge: Boolean
         get() {return false}

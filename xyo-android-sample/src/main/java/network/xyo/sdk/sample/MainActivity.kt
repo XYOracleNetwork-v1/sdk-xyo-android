@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import network.xyo.sdk.XyoNodeBuilder
 import network.xyo.sdk.XyoSdk
 
+@kotlin.ExperimentalUnsignedTypes
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeXyo() {
         val builder = XyoNodeBuilder()
-        builder.build()
+        builder.build(this)
     }
 }
