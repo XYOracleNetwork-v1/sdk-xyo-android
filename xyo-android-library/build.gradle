@@ -42,4 +42,6 @@ dependencies {
     implementation 'network.xyo:sdk-xyobleinterface-android:2.1.504'
     implementation 'network.xyo:sdk-ble-android:3.0.1075'
     implementation 'network.xyo:sdk-core-kotlin:3.0.32'
+    implementation 'com.snappydb:snappydb-lib:0.5.2'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.58'
 }
