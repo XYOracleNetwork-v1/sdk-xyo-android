@@ -9,7 +9,7 @@ class XyoTcpIpServer(
     autoBridge: Boolean,
     acceptBridging: Boolean,
     listen: Boolean,
-    override val payloadCallback: (() -> ByteArray)? = null
+    override var listener: Listener? = null
 ) : XyoServer(relayNode, procedureCatalog) {
 
     override var autoBridge: Boolean

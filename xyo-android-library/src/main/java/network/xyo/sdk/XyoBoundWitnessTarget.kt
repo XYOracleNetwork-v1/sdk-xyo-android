@@ -8,9 +8,23 @@ abstract class XyoBoundWitnessTarget(
     val relayNode: XyoRelayNode,
     val procedureCatalog: XyoProcedureCatalog
 ): XYBase() {
-    //this is where people provide additional payload data if they want.
-    //we will need helpers to help people build the byte arrays
-    abstract val payloadCallback: (() -> ByteArray)?
+
+    open class Listener: XYBase() {
+        open fun getPayloadData(): ByteArray {
+            return byteArrayOf()
+        }
+
+        open fun boundWitnessStarted() {
+            log.info("boundWitnessStarted")
+        }
+
+        open fun boundWitnessCompleted() {
+            log.info("boundWitnessCompleted")
+        }
+    }
+
+    //the interaction listener
+    abstract var listener: Listener?
 
     //accept bound witnesses that have bridges payloads
     abstract var acceptBridging: Boolean

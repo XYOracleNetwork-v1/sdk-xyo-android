@@ -19,8 +19,9 @@ import java.lang.Exception
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoNodeBuilder: XYBase() {
-    private var networks = mutableListOf<XyoNetwork>()
+    private var networks = mutableMapOf<String, XyoNetwork>()
     private var storage: XyoKeyValueStore? = null
+    private var listener: XyoBoundWitnessTarget.Listener? = null
 
     private var relayNode: XyoRelayNode? = null
     private var procedureCatalog: XyoProcedureCatalog? = null
@@ -29,12 +30,16 @@ class XyoNodeBuilder: XYBase() {
     private var bridgeQueueRepository: XyoBridgeQueueRepository? = null
     private var hashingProvider: XyoHash.XyoHashProvider? = null
 
-    fun addNetwork(network: XyoNetwork) {
-        networks.add(network)
+    fun addNetwork(name: String, network: XyoNetwork) {
+        networks[name] = network
     }
 
     fun setStorage(storage: XyoKeyValueStore) {
         this.storage = storage
+    }
+
+    fun setListener(listener: XyoBoundWitnessTarget.Listener) {
+        this.listener = listener
     }
 
     fun build(context: Context): XyoNode {
@@ -82,8 +87,11 @@ class XyoNodeBuilder: XYBase() {
             setDefaultNetworks(context)
         }
 
-        val node = XyoNode(storage!!, networks.toTypedArray())
+        val node = XyoNode(storage!!, networks)
         XyoSdk.nodes.add(node)
+
+        node.setAllListeners(listener)
+
         return node
     }
 
@@ -184,8 +192,8 @@ class XyoNodeBuilder: XYBase() {
     private fun setDefaultNetworks(context: Context) {
         relayNode?.let {relayNode ->
             procedureCatalog?.let { procedureCatalog ->
-                addNetwork(XyoBleNetwork(context, relayNode, procedureCatalog))
-                addNetwork(XyoTcpIpNetwork(relayNode, procedureCatalog))
+                addNetwork("ble", XyoBleNetwork(context, relayNode, procedureCatalog))
+                addNetwork("tcpip", XyoTcpIpNetwork(relayNode, procedureCatalog))
                 return
             }
             log.error("Missing procedureCatalog", true)
@@ -195,6 +203,6 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultStorage(context: Context) {
-        storage = XyoSnappyDbStorageProvider(context)
+        setStorage(XyoSnappyDbStorageProvider(context))
     }
 }

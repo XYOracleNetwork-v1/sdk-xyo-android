@@ -3,6 +3,7 @@ package network.xyo.sdk
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
@@ -12,6 +13,8 @@ import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantLock
 
 @kotlin.ExperimentalUnsignedTypes
@@ -21,21 +24,21 @@ class XyoBleClient(
     procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
-    val autoBoundWitness: Boolean,
-    override val payloadCallback: (() -> ByteArray)? = null
+    autoBoundWitness: Boolean,
+    override var listener: Listener? = null
 )
-    : XyoClient(relayNode, procedureCatalog) {
+    : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
-    override var autoBridge: Boolean
-        get() {return false}
-        set(value) {}
+    override var autoBridge: Boolean = false
+    override var acceptBridging: Boolean = false
 
-    override var acceptBridging: Boolean
-        get() {return false}
-        set(value) {}
+    val minBWTimeGap = 10 * 1000
 
-    private var scanner: XYSmartScanModern
-    private val boundWitnessLock = ReentrantLock()
+    var lastBoundWitnessTime = Date().time - minBWTimeGap //ten seconds ago
+
+    var scanner: XYSmartScanModern
+
+    private val boundWitnessMutex = Mutex()
 
     override var scan: Boolean
         get() {return scanner.started()}
@@ -52,10 +55,12 @@ class XyoBleClient(
     private val scannerListener = object: XYSmartScan.Listener() {
         override fun entered(device: XYBluetoothDevice) {
             super.entered(device)
-            if (autoBoundWitness) {
-                if (device is XyoBluetoothClient) {
-                    GlobalScope.launch {
-                        tryBoundWitnessWithDevice(device)
+            if (this@XyoBleClient.autoBoundWitness) {
+                if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
+                    (device as? XyoBluetoothClient)?.let { device ->
+                        GlobalScope.launch {
+                            tryBoundWitnessWithDevice(device)
+                        }
                     }
                 }
             }
@@ -63,7 +68,8 @@ class XyoBleClient(
     }
 
     suspend fun tryBoundWitnessWithDevice(device: XyoBluetoothClient) {
-        if (boundWitnessLock.tryLock()) {
+        if (boundWitnessMutex.tryLock()) {
+            listener?.boundWitnessStarted()
             device.connection {
                 val pipe = device.createPipe()
 
@@ -76,7 +82,9 @@ class XyoBleClient(
 
                 return@connection XYBluetoothResult(false)
             }
-            boundWitnessLock.unlock()
+            listener?.boundWitnessCompleted()
+            lastBoundWitnessTime = Date().time
+            boundWitnessMutex.unlock()
         }
     }
 

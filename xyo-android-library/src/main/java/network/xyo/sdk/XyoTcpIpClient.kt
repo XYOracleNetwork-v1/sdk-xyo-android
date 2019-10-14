@@ -8,10 +8,10 @@ class XyoTcpIpClient(
     procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
-    val autoBoundWitness: Boolean,
-    override val payloadCallback: (() -> ByteArray)? = null
+    autoBoundWitness: Boolean,
+    override var listener: Listener? = null
 )
-    : XyoClient(relayNode, procedureCatalog) {
+    : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     override var autoBridge: Boolean
         get() {return false}
