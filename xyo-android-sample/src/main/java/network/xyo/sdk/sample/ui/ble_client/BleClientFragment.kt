@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+
 import kotlinx.android.synthetic.main.fragment_ble_client.*
-import network.xyo.sdk.XyoBleClient
 import network.xyo.sdk.sample.R
 import network.xyo.sdk.XyoBleNetwork
 import network.xyo.sdk.XyoBoundWitnessTarget
@@ -29,11 +26,13 @@ class BleClientFragment : Fragment() {
 
     fun addStatus(status: String) {
         ui {
-            val sb = StringBuilder()
-            sb.append(text_ble_client.text)
-            sb.append("\r\n")
-            sb.append(status)
-            text_ble_client.text = sb.toString()
+            text_ble_client?.let {
+                val sb = StringBuilder()
+                sb.append(it.text)
+                sb.append("\r\n")
+                sb.append(status)
+                it.text = sb.toString()
+            }
         }
     }
 
