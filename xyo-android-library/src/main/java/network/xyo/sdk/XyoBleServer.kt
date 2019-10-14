@@ -46,7 +46,7 @@ class XyoBleServer(
                     }
                     return@launch
                 }
-                log.error("Advertiser Failed to Initialize", true)
+                log.error("Advertiser Failed to Initialize", false)
             }
         }
 

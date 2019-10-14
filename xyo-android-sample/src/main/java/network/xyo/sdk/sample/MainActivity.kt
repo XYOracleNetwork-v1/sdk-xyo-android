@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             })
             network.client.scan = true
             if (network.client.scanner.status != XYSmartScan.Status.Enabled) {
-                log.error("Scanner Error: ${network.client.scanner.status}", true)
+                log.error("Scanner Error: ${network.client.scanner.status}", false)
             }
         }
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->

@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_ble_client"
-        android:name="network.xyo.sdk.sample.ui.ble_server.BleServerFragment"
+        android:name="network.xyo.sdk.sample.ui.ble_client.BleClientFragment"
         android:label="@string/title_ble_client"
         tools:layout="@layout/fragment_ble_client" />
 
     <fragment
         android:id="@+id/navigation_ble_server"
-        android:name="network.xyo.sdk.sample.ui.ble_client.BleClientFragment"
+        android:name="network.xyo.sdk.sample.ui.ble_server.BleServerFragment"
         android:label="@string/title_ble_server"
         tools:layout="@layout/fragment_ble_server" />
 
