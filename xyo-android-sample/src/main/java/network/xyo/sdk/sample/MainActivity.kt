@@ -33,10 +33,34 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        initializeXyo()
+        initializeXyoSimple()
     }
 
-    private fun initializeXyo() {
+    private fun initializeXyoSimple() {
+        val builder = XyoNodeBuilder()
+        node = builder.build(this)
+        addXyoListener()
+    }
+
+    private fun addXyoListener() {
+        node.setAllListeners(object: XyoBoundWitnessTarget.Listener() {
+            override fun boundWitnessStarted() {
+                log.info("BoundWitness Started")
+                super.boundWitnessStarted()
+            }
+
+            override fun boundWitnessCompleted() {
+                log.info("BoundWitness Completed")
+                super.boundWitnessCompleted()
+            }
+
+            override fun getPayloadData(): ByteArray {
+                return byteArrayOf(0xff.toByte(), 0xff.toByte())
+            }
+        })
+    }
+
+    private fun initializeXyoComplex() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
@@ -70,20 +94,6 @@ class MainActivity : AppCompatActivity() {
             network.server.listen = true
         }
 
-        node.setAllListeners(object: XyoBoundWitnessTarget.Listener() {
-            override fun boundWitnessStarted() {
-                log.info("BoundWitness Started")
-                super.boundWitnessStarted()
-            }
-
-            override fun boundWitnessCompleted() {
-                log.info("BoundWitness Completed")
-                super.boundWitnessCompleted()
-            }
-
-            override fun getPayloadData(): ByteArray {
-                return byteArrayOf(0xff.toByte(), 0xff.toByte())
-            }
-        })
+        addXyoListener()
     }
 }

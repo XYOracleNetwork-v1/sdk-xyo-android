@@ -25,6 +25,7 @@ class XyoBleClient(
     autoBridge: Boolean,
     acceptBridging: Boolean,
     autoBoundWitness: Boolean,
+    scan: Boolean,
     override var listener: Listener? = null
 )
     : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
@@ -95,5 +96,6 @@ class XyoBleClient(
         XyoSha256WithSecp256K.enable()
         this.scanner = XYSmartScanModern(context)
         this.scanner.addListener("xyo_client", this.scannerListener)
+        this.scan = scan
     }
 }
