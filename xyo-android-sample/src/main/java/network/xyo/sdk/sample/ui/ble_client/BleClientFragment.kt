@@ -13,6 +13,8 @@ import network.xyo.sdk.XyoBoundWitnessTarget
 import network.xyo.sdk.XyoSdk
 import network.xyo.sdk.sample.ui
 
+import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
+
 @kotlin.ExperimentalUnsignedTypes
 class BleClientFragment : Fragment() {
 
@@ -48,29 +50,33 @@ class BleClientFragment : Fragment() {
                         addStatus("Bound Witness Started")
                     }
 
-                    override fun boundWitnessCompleted() {
-                        super.boundWitnessCompleted()
-                        addStatus("Bound Witness Completed")
+                    override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
+                        super.boundWitnessCompleted(boundWitness, error)
+                        if (error == null) {
+                            addStatus("Bound Witness Completed [${boundWitness?.completed}]")
+                        } else {
+                            addStatus("Bound Witness Failed [$error]")
+                        }
                     }
                 }
 
                 acceptBridging.setChecked(network.client.acceptBridging)
-                acceptBridging.setOnCheckedChangeListener { buttonView, isChecked ->
+                acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.client.acceptBridging = isChecked
                 }
 
                 autoBoundWitness.setChecked(network.client.autoBoundWitness)
-                autoBoundWitness.setOnCheckedChangeListener { buttonView, isChecked ->
+                autoBoundWitness.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBoundWitness = isChecked
                 }
 
                 autoBridge.setChecked(network.client.autoBridge)
-                autoBridge.setOnCheckedChangeListener { buttonView, isChecked ->
+                autoBridge.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBridge = isChecked
                 }
 
                 scan.setChecked(network.client.scan)
-                scan.setOnCheckedChangeListener { buttonView, isChecked ->
+                scan.setOnCheckedChangeListener { _, isChecked ->
                     network.client.scan = isChecked
                 }
             }

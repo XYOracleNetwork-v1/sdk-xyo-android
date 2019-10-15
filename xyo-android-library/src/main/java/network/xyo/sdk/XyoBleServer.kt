@@ -66,8 +66,8 @@ class XyoBleServer(
                 GlobalScope.launch {
                     listener?.boundWitnessStarted()
                     val handler = XyoNetworkHandler(pipe)
-                    relayNode.boundWitness(handler, procedureCatalog).await()
-                    listener?.boundWitnessCompleted()
+                    val bw = relayNode.boundWitness(handler, procedureCatalog).await()
+                    listener?.boundWitnessCompleted(bw, null)
                     return@launch
                 }
             }

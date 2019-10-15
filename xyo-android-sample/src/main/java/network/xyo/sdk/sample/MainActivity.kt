@@ -11,6 +11,7 @@ import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.sdk.*
 import network.xyo.base.XYBase
+import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
 @kotlin.ExperimentalUnsignedTypes
 class MainActivity : AppCompatActivity() {
@@ -49,9 +50,13 @@ class MainActivity : AppCompatActivity() {
                 super.boundWitnessStarted()
             }
 
-            override fun boundWitnessCompleted() {
-                log.info("BoundWitness Completed")
-                super.boundWitnessCompleted()
+            override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
+                if (error == null) {
+                    log.info("BoundWitness Completed")
+                } else {
+                    log.info("BoundWitness Error: $error")
+                }
+                super.boundWitnessCompleted(boundWitness, error)
             }
 
             override fun getPayloadData(): ByteArray {

@@ -9,6 +9,7 @@ import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.ble.generic.scanner.XYSmartScanModern
 import network.xyo.modbluetoothkotlin.client.XyoBluetoothClient
+import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
@@ -58,9 +59,9 @@ class XyoBleClient(
             super.entered(device)
             if (this@XyoBleClient.autoBoundWitness) {
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
-                    (device as? XyoBluetoothClient)?.let { device ->
+                    (device as? XyoBluetoothClient)?.let { client ->
                         GlobalScope.launch {
-                            tryBoundWitnessWithDevice(device)
+                            tryBoundWitnessWithDevice(client)
                         }
                     }
                 }
@@ -71,19 +72,23 @@ class XyoBleClient(
     suspend fun tryBoundWitnessWithDevice(device: XyoBluetoothClient) {
         if (boundWitnessMutex.tryLock()) {
             listener?.boundWitnessStarted()
-            device.connection {
+            val result = device.connection {
                 val pipe = device.createPipe()
 
                 if (pipe != null) {
                     val handler = XyoNetworkHandler(pipe)
 
                     val bw = relayNode.boundWitness(handler, procedureCatalog).await()
-                    return@connection XYBluetoothResult(bw != null)
+                    return@connection XYBluetoothResult(bw)
                 }
 
-                return@connection XYBluetoothResult(false)
+                return@connection XYBluetoothResult<XyoBoundWitness>(null)
             }
-            listener?.boundWitnessCompleted()
+            var errorCode: String? = null
+            if (result.error != XYBluetoothResult.ErrorCode.None) {
+                errorCode = result.error.toString()
+            }
+            listener?.boundWitnessCompleted(result.value, errorCode)
             lastBoundWitnessTime = Date().time
             boundWitnessMutex.unlock()
         }

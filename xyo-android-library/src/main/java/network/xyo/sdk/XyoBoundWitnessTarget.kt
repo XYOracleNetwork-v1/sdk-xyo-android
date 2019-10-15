@@ -1,6 +1,7 @@
 package network.xyo.sdk
 
 import network.xyo.base.XYBase
+import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
@@ -18,7 +19,7 @@ abstract class XyoBoundWitnessTarget(
             log.info("boundWitnessStarted")
         }
 
-        open fun boundWitnessCompleted() {
+        open fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
             log.info("boundWitnessCompleted")
         }
     }
