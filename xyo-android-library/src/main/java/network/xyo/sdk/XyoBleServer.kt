@@ -30,7 +30,7 @@ class XyoBleServer(
     lateinit var server: XyoBluetoothServer
 
     var listen: Boolean
-        get() {return false}
+        get() {return advertiser?.started ?: false}
         set(value) {
             GlobalScope.launch {
                 var waitForAdvertiserCount = 10
@@ -40,8 +40,10 @@ class XyoBleServer(
                 }
                 advertiser?.let { advertiser ->
                     if (value) {
+                        log.info("Starting Advertiser")
                         advertiser.startAdvertiser()
                     } else {
+                        log.info("Stopping Advertiser")
                         advertiser.stopAdvertiser()
                     }
                     return@launch
@@ -61,8 +63,10 @@ class XyoBleServer(
 
     private suspend fun initServer(context: Context): Boolean {
         advertiser = XyoBleSdk.advertiser(context)
-        XyoBleSdk.server(context).listener = object: XyoBluetoothServer.Listener {
+        server = XyoBleSdk.server(context)
+        server.listener = object: XyoBluetoothServer.Listener {
             override fun onPipe(pipe: XyoNetworkPipe) {
+                log.info("onPipe")
                 GlobalScope.launch {
                     listener?.boundWitnessStarted()
                     val handler = XyoNetworkHandler(pipe)
@@ -72,6 +76,7 @@ class XyoBleServer(
                 }
             }
         }
+        log.info("Initialized Server")
         return true
     }
 }

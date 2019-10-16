@@ -16,6 +16,7 @@ import network.xyo.sdkcorekotlin.repositories.XyoOriginBlockRepository
 import network.xyo.sdkcorekotlin.repositories.XyoOriginChainStateRepository
 import network.xyo.sdkcorekotlin.schemas.XyoSchemas
 import java.lang.Exception
+import java.nio.ByteBuffer
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoNodeBuilder: XYBase() {
@@ -97,6 +98,27 @@ class XyoNodeBuilder: XYBase() {
 
     private fun setDefaultProcedureCatalog() {
         procedureCatalog = object : XyoProcedureCatalog {
+            override fun canDo(byteArray: ByteArray): Boolean {
+                if (true) {
+                    return true
+                }
+
+                return ByteBuffer.wrap(byteArray).int and 1 != 0
+            }
+
+            override fun choose(byteArray: ByteArray): ByteArray {
+                return byteArrayOf(0x00, 0x00, 0x00, 0x01)
+            }
+
+            override fun getEncodedCanDo(): ByteArray {
+                if (true) {
+                    return byteArrayOf(0x00, 0x00, 0x00, 0xff.toByte())
+                }
+
+                return byteArrayOf(0x00, 0x00, 0x00, 0x01)
+            }
+        }
+        /*procedureCatalog = object : XyoProcedureCatalog {
             val canDoByte = XyoProcedureCatalogFlags.BOUND_WITNESS or XyoProcedureCatalogFlags.GIVE_ORIGIN_CHAIN or XyoProcedureCatalogFlags.TAKE_ORIGIN_CHAIN
 
             override fun canDo(byteArray: ByteArray): Boolean {
@@ -129,7 +151,7 @@ class XyoNodeBuilder: XYBase() {
 
                 return byteArrayOf(0x00, 0x00, 0x00, canDoByte.toByte())
             }
-        }
+        }*/
     }
 
     private fun setDefaultBlockRepository() {

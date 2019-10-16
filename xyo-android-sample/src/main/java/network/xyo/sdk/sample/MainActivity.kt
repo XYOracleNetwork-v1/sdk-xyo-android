@@ -34,71 +34,49 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        initializeXyoSimple()
+        //initializeXyoSimple()
+        //initializeXyoBleClientOnly()
+        initializeXyoBleServerOnly()
     }
 
     private fun initializeXyoSimple() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
-        addXyoListener()
     }
 
-    private fun addXyoListener() {
-        node.setAllListeners(object: XyoBoundWitnessTarget.Listener() {
-            override fun boundWitnessStarted() {
-                log.info("BoundWitness Started")
-                super.boundWitnessStarted()
-            }
-
-            override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
-                if (error == null) {
-                    log.info("BoundWitness Completed")
-                } else {
-                    log.info("BoundWitness Error: $error")
-                }
-                super.boundWitnessCompleted(boundWitness, error)
-            }
-
-            override fun getPayloadData(): ByteArray {
-                return byteArrayOf(0xff.toByte(), 0xff.toByte())
-            }
-        })
-    }
-
-    private fun initializeXyoComplex() {
+    private fun initializeXyoBleClientOnly() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
             network.client.autoBridge = true
             network.client.autoBoundWitness = true
-            network.server.autoBridge = true
-            network.server.listen = true
-            network.client.scanner.addListener("sample", object: XYSmartScan.Listener() {
-                override fun entered(device: XYBluetoothDevice) {
-                    //log.info("Device Entered: $device")
-                    super.entered(device)
-                }
-                override fun exited(device: XYBluetoothDevice) {
-                    //log.info("Device Exited: $device")
-                    super.exited(device)
-                }
-                override fun detected(device: XYBluetoothDevice) {
-                    //log.info("Device Detected: $device")
-                    super.detected(device)
-                }
-            })
             network.client.scan = true
-            if (network.client.scanner.status != XYSmartScan.Status.Enabled) {
-                log.error("Scanner Error: ${network.client.scanner.status}", false)
-            }
+            network.server.autoBridge = false
+            network.server.listen = false
         }
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
-            network.client.autoBridge = true
-            network.client.autoBoundWitness = true
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
+    }
+
+    private fun initializeXyoBleServerOnly() {
+        val builder = XyoNodeBuilder()
+        node = builder.build(this)
+        (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.client.scan = false
             network.server.autoBridge = true
             network.server.listen = true
         }
-
-        addXyoListener()
+        (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
     }
 }

@@ -38,28 +38,9 @@ class BleClientFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    fun updateUI() {
         ui {
             (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-
-                network.client.listener = object : XyoBoundWitnessTarget.Listener() {
-                    override fun boundWitnessStarted() {
-                        super.boundWitnessStarted()
-                        addStatus("Bound Witness Started")
-                    }
-
-                    override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
-                        super.boundWitnessCompleted(boundWitness, error)
-                        if (error == null) {
-                            addStatus("Bound Witness Completed [${boundWitness?.completed}]")
-                        } else {
-                            addStatus("Bound Witness Failed [$error]")
-                        }
-                    }
-                }
-
                 acceptBridging.setChecked(network.client.acceptBridging)
                 acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.client.acceptBridging = isChecked
@@ -80,7 +61,38 @@ class BleClientFragment : Fragment() {
                     network.client.scan = isChecked
                 }
             }
-            text_ble_client.text = ""
+        }
+    }
+
+    override fun onResume() {
+        updateUI()
+        super.onResume()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+
+            network.client.listener = object : XyoBoundWitnessTarget.Listener() {
+                override fun boundWitnessStarted() {
+                    super.boundWitnessStarted()
+                    addStatus("Bound Witness Started")
+                }
+
+                override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
+                    super.boundWitnessCompleted(boundWitness, error)
+                    if (error == null) {
+                        addStatus("Bound Witness Completed [${boundWitness?.completed}]")
+                    } else {
+                        addStatus("Bound Witness Failed [$error]")
+                    }
+                }
+            }
+
+            ui {
+                text_ble_client.text = ""
+            }
         }
     }
 }
