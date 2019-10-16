@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         //initializeXyoSimple()
-        //initializeXyoBleClientOnly()
+        initializeXyoBleClientOnly()
         //initializeXyoBleServerOnly()
-        initializeXyoBleOnly()
+        //initializeXyoBleOnly()
     }
 
     private fun initializeXyoSimple() {
