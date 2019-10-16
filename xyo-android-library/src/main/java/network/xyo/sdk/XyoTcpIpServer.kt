@@ -8,21 +8,20 @@ class XyoTcpIpServer(
     procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
-    listen: Boolean,
-    override var listener: Listener? = null
+    listen: Boolean
 ) : XyoServer(relayNode, procedureCatalog) {
 
     override var autoBridge: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 
     override var acceptBridging: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 
     var listen: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 
     init {
         this.autoBridge = autoBridge

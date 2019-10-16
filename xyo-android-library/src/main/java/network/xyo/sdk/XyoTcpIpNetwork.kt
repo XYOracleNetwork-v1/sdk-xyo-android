@@ -21,4 +21,7 @@ class XyoTcpIpNetwork(
         listen = false
     )
 ) : XyoNetwork(Type.TcpIp) {
+    init {
+        client.knownBridges = client.knownBridges ?: listOf("ac0.xyo.network")
+    }
 }

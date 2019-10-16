@@ -41,22 +41,22 @@ class BleClientFragment : Fragment() {
     fun updateUI() {
         ui {
             (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-                acceptBridging.setChecked(network.client.acceptBridging)
+                acceptBridging.isChecked = network.client.acceptBridging
                 acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.client.acceptBridging = isChecked
                 }
 
-                autoBoundWitness.setChecked(network.client.autoBoundWitness)
+                autoBoundWitness.isChecked = network.client.autoBoundWitness
                 autoBoundWitness.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBoundWitness = isChecked
                 }
 
-                autoBridge.setChecked(network.client.autoBridge)
+                autoBridge.isChecked = network.client.autoBridge
                 autoBridge.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBridge = isChecked
                 }
 
-                scan.setChecked(network.client.scan)
+                scan.isChecked = network.client.scan
                 scan.setOnCheckedChangeListener { _, isChecked ->
                     network.client.scan = isChecked
                 }
@@ -69,25 +69,34 @@ class BleClientFragment : Fragment() {
         super.onResume()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.client?.listeners?.remove("sample")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
 
-            network.client.listener = object : XyoBoundWitnessTarget.Listener() {
-                override fun boundWitnessStarted() {
-                    super.boundWitnessStarted()
+            network.client.listeners["sample"] = object : XyoBoundWitnessTarget.Listener() {
+                override fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
+                    super.boundWitnessStarted(target)
                     addStatus("Bound Witness Started")
                 }
 
-                override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
-                    super.boundWitnessCompleted(boundWitness, error)
+                override fun boundWitnessCompleted(target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
+                    super.boundWitnessCompleted(target, boundWitness, error)
+                    val index = target.relayNode.originState.index.valueCopy.toList().toString()
                     if (error == null) {
-                        addStatus("Bound Witness Completed [${boundWitness?.completed}]")
+                        addStatus("Bound Witness Completed $index [${boundWitness?.completed}]")
                     } else {
                         addStatus("Bound Witness Failed [$error]")
                     }
+                    addStatus("- - - - - -")
                 }
+
             }
 
             ui {

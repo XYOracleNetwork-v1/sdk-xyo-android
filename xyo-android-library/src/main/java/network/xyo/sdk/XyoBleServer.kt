@@ -10,6 +10,7 @@ import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
+import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
 @kotlin.ExperimentalUnsignedTypes
@@ -19,8 +20,7 @@ class XyoBleServer(
     procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
-    listen: Boolean,
-    override var listener: Listener? = null
+    listen: Boolean
 ) : XyoServer(relayNode, procedureCatalog) {
 
     override var autoBridge: Boolean = false
@@ -64,14 +64,21 @@ class XyoBleServer(
     private suspend fun initServer(context: Context): Boolean {
         advertiser = XyoBleSdk.advertiser(context)
         server = XyoBleSdk.server(context)
+        var errorMessage: String? = null
         server.listener = object: XyoBluetoothServer.Listener {
             override fun onPipe(pipe: XyoNetworkPipe) {
                 log.info("onPipe")
                 GlobalScope.launch {
-                    listener?.boundWitnessStarted()
+                    boundWitnessStarted()
                     val handler = XyoNetworkHandler(pipe)
+                    relayNode.addListener("XyoBleServer", object : XyoNodeListener() {
+                        override fun onBoundWitnessEndFailure(error: Exception?) {
+                            errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
+                        }
+                    })
                     val bw = relayNode.boundWitness(handler, procedureCatalog).await()
-                    listener?.boundWitnessCompleted(bw, null)
+                    relayNode.removeListener("XyoBleServer")
+                    boundWitnessCompleted(bw, errorMessage)
                     return@launch
                 }
             }

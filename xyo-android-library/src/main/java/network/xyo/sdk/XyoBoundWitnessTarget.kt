@@ -11,21 +11,41 @@ abstract class XyoBoundWitnessTarget(
 ): XYBase() {
 
     open class Listener: XYBase() {
-        open fun getPayloadData(): ByteArray {
+        open fun getPayloadData(target: XyoBoundWitnessTarget): ByteArray {
             return byteArrayOf()
         }
 
-        open fun boundWitnessStarted() {
+        open fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
             log.info("boundWitnessStarted")
         }
 
-        open fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
+        open fun boundWitnessCompleted(target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
             log.info("boundWitnessCompleted")
         }
     }
 
     //the interaction listener
-    abstract var listener: Listener?
+    val listeners = mutableMapOf<String, Listener>()
+
+    fun getPayloadData(): ByteArray {
+        var result: ByteArray? = null
+        listeners.forEach {
+            result = it.value.getPayloadData(this)
+        }
+        return result ?: byteArrayOf()
+    }
+
+    fun boundWitnessStarted() {
+        listeners.forEach {
+            it.value.boundWitnessStarted(this)
+        }
+    }
+
+    fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
+        listeners.forEach {
+            it.value.boundWitnessCompleted(this, boundWitness, error)
+        }
+    }
 
     //accept bound witnesses that have bridges payloads
     abstract var acceptBridging: Boolean

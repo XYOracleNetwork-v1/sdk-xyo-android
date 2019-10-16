@@ -48,6 +48,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     implementation 'network.xyo:sdk-base-android:2.1.114'
     implementation 'network.xyo:sdk-ble-android:3.0.1075'
-    implementation 'network.xyo:sdk-core-kotlin:3.0.32'
+    implementation 'network.xyo:sdk-core-kotlin:3.0.33'
     implementation project(':xyo-android-library')
 }

@@ -8,18 +8,17 @@ class XyoTcpIpClient(
     procedureCatalog: XyoProcedureCatalog,
     autoBridge: Boolean,
     acceptBridging: Boolean,
-    autoBoundWitness: Boolean,
-    override var listener: Listener? = null
+    autoBoundWitness: Boolean
 )
     : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     override var autoBridge: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 
     override var acceptBridging: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 
     init {
         this.autoBridge = autoBridge
@@ -28,5 +27,5 @@ class XyoTcpIpClient(
 
     override var scan: Boolean
         get() {return false}
-        set(value) {}
+        set(_) {}
 }

@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         //initializeXyoSimple()
         //initializeXyoBleClientOnly()
-        initializeXyoBleServerOnly()
+        //initializeXyoBleServerOnly()
+        initializeXyoBleOnly()
     }
 
     private fun initializeXyoSimple() {
@@ -72,6 +73,17 @@ class MainActivity : AppCompatActivity() {
             network.server.autoBridge = true
             network.server.listen = true
         }
+        (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
+    }
+
+    private fun initializeXyoBleOnly() {
+        val builder = XyoNodeBuilder()
+        node = builder.build(this)
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
             network.client.autoBridge = false
             network.client.autoBoundWitness = false

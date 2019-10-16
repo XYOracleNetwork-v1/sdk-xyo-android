@@ -13,6 +13,7 @@ import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
+import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -26,8 +27,7 @@ class XyoBleClient(
     autoBridge: Boolean,
     acceptBridging: Boolean,
     autoBoundWitness: Boolean,
-    scan: Boolean,
-    override var listener: Listener? = null
+    scan: Boolean
 )
     : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
@@ -71,24 +71,38 @@ class XyoBleClient(
 
     suspend fun tryBoundWitnessWithDevice(device: XyoBluetoothClient) {
         if (boundWitnessMutex.tryLock()) {
-            listener?.boundWitnessStarted()
+            boundWitnessStarted()
+
+            var errorMessage: String? = null
+
             val result = device.connection {
                 val pipe = device.createPipe()
 
                 if (pipe != null) {
                     val handler = XyoNetworkHandler(pipe)
 
+                    relayNode.addListener("tryBoundWitnessWithDevice", object : XyoNodeListener() {
+                        override fun onBoundWitnessEndFailure(error: Exception?) {
+                            errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
+                        }
+                    })
+
                     val bw = relayNode.boundWitness(handler, procedureCatalog).await()
+
+                    relayNode.removeListener("tryBoundWitnessWithDevice")
+
                     return@connection XYBluetoothResult(bw)
                 }
 
                 return@connection XYBluetoothResult<XyoBoundWitness>(null)
             }
-            var errorCode: String? = null
-            if (result.error != XYBluetoothResult.ErrorCode.None) {
-                errorCode = result.error.toString()
-            }
-            listener?.boundWitnessCompleted(result.value, errorCode)
+            val errorCode: String? =
+                if (result.error != XYBluetoothResult.ErrorCode.None) {
+                    result.error.toString()
+                } else {
+                    errorMessage
+                }
+            boundWitnessCompleted(result.value, errorCode)
             lastBoundWitnessTime = Date().time
             boundWitnessMutex.unlock()
         }

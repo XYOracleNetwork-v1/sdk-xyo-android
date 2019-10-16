@@ -30,6 +30,7 @@ class XyoNodeBuilder: XYBase() {
     private var stateRepository: XyoOriginChainStateRepository? = null
     private var bridgeQueueRepository: XyoBridgeQueueRepository? = null
     private var hashingProvider: XyoHash.XyoHashProvider? = null
+    private var knownBridges = mutableListOf<String>()
 
     fun addNetwork(name: String, network: XyoNetwork) {
         networks[name] = network
@@ -91,13 +92,15 @@ class XyoNodeBuilder: XYBase() {
         val node = XyoNode(storage!!, networks)
         XyoSdk.nodes.add(node)
 
-        node.setAllListeners(listener)
+        listener?.let {
+            node.setAllListeners("default", it)
+        }
 
         return node
     }
 
     private fun setDefaultProcedureCatalog() {
-        procedureCatalog = object : XyoProcedureCatalog {
+        /*procedureCatalog = object : XyoProcedureCatalog {
             override fun canDo(byteArray: ByteArray): Boolean {
                 if (true) {
                     return true
@@ -117,8 +120,8 @@ class XyoNodeBuilder: XYBase() {
 
                 return byteArrayOf(0x00, 0x00, 0x00, 0x01)
             }
-        }
-        /*procedureCatalog = object : XyoProcedureCatalog {
+        } */
+        procedureCatalog = object : XyoProcedureCatalog {
             val canDoByte = XyoProcedureCatalogFlags.BOUND_WITNESS or XyoProcedureCatalogFlags.GIVE_ORIGIN_CHAIN or XyoProcedureCatalogFlags.TAKE_ORIGIN_CHAIN
 
             override fun canDo(byteArray: ByteArray): Boolean {
@@ -151,7 +154,7 @@ class XyoNodeBuilder: XYBase() {
 
                 return byteArrayOf(0x00, 0x00, 0x00, canDoByte.toByte())
             }
-        }*/
+        }
     }
 
     private fun setDefaultBlockRepository() {
