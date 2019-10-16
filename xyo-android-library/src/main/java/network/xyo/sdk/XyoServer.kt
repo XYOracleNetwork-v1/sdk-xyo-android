@@ -1,5 +1,7 @@
 package network.xyo.sdk
 
-abstract class XyoServer: XyoBoundWitnessTarget() {
+import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
+import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
+abstract class XyoServer(relayNode: XyoRelayNode, procedureCatalog: XyoProcedureCatalog): XyoBoundWitnessTarget(relayNode, procedureCatalog) {
 }

@@ -4,4 +4,9 @@
     <string name="title_ble_server">BLE Server</string>
     <string name="title_tcpip_client">TcpIp Client</string>
     <string name="title_tcpip_server">TcpIp Server</string>
+    <string name="auto_bound_witness">Auto BoundWitness</string>
+    <string name="auto_bridge">Auto Bridge</string>
+    <string name="accept_bridging">Accept Bridging</string>
+    <string name="scan">Scan</string>
+    <string name="listen">Listen</string>
 </resources>

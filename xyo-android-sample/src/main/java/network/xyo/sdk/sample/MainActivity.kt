@@ -7,10 +7,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import network.xyo.sdk.XyoNodeBuilder
-import network.xyo.sdk.XyoSdk
+import network.xyo.ble.generic.devices.XYBluetoothDevice
+import network.xyo.ble.generic.scanner.XYSmartScan
+import network.xyo.sdk.*
+import network.xyo.base.XYBase
+import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
+@kotlin.ExperimentalUnsignedTypes
 class MainActivity : AppCompatActivity() {
+
+    lateinit var node: XyoNode
+    val log = XYBase.log("Xyo-MainActivity")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +34,49 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        initializeXyo()
+        //initializeXyoSimple()
+        //initializeXyoBleClientOnly()
+        initializeXyoBleServerOnly()
     }
 
-    private fun initializeXyo() {
+    private fun initializeXyoSimple() {
         val builder = XyoNodeBuilder()
-        builder.build()
+        node = builder.build(this)
+    }
+
+    private fun initializeXyoBleClientOnly() {
+        val builder = XyoNodeBuilder()
+        node = builder.build(this)
+        (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
+            network.client.autoBridge = true
+            network.client.autoBoundWitness = true
+            network.client.scan = true
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
+        (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
+    }
+
+    private fun initializeXyoBleServerOnly() {
+        val builder = XyoNodeBuilder()
+        node = builder.build(this)
+        (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.client.scan = false
+            network.server.autoBridge = true
+            network.server.listen = true
+        }
+        (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
+            network.client.autoBridge = false
+            network.client.autoBoundWitness = false
+            network.server.autoBridge = false
+            network.server.listen = false
+        }
     }
 }

@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
@@ -46,6 +46,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    api 'network.xyo:sdk-base-android:2.1.114'
+    implementation 'network.xyo:sdk-base-android:2.1.114'
+    implementation 'network.xyo:sdk-ble-android:3.0.1075'
+    implementation 'network.xyo:sdk-core-kotlin:3.0.32'
     implementation project(':xyo-android-library')
 }
