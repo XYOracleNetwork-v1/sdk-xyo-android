@@ -19,13 +19,13 @@
 
     <fragment
         android:id="@+id/navigation_tcpip_client"
-        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipClientFragment"
+        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpIpClientFragment"
         android:label="@string/title_tcpip_client"
         tools:layout="@layout/fragment_tcpip_client" />
 
     <fragment
         android:id="@+id/navigation_tcpip_server"
-        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipServerFragment"
+        android:name="network.xyo.sdk.sample.ui.tcpip_server.TcpIpServerFragment"
         android:label="@string/title_tcpip_server"
         tools:layout="@layout/fragment_tcpip_server" />
 </navigation>

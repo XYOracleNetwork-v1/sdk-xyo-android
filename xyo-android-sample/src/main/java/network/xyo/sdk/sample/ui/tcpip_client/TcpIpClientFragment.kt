@@ -17,7 +17,7 @@ import network.xyo.sdk.sample.ui
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
 @kotlin.ExperimentalUnsignedTypes
-class TcpipClientFragment : Fragment() {
+class TcpIpClientFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
