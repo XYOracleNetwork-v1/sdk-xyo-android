@@ -14,7 +14,6 @@
 -   [Install](#install)
 -   [Implementation](#implementation)
 -   [Architecture](#architecture)
--   [Testing](#testing)
 -   [Maintainers](#maintainers)
 -   [Contributing](#contributing)
 -   [License](#license)
@@ -46,13 +45,64 @@ You can then run the app in a simulator of your choice or an Andro
 
 ## Architecture
 
-This sdk is built on a client/server architecture as opposed to our past ble sdks which were built on an idea of central/peripheral. 
+This sdk is built on a client/server architecture as opposed to our past ble SDKs which were built on an idea of central/peripheral. 
 
 ## Sample App
 
-Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for boundWitness and bridging. 
+Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for bound witness and bridging. 
 
-## Testing
+This sample app includes client bridging and bound witnessing with a BLE server listener. 
+
+## Usage
+
+Build an XYO Node 
+
+```kotlin
+val builder = XYONodeBuilder()
+``` 
+
+After calling the node builder, you can start the build
+
+```kotlin
+lateinit var node = XyoNode()
+
+node = builder.build(this)
+```
+
+Once you have a build, you have access to properties to help you shape your node and what you want out of it. 
+
+```kotlin
+node.networks["this can be "ble" or "tcpip""]
+```
+
+After choosing the network, you have these properties available
+
+Client
+
+```kotlin
+network.client.autoBridge
+network.client.autoBoundWitness
+network.client.scan
+```
+
+Server
+
+```kotlin
+network.server.autoBridge
+network.server.listen
+```
+
+These will allow your app to actively seek devices to bound witness with and bridge from the client to the server.
+
+You can also get payload data from the bound witness 
+
+```kotlin
+node.listener.getPayloadData(target: boundWitnessTarget)
+```
+
+This will return a byteArray.
+
+There are other properties from the client and server which you can find in the source code as well as a reference guide that we have prepared. 
 
 ## Maintainers
 
