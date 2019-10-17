@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_tcpip_client"
-        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipServerFragment"
+        android:name="network.xyo.sdk.sample.ui.tcpip_client.TcpipClientFragment"
         android:label="@string/title_tcpip_client"
         tools:layout="@layout/fragment_tcpip_client" />
 
