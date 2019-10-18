@@ -27,42 +27,42 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 Copy this code to test. Look below for specific usage. 
 
 ``` kotlin 
-// callback for node events
-        val listener = object : XyoBoundWitnessTarget.Listener() {
-            override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
-                super.boundWitnessCompleted(boundWitness, error)
+  // callback for node events
+          val listener = object : XyoBoundWitnessTarget.Listener() {
+              override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
+                  super.boundWitnessCompleted(boundWitness, error)
 
-                println("New bound witness!")
-            }
+                  println("New bound witness!")
+              }
 
-            override fun boundWitnessStarted() {
-                super.boundWitnessStarted()
+              override fun boundWitnessStarted() {
+                  super.boundWitnessStarted()
 
-                println("Bound witness started!")
+                  println("Bound witness started!")
 
-            }
-        }
-        
+              }
+          }
+          
 
-        // build and configure the node
-        val builder = XyoNodeBuilder()
-        builder.setListener(listener)
+          // build and configure the node
+          val builder = XyoNodeBuilder()
+          builder.setListener(listener)
 
-        // create the node
-        val context = getContextSomehow()
-        val node = builder.build(context)
+          // create the node
+          val context = getContextSomehow()
+          val node = builder.build(context)
 
-        // configure tcp
-        val tcpNetwork = node.networks["tcp"] ?: return
-        tcpNetwork.client.autoBridge = true
-        tcpNetwork.client.autoBoundWitness = true
-        tcpNetwork.client.scan = false
+          // configure tcp
+          val tcpNetwork = node.networks["tcp"] ?: return
+          tcpNetwork.client.autoBridge = true
+          tcpNetwork.client.autoBoundWitness = true
+          tcpNetwork.client.scan = false
 
-        // configure ble
-        val bleNetwork = node.networks["ble"] ?: return
-        bleNetwork.client.autoBridge = true
-        bleNetwork.client.autoBoundWitness = true
-        bleNetwork.client.scan = false
+          // configure ble
+          val bleNetwork = node.networks["ble"] ?: return
+          bleNetwork.client.autoBridge = true
+          bleNetwork.client.autoBoundWitness = true
+          bleNetwork.client.scan = false
 ```
 
 ## Usage
