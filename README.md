@@ -10,7 +10,6 @@
 
 -   [Title](#sdk-xyo-android)
 -   [Description](#description)
--   [Getting Started](#getting-started)
 -   [Install](#install)
 -   [Implementation](#implementation)
 -   [Architecture](#architecture)
@@ -21,33 +20,18 @@
 
 ## Description 
 
-A simple high-level SDK for integration of key XYO BLE and TCP methods for bound witnessing and bridging. 
-
-## Getting Started
-
-To integrate into your project:
-
-Update your gradle
-
-## Install
-
-To use the sample app to measure functionality
-
-- Launch [Android Studio](https://developer.android.com/studio/install)
-- Click on `Open an existing Android Studio Project`
-- Navigate to `<path to the sdk-xyo-android>/xyo-android-sample` in your file explorer
-
-Once you open the sample in Android Studio it will go through the build process.
-
-You can then run the app in a simulator of your choice or an Android device. 
+A high-level SDK for interacting with the XYO network.
+Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
 ## Implementation
 
 ## Architecture
 
-This sdk is built on a client/server architecture as opposed to our past ble SDKs which were built on an idea of central/peripheral. 
+This sdk is built on a client/server to ensure ease of understanding during development. (The client takes on "central" role, and the server the "peripheral"). This allows us to define roles with simplicity. 
 
-> XyoSDK
+> SDK-XYO-ANDROID TREE
+
+- XyoSDK
   - mutableList `<XyoNode>` 
     - `XyoNode(storage, networks)`
       - `listeners`
@@ -72,6 +56,18 @@ This sdk is built on a client/server architecture as opposed to our 
 ## Sample App
 
 Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for bound witness and bridging. 
+
+### Install
+
+To use the sample app to measure functionality
+
+- Launch [Android Studio](https://developer.android.com/studio/install)
+- Click on `Open an existing Android Studio Project`
+- Navigate to `<path to the sdk-xyo-android>/xyo-android-sample` in your file explorer
+
+Once you open the sample in Android Studio it will go through the build process.
+
+You can then run the app in a simulator of your choice or an Android device. 
 
 This sample app includes client bridging and bound witnessing with a BLE server listener. 
 
