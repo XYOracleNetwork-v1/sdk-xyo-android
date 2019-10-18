@@ -47,6 +47,28 @@ You can then run the app in a simulator of your choice or an Andro
 
 This sdk is built on a client/server architecture as opposed to our past ble SDKs which were built on an idea of central/peripheral. 
 
+> XyoSDK
+  - mutableList `<XyoNode>` 
+    - `XyoNode(storage, networks)`
+      - `listeners`
+        - `boundWitnessTarget`
+    - XyoClient, XyoServer
+      - Ble
+        - `context`
+        - `relayNode`
+        - `procedureCatalog`
+        - `autoBridge`
+        - `acceptBridging`
+        - `autoBoundWitness`
+        - `scan`
+    
+      - TcpIp
+        - `relayNode`
+        - `procedureCatalog`
+        - `autoBridge`
+        - `acceptBridging`
+        - `autoBoundWitness`
+
 ## Sample App
 
 Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for bound witness and bridging. 
@@ -74,6 +96,8 @@ Once you have a build, you have access to properties to help you shape your node
 ```kotlin
 node.networks["this can be "ble" or "tcpip""]
 ```
+
+You should use `ble` for client services.
 
 After choosing the network, you have these properties available
 
