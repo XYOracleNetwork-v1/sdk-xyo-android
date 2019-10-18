@@ -22,6 +22,49 @@
 A high-level SDK for interacting with the XYO network.
 Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
+## Start Here 
+
+Copy this code to test. Look below for specific usage. 
+
+``` kotlin 
+// callback for node events
+        val listener = object : XyoBoundWitnessTarget.Listener() {
+            override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
+                super.boundWitnessCompleted(boundWitness, error)
+
+                println("New bound witness!")
+            }
+
+            override fun boundWitnessStarted() {
+                super.boundWitnessStarted()
+
+                println("Bound witness started!")
+
+            }
+        }
+        
+
+        // build and configure the node
+        val builder = XyoNodeBuilder()
+        builder.setListener(listener)
+
+        // create the node
+        val context = getContextSomehow()
+        val node = builder.build(context)
+
+        // configure tcp
+        val tcpNetwork = node.networks["tcp"] ?: return
+        tcpNetwork.client.autoBridge = true
+        tcpNetwork.client.autoBoundWitness = true
+        tcpNetwork.client.scan = false
+
+        // configure ble
+        val bleNetwork = node.networks["ble"] ?: return
+        bleNetwork.client.autoBridge = true
+        bleNetwork.client.autoBoundWitness = true
+        bleNetwork.client.scan = false
+```
+
 ## Usage
 
 Build an XYO Node 
@@ -33,7 +76,7 @@ val builder = XYONodeBuilder()
 After calling the node builder, you can start the build
 
 ```kotlin
-lateinit var node = XyoNode()
+val node = XyoNode()
 
 node = builder.build(this)
 ```
@@ -44,13 +87,13 @@ Once you have a build, you have access to properties to help you shape your node
 node.networks["this can be "ble" or "tcpip""]
 ```
 
-You should use `ble` for client services.
-
 After choosing the network, you have these properties available
 
 Client
 
 ```kotlin
+val network = node.networks["network"]
+
 network.client.autoBridge
 network.client.autoBoundWitness
 network.client.scan
@@ -59,6 +102,8 @@ network.client.scan
 Server
 
 ```kotlin
+val network = node.networks["network"]
+
 network.server.autoBridge
 network.server.listen
 ```
