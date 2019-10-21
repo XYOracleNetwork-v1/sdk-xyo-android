@@ -133,7 +133,7 @@ These will allow your app to actively seek devices to bound witness with and bri
 You can also get payload data from the bound witness 
 
 ```kotlin
-node.listener.getPayloadData(target: boundWitnessTarget)
+node.listener.getPayloadData(target: XyoBoundWitnessTarget)
 ```
 
 This will return a byteArray.
