@@ -2,8 +2,11 @@ package network.xyo.sdk
 
 import android.content.Context
 import network.xyo.base.XYBase
+import network.xyo.sdkcorekotlin.crypto.signing.XyoSigner
+import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.hashing.XyoBasicHashBase
 import network.xyo.sdkcorekotlin.hashing.XyoHash
+import network.xyo.sdkcorekotlin.heuristics.XyoUnixTime
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalogFlags
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
@@ -26,9 +29,9 @@ class XyoNodeBuilder: XYBase() {
 
     private var relayNode: XyoRelayNode? = null
     private var procedureCatalog: XyoProcedureCatalog? = null
-    private var blockRepository: XyoOriginBlockRepository? = null
-    private var stateRepository: XyoOriginChainStateRepository? = null
-    private var bridgeQueueRepository: XyoBridgeQueueRepository? = null
+    private var blockRepository: XyoStorageOriginBlockRepository? = null
+    private var stateRepository: XyoStorageOriginStateRepository? = null
+    private var bridgeQueueRepository: XyoStorageBridgeQueueRepository? = null
     private var hashingProvider: XyoHash.XyoHashProvider? = null
     private var knownBridges = mutableListOf<String>()
 
@@ -44,7 +47,7 @@ class XyoNodeBuilder: XYBase() {
         this.listener = listener
     }
 
-    fun build(context: Context): XyoNode {
+    suspend fun build(context: Context): XyoNode {
         if (XyoSdk.nodes.isNotEmpty()) {
             throw Exception()
         }
@@ -91,6 +94,8 @@ class XyoNodeBuilder: XYBase() {
 
         val node = XyoNode(storage!!, networks)
         XyoSdk.nodes.add(node)
+
+        restoreAndInitBlockStorage()
 
         listener?.let {
             node.setAllListeners("default", it)
@@ -214,6 +219,37 @@ class XyoNodeBuilder: XYBase() {
         log.error("Missing blockRepository", true)
     }
 
+    private suspend fun getSigner(): XyoSigner {
+        storage!!.let { storage ->
+            val currentSigner = storage.read(SIGNER_KEY).await()
+
+            if (currentSigner == null) {
+                val newSigner = XyoSha256WithSecp256K.newInstance()
+                storage.write(SIGNER_KEY, newSigner.privateKey.bytesCopy).await()
+                return newSigner
+            }
+
+            return XyoSha256WithSecp256K.newInstance(currentSigner)
+        }
+    }
+
+    suspend fun restoreAndInitBlockStorage () {
+        relayNode!!.let { relayNode ->
+            relayNode.originBlocksToBridge.removeWeight = 2
+            relayNode.originBlocksToBridge.sendLimit = 38
+            relayNode.addHeuristic("TIME", XyoUnixTime.getter)
+
+            val currentSigner = getSigner()
+
+            stateRepository!!.restore(arrayListOf(currentSigner)).await()
+            bridgeQueueRepository!!.restore().await()
+
+            if (ByteBuffer.wrap((relayNode.originState.index.valueCopy)).int == 0) {
+                relayNode.selfSignOriginChain().await()
+            }
+        }
+    }
+
     private fun setDefaultNetworks(context: Context) {
         relayNode?.let {relayNode ->
             procedureCatalog?.let { procedureCatalog ->
@@ -229,5 +265,9 @@ class XyoNodeBuilder: XYBase() {
 
     private fun setDefaultStorage(context: Context) {
         setStorage(XyoSnappyDbStorageProvider(context))
+    }
+
+    companion object {
+        private val SIGNER_KEY = "SIGNER_KEY".toByteArray()
     }
 }

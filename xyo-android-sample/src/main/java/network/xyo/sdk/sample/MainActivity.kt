@@ -7,6 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.sdk.*
@@ -17,35 +19,37 @@ import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 class MainActivity : AppCompatActivity() {
 
     lateinit var node: XyoNode
-    val log = XYBase.log("Xyo-MainActivity")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        GlobalScope.launch {
+            initializeXyoSimple()
+            //initializeXyoBleClientOnly()
+            //initializeXyoBleServerOnly()
+            //initializeXyoBleOnly()
+            ui {
+                setContentView(R.layout.activity_main)
+                val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_ble_client, R.id.navigation_ble_server, R.id.navigation_tcpip_client, R.id.navigation_tcpip_server
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-        initializeXyoSimple()
-        //initializeXyoBleClientOnly()
-        //initializeXyoBleServerOnly()
-        //initializeXyoBleOnly()
+                val navController = findNavController(R.id.nav_host_fragment)
+                // Passing each menu ID as a set of Ids because each
+                // menu should be considered as top level destinations.
+                val appBarConfiguration = AppBarConfiguration(
+                    setOf(
+                        R.id.navigation_ble_client, R.id.navigation_ble_server, R.id.navigation_tcpip_client, R.id.navigation_tcpip_server
+                    )
+                )
+                setupActionBarWithNavController(navController, appBarConfiguration)
+                navView.setupWithNavController(navController)
+            }
+        }
     }
 
-    private fun initializeXyoSimple() {
+    private suspend fun initializeXyoSimple() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
     }
 
-    private fun initializeXyoBleClientOnly() {
+    private suspend fun initializeXyoBleClientOnly() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
@@ -63,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeXyoBleServerOnly() {
+    private suspend fun initializeXyoBleServerOnly() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeXyoBleOnly() {
+    private suspend fun initializeXyoBleOnly() {
         val builder = XyoNodeBuilder()
         node = builder.build(this)
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
