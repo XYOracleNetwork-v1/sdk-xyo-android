@@ -92,7 +92,7 @@ class XyoNodeBuilder: XYBase() {
             setDefaultNetworks(context)
         }
 
-        val node = XyoNode(storage!!, networks)
+        val node = XyoNode(networks)
         XyoSdk.nodes.add(node)
 
         restoreAndInitBlockStorage()

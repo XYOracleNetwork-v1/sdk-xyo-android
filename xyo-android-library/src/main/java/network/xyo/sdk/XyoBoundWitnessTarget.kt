@@ -10,6 +10,15 @@ abstract class XyoBoundWitnessTarget(
     val procedureCatalog: XyoProcedureCatalog
 ): XYBase() {
 
+    val publicKey: String?
+        get() {
+            if (relayNode.originState.signers.isEmpty()) {
+                return null
+            }
+
+            return relayNode.originState.signers.first().publicKey.bytesCopy.toBase58String()
+        }
+
     open class Listener: XYBase() {
         open fun getPayloadData(target: XyoBoundWitnessTarget): ByteArray {
             return byteArrayOf()

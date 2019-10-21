@@ -101,6 +101,7 @@ class BleClientFragment : Fragment() {
 
             ui {
                 text_ble_client.text = ""
+                publicKey.text = network.client.publicKey
             }
         }
     }

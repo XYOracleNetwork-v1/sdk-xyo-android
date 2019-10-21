@@ -73,9 +73,8 @@ class BleServerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ui {
-            (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-
+        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+            ui {
                 network.server.listeners["sample"] = object : XyoBoundWitnessTarget.Listener() {
                     override fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
                         super.boundWitnessStarted(target)
@@ -93,9 +92,10 @@ class BleServerFragment : Fragment() {
                         addStatus("- - - - - -")
                     }
                 }
+                updateUI()
+                text_ble_server.text = ""
+                publicKey.text = network.server.publicKey
             }
-            updateUI()
-            text_ble_server.text = ""
         }
     }
 }
