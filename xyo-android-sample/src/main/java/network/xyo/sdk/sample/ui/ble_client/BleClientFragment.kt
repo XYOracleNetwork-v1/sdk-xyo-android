@@ -96,11 +96,11 @@ class BleClientFragment : Fragment() {
                     }
                     addStatus("- - - - - -")
                 }
-
             }
 
             ui {
                 text_ble_client.text = ""
+                publicKey.text = network.client.publicKey
             }
         }
     }

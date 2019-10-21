@@ -92,7 +92,7 @@ class XyoNodeBuilder: XYBase() {
             setDefaultNetworks(context)
         }
 
-        val node = XyoNode(storage!!, networks)
+        val node = XyoNode(networks)
         XyoSdk.nodes.add(node)
 
         restoreAndInitBlockStorage()
@@ -233,7 +233,7 @@ class XyoNodeBuilder: XYBase() {
         }
     }
 
-    suspend fun restoreAndInitBlockStorage () {
+    private suspend fun restoreAndInitBlockStorage () {
         relayNode!!.let { relayNode ->
             relayNode.originBlocksToBridge.removeWeight = 2
             relayNode.originBlocksToBridge.sendLimit = 38

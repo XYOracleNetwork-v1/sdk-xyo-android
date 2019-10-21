@@ -10,11 +10,16 @@ abstract class XyoBoundWitnessTarget(
     val procedureCatalog: XyoProcedureCatalog
 ): XYBase() {
 
-    open class Listener: XYBase() {
-        open fun getPayloadData(target: XyoBoundWitnessTarget): ByteArray {
-            return byteArrayOf()
+    val publicKey: String?
+        get() {
+            if (relayNode.originState.signers.isEmpty()) {
+                return null
+            }
+
+            return relayNode.originState.signers.first().publicKey.bytesCopy.toBase58String()
         }
 
+    open class Listener: XYBase() {
         open fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
             log.info("boundWitnessStarted")
         }
@@ -26,14 +31,6 @@ abstract class XyoBoundWitnessTarget(
 
     //the interaction listener
     val listeners = mutableMapOf<String, Listener>()
-
-    fun getPayloadData(): ByteArray {
-        var result: ByteArray? = null
-        listeners.forEach {
-            result = it.value.getPayloadData(this)
-        }
-        return result ?: byteArrayOf()
-    }
 
     fun boundWitnessStarted() {
         listeners.forEach {
