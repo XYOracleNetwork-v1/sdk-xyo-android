@@ -26,6 +26,14 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
 Copy this code to test. Look below for specific usage. 
 
+One line is all it takes to start your node 
+
+```kotlin
+val node = XyoNodeBuilder().build(context)
+```
+
+For a more complex test, create a listener callback.
+
 ``` kotlin 
   // callback for node events
           val listener = object : XyoBoundWitnessTarget.Listener() {
@@ -41,9 +49,11 @@ Copy this code to test. Look below for specific usage.
                   println("Bound witness started!")
 
               }
-          }
-          
+          }       
+```
+You can also configure to your specific roles.
 
+```kotlin
           // build and configure the node
           val builder = XyoNodeBuilder()
           builder.setListener(listener)
@@ -53,7 +63,7 @@ Copy this code to test. Look below for specific usage.
           val node = builder.build(context)
 
           // configure tcp
-          val tcpNetwork = node.networks["tcp"] ?: return
+          val tcpNetwork = node.networks["tcpip"] ?: return
           tcpNetwork.client.autoBridge = true
           tcpNetwork.client.autoBoundWitness = true
           tcpNetwork.client.scan = false
@@ -92,19 +102,29 @@ After choosing the network, you have these properties available
 Client
 
 ```kotlin
+// select the network
 val network = node.networks["network"]
 
+// a flag to tell the client to automatically bridge
 network.client.autoBridge
+
+// a flag to tell the client to automatically bound witness 
 network.client.autoBoundWitness
+
+// a flag to tell the client to automatically scan
 network.client.scan
 ```
 
 Server
 
 ```kotlin
+// select the network 
 val network = node.networks["network"]
 
+// a flag to tell the server to automatically bridge
 network.server.autoBridge
+
+// a flag to tell the client to automatically listen for bridging
 network.server.listen
 ```
 
