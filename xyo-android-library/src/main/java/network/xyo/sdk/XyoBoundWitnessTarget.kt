@@ -20,10 +20,6 @@ abstract class XyoBoundWitnessTarget(
         }
 
     open class Listener: XYBase() {
-        open fun getPayloadData(target: XyoBoundWitnessTarget): ByteArray {
-            return byteArrayOf()
-        }
-
         open fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
             log.info("boundWitnessStarted")
         }
@@ -35,14 +31,6 @@ abstract class XyoBoundWitnessTarget(
 
     //the interaction listener
     val listeners = mutableMapOf<String, Listener>()
-
-    fun getPayloadData(): ByteArray {
-        var result: ByteArray? = null
-        listeners.forEach {
-            result = it.value.getPayloadData(this)
-        }
-        return result ?: byteArrayOf()
-    }
 
     fun boundWitnessStarted() {
         listeners.forEach {

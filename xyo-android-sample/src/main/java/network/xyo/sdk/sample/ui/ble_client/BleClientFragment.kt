@@ -96,7 +96,6 @@ class BleClientFragment : Fragment() {
                     }
                     addStatus("- - - - - -")
                 }
-
             }
 
             ui {

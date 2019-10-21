@@ -4,6 +4,8 @@ import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
 import network.xyo.modbluetoothkotlin.XyoBleSdk
 import network.xyo.modbluetoothkotlin.advertiser.XyoBluetoothAdvertiser
 import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
@@ -32,12 +34,7 @@ class XyoBleServer(
     var listen: Boolean
         get() {return advertiser?.started ?: false}
         set(value) {
-            GlobalScope.launch {
-                var waitForAdvertiserCount = 10
-                while (advertiser == null && waitForAdvertiserCount > 0) {
-                    delay(1000)
-                    waitForAdvertiserCount--
-                }
+            runBlocking {
                 advertiser?.let { advertiser ->
                     if (value) {
                         log.info("Starting Advertiser")
@@ -46,9 +43,7 @@ class XyoBleServer(
                         log.info("Stopping Advertiser")
                         advertiser.stopAdvertiser()
                     }
-                    return@launch
                 }
-                log.error("Advertiser Failed to Initialize", false)
             }
         }
 
