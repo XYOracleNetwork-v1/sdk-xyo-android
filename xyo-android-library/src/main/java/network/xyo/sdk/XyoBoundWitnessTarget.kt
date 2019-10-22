@@ -20,11 +20,11 @@ abstract class XyoBoundWitnessTarget(
         }
 
     open class Listener: XYBase() {
-        open fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
+        open fun boundWitnessStarted(source: Any?, target: XyoBoundWitnessTarget) {
             log.info("boundWitnessStarted")
         }
 
-        open fun boundWitnessCompleted(target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
+        open fun boundWitnessCompleted(source: Any?, target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
             log.info("boundWitnessCompleted")
         }
     }
@@ -32,15 +32,15 @@ abstract class XyoBoundWitnessTarget(
     //the interaction listener
     val listeners = mutableMapOf<String, Listener>()
 
-    fun boundWitnessStarted() {
+    fun boundWitnessStarted(source: Any?) {
         listeners.forEach {
-            it.value.boundWitnessStarted(this)
+            it.value.boundWitnessStarted(source, this)
         }
     }
 
-    fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error:String?) {
+    fun boundWitnessCompleted(source: Any?, boundWitness: XyoBoundWitness?, error:String?) {
         listeners.forEach {
-            it.value.boundWitnessCompleted(this, boundWitness, error)
+            it.value.boundWitnessCompleted(source, this, boundWitness, error)
         }
     }
 

@@ -51,7 +51,7 @@ class XyoTcpIpClient(
                     var bw: XyoBoundWitness? = null
                     knownBridges.forEach { bridge ->
                         log.info("Trying to bridge: $bridge")
-                        boundWitnessStarted()
+                        boundWitnessStarted(bridge)
                         try {
                             if (bw == null) {
                                 val uri = Uri.parse(bridge)
@@ -77,7 +77,7 @@ class XyoTcpIpClient(
                             log.info("Bridging Excepted $e")
                             networkErrorMessage = e.message ?: e.toString()
                         }
-                        boundWitnessCompleted(bw, errorMessage ?: networkErrorMessage)
+                        boundWitnessCompleted(bridge, bw, errorMessage ?: networkErrorMessage)
                     }
                 }
             }
