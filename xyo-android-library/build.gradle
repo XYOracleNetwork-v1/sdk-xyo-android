@@ -44,14 +44,6 @@ android {
     versionProps['VERSION_CODE'] = code.toString()
     versionProps.store(versionPropsFile.newWriter(), null)
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        defaultPublishConfig 'release'
-        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code
-        versionName majorVersion + "." + minorVersion + "." + code
-    }
-
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -60,8 +52,19 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        defaultPublishConfig 'release'
+        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code
+        versionName majorVersion + "." + minorVersion + "." + code
+    }
+
+    lintOptions {
+        htmlReport false
+        abortOnError true
+        warningsAsErrors true
+        disable "HardwareIds", "MissingPermission"
     }
 
     buildTypes {
