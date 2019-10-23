@@ -1,34 +1,32 @@
-package network.xyo.sdk.sample.ui.ble_client
+package network.xyo.sdk.sample.ui.tcpip_client
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-
-import kotlinx.android.synthetic.main.fragment_ble_client.*
-import network.xyo.sdk.sample.R
-import network.xyo.sdk.XyoBleNetwork
+import kotlinx.android.synthetic.main.fragment_tcpip_client.*
 import network.xyo.sdk.XyoBoundWitnessTarget
 import network.xyo.sdk.XyoSdk
+import network.xyo.sdk.XyoTcpIpNetwork
+import network.xyo.sdk.sample.R
 import network.xyo.sdk.sample.ui
-
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
 @kotlin.ExperimentalUnsignedTypes
-class BleClientFragment : Fragment() {
+class TcpIpClientFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ble_client, container, false)
+        return inflater.inflate(R.layout.fragment_tcpip_client, container, false)
     }
 
     fun addStatus(status: String) {
         ui {
-            text_ble_client?.let {
+            text_tcpip_client?.let {
                 val sb = StringBuilder()
                 sb.append(it.text)
                 sb.append("\r\n")
@@ -40,7 +38,7 @@ class BleClientFragment : Fragment() {
 
     fun updateUI() {
         ui {
-            (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+            (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
                 acceptBridging.isChecked = network.client.acceptBridging
                 acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.client.acceptBridging = isChecked
@@ -72,13 +70,13 @@ class BleClientFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.client?.listeners?.remove("sample")
+        (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.client?.listeners?.remove("sample")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+        (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
 
             network.client.listeners["sample"] = object : XyoBoundWitnessTarget.Listener() {
                 override fun boundWitnessStarted(source: Any?, target: XyoBoundWitnessTarget) {
@@ -96,10 +94,11 @@ class BleClientFragment : Fragment() {
                     }
                     addStatus("- - - - - -")
                 }
+
             }
 
             ui {
-                text_ble_client.text = ""
+                text_tcpip_client.text = ""
                 publicKey.text = network.client.publicKey
             }
         }

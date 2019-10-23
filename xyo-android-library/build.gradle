@@ -1,34 +1,138 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+group = 'network.xyo'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:9.0.0"
+    }
+}
+
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+configurations {
+    localImplementation
+}
+
+def majorVersion = 3
+def minorVersion = 0
+
+Properties versionProps = new Properties()
+def versionPropsFile = file('version.properties')
+if (versionPropsFile.exists())
+    versionProps.load(new FileInputStream(versionPropsFile))
+def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+def verString = majorVersion + '.' + minorVersion + '.' + code
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        consumerProguardFiles 'consumer-rules.pro'
-    }
+    versionProps['VERSION_CODE'] = code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
 
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
+        kotlinOptions {
+            allWarningsAsErrors = false
+        }
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        defaultPublishConfig 'release'
+        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code
+        versionName majorVersion + "." + minorVersion + "." + code
+    }
+
+    lintOptions {
+        htmlReport false
+        abortOnError true
+        warningsAsErrors true
+        disable "HardwareIds", "MissingPermission"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/build.kotlin_module'
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+
+}
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
+            groupId 'network.xyo'
+            artifactId 'sdk-xyo-android'
+            version verString
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                //def dependenciesNode = asNode().appendNode('dependencies')
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    dryRun = false
+    override = false
+    publish = true
+    pkg {
+        repo = 'xyo'
+        name = 'sdk-ble-android'
+        userOrg = 'xyoraclenetwork'
+        licenses = ['LGPL-3.0']
+        desc = 'Android Base Classes'
+        vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
+
+        version {
+            name = verString
+            vcsTag = verString
+        }
+    }
+    publications = ['Production']
+}
+
+ktlint {
+    disabledRules = ["no-wildcard-imports"]
 }
 
 dependencies {
@@ -39,9 +143,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'network.xyo:sdk-base-android:2.1.114'
-    implementation 'network.xyo:sdk-xyobleinterface-android:2.1.533'
+    implementation 'network.xyo:sdk-xyobleinterface-android:2.1.545'
     implementation 'network.xyo:sdk-ble-android:3.0.1075'
-    implementation 'network.xyo:sdk-core-kotlin:3.0.32'
+    implementation 'network.xyo:sdk-core-kotlin:3.0.33'
     implementation 'com.snappydb:snappydb-lib:0.5.2'
-    implementation 'org.bouncycastle:bcpkix-jdk15on:1.58'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.64'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile).all { task ->
+    task.kotlinOptions.freeCompilerArgs += experimentalsEnabled
 }

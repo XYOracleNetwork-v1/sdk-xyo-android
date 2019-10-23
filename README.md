@@ -10,11 +10,8 @@
 
 -   [Title](#sdk-xyo-android)
 -   [Description](#description)
--   [Getting Started](#getting-started)
--   [Install](#install)
--   [Implementation](#implementation)
+-   [Usage](#usage)
 -   [Architecture](#architecture)
--   [Testing](#testing)
 -   [Maintainers](#maintainers)
 -   [Contributing](#contributing)
 -   [License](#license)
@@ -22,15 +19,141 @@
 
 ## Description 
 
-A simple high-level SDK for integration of key XYO BLE and TCP methods for bound witnessing and bridging. 
+A high-level SDK for interacting with the XYO network.
+Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
-## Getting Started
+## Start Here 
 
-To integrate into your project:
+Copy this code to test. Look below for specific usage. 
 
-Update your gradle
+``` kotlin 
+  // callback for node events
+          val listener = object : XyoBoundWitnessTarget.Listener() {
+              override fun boundWitnessCompleted(boundWitness: XyoBoundWitness?, error: String?) {
+                  super.boundWitnessCompleted(boundWitness, error)
 
-## Install
+                  println("New bound witness!")
+              }
+
+              override fun boundWitnessStarted() {
+                  super.boundWitnessStarted()
+
+                  println("Bound witness started!")
+
+              }
+          }
+          
+
+          // build and configure the node
+          val builder = XyoNodeBuilder()
+          builder.setListener(listener)
+
+          // create the node
+          val context = getContextSomehow()
+          val node = builder.build(context)
+
+          // configure tcp
+          val tcpNetwork = node.networks["tcp"] ?: return
+          tcpNetwork.client.autoBridge = true
+          tcpNetwork.client.autoBoundWitness = true
+          tcpNetwork.client.scan = false
+
+          // configure ble
+          val bleNetwork = node.networks["ble"] ?: return
+          bleNetwork.client.autoBridge = true
+          bleNetwork.client.autoBoundWitness = true
+          bleNetwork.client.scan = false
+```
+
+## Usage
+
+Build an XYO Node 
+
+```kotlin
+val builder = XYONodeBuilder()
+``` 
+
+After calling the node builder, you can start the build
+
+```kotlin
+val node = XyoNode()
+
+node = builder.build(this)
+```
+
+Once you have a build, you have access to properties to help you shape your node and what you want out of it. 
+
+```kotlin
+node.networks["this can be "ble" or "tcpip""]
+```
+
+After choosing the network, you have these properties available
+
+Client
+
+```kotlin
+val network = node.networks["network"]
+
+network.client.autoBridge
+network.client.autoBoundWitness
+network.client.scan
+```
+
+Server
+
+```kotlin
+val network = node.networks["network"]
+
+network.server.autoBridge
+network.server.listen
+```
+
+These will allow your app to actively seek devices to bound witness with and bridge from the client to the server.
+
+You can also get payload data from the bound witness 
+
+```kotlin
+node.listener.getPayloadData(target: XyoBoundWitnessTarget)
+```
+
+This will return a byteArray.
+
+There are other properties from the client and server which you can find in the source code as well as a reference guide that we have prepared. 
+
+
+## Architecture
+
+This sdk is built on a client/server to ensure ease of understanding during development. (The client takes on "central" role, and the server the "peripheral"). This allows us to define roles with simplicity. 
+
+> SDK-XYO-ANDROID TREE
+
+- XyoSDK
+  - mutableList `<XyoNode>` 
+    - `XyoNode(storage, networks)`
+      - `listeners`
+        - `boundWitnessTarget`
+    - XyoClient, XyoServer
+      - Ble
+        - `context`
+        - `relayNode`
+        - `procedureCatalog`
+        - `autoBridge`
+        - `acceptBridging`
+        - `autoBoundWitness`
+        - `scan`
+    
+      - TcpIp
+        - `relayNode`
+        - `procedureCatalog`
+        - `autoBridge`
+        - `acceptBridging`
+        - `autoBoundWitness`
+
+## Sample App
+
+Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for bound witness and bridging. 
+
+### Install
 
 To use the sample app to measure functionality
 
@@ -42,17 +165,7 @@ Once you open the sample in Android Studio it will go through the b
 
 You can then run the app in a simulator of your choice or an Android device. 
 
-## Implementation
-
-## Architecture
-
-This sdk is built on a client/server architecture as opposed to our past ble sdks which were built on an idea of central/peripheral. 
-
-## Sample App
-
-Please refer to the [xyo-android-sample](/xyo-android-sample/src/main/java/network/xyo/sdk/sample/MainActivity.kt) for an exmple implementation for boundWitness and bridging. 
-
-## Testing
+This sample app includes client bridging and bound witnessing with a BLE server listener. 
 
 ## Maintainers
 
