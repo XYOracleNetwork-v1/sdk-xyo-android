@@ -3,8 +3,8 @@
 ![logo]
 
 # sdk-xyo-android
-
-[![](https://travis-ci.org/XYOracleNetwork/sdk-core-kotlin.svg?branch=master)](https://travis-ci.org/XYOracleNetwork/sdk-xyo-android)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2fb2eb69c1db455299ffce57b0216aa6)](https://www.codacy.com/app/XYOracleNetwork/sdk-xyo-android?utm_source=github.com&utm_medium=referral&utm_content=XYOracleNetwork/sdk-xyo-android&utm_campaign=Badge_Grade) [![Maintainability](https://api.codeclimate.com/v1/badges/af641257b27ecea22a9f/maintainability)](https://codeclimate.com/github/XYOracleNetwork/sdk-xyo-android/maintainability) [![](https://img.shields.io/gitter/room/XYOracleNetwork/Stardust.svg)](https://gitter.im/XYOracleNetwork/Dev)
+[ ![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion)
+[![Build Status](https://travis-ci.com/XYOracleNetwork/sdk-xyo-android.svg?token=DwLaRUVjarU2ZypyaHXe&branch=master)](https://travis-ci.com/XYOracleNetwork/sdk-xyo-android)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade)
 
 ## Table of Contents
 
@@ -26,6 +26,14 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
 Copy this code to test. Look below for specific usage. 
 
+One line is all it takes to start your node 
+
+```kotlin
+val node = XyoNodeBuilder().build(context)
+```
+
+For a more complex test, create a listener callback.
+
 ``` kotlin 
   // callback for node events
           val listener = object : XyoBoundWitnessTarget.Listener() {
@@ -41,9 +49,11 @@ Copy this code to test. Look below for specific usage.
                   println("Bound witness started!")
 
               }
-          }
-          
+          }       
+```
+You can also configure to your specific roles.
 
+```kotlin
           // build and configure the node
           val builder = XyoNodeBuilder()
           builder.setListener(listener)
@@ -53,16 +63,45 @@ Copy this code to test. Look below for specific usage.
           val node = builder.build(context)
 
           // configure tcp
-          val tcpNetwork = node.networks["tcp"] ?: return
+          val tcpNetwork = node.networks["tcpip"] ?: return
           tcpNetwork.client.autoBridge = true
           tcpNetwork.client.autoBoundWitness = true
           tcpNetwork.client.scan = false
+          tcpNetwork.client.knownBridges = ["public key of bridge", "public key of bridge"]
 
           // configure ble
           val bleNetwork = node.networks["ble"] ?: return
           bleNetwork.client.autoBridge = true
           bleNetwork.client.autoBoundWitness = true
           bleNetwork.client.scan = false
+```
+
+You can also use a heuristic getter, here is an example to get GPS.
+
+```kotlin
+    (node.networks["ble"] as? XyoBleNetwork)?.client?.relayNode?.addHeuristic(
+        "GPS",
+        object: XyoHeuristicGetter {
+            override fun getHeuristic(): XyoObjectStructure? {
+                val locationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+                if (ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                    val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+                    if (lastLocation != null) {
+                        val encodedLat = ByteBuffer.allocate(8).putDouble(lastLocation.latitude).array()
+                        val encodedLng = ByteBuffer.allocate(8).putDouble(lastLocation.longitude).array()
+                        val lat = XyoObjectStructure.newInstance(XyoSchemas.LAT, encodedLat)
+                        val lng = XyoObjectStructure.newInstance(XyoSchemas.LNG, encodedLng)
+
+                        return XyoIterableStructure.createUntypedIterableObject(XyoSchemas.GPS, arrayOf(lat, lng))
+                    }
+                }
+                return null
+            }
+        }
+    )
 ```
 
 ## Usage
@@ -92,19 +131,29 @@ After choosing the network, you have these properties available
 Client
 
 ```kotlin
+// select the network
 val network = node.networks["network"]
 
+// a flag to tell the client to automatically bridge
 network.client.autoBridge
+
+// a flag to tell the client to automatically bound witness 
 network.client.autoBoundWitness
+
+// a flag to tell the client to automatically scan
 network.client.scan
 ```
 
 Server
 
 ```kotlin
+// select the network 
 val network = node.networks["network"]
 
+// a flag to tell the server to automatically bridge
 network.server.autoBridge
+
+// a flag to tell the client to automatically listen for bridging
 network.server.listen
 ```
 
