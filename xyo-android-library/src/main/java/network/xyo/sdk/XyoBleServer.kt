@@ -50,9 +50,9 @@ class XyoBleServer(
     init {
         this.autoBridge = autoBridge
         this.acceptBridging = acceptBridging
-        this.listen = listen
         GlobalScope.launch {
             initServer(context)
+            this@XyoBleServer.listen = listen
         }
     }
 
@@ -64,7 +64,7 @@ class XyoBleServer(
             override fun onPipe(pipe: XyoNetworkPipe) {
                 log.info("onPipe")
                 GlobalScope.launch {
-                    boundWitnessStarted()
+                    boundWitnessStarted(null)
                     val handler = XyoNetworkHandler(pipe)
                     relayNode.addListener("XyoBleServer", object : XyoNodeListener() {
                         override fun onBoundWitnessEndFailure(error: Exception?) {
@@ -73,7 +73,7 @@ class XyoBleServer(
                     })
                     val bw = relayNode.boundWitness(handler, procedureCatalog).await()
                     relayNode.removeListener("XyoBleServer")
-                    boundWitnessCompleted(bw, errorMessage)
+                    boundWitnessCompleted(null, bw, errorMessage)
                     return@launch
                 }
             }

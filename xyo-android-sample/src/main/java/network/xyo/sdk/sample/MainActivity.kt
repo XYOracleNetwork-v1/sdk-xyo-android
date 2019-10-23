@@ -28,9 +28,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlobalScope.launch {
-            //initializeXyoSimpleWithGps()
+            initializeXyoSimpleWithGps()
             //initializeXyoSimple()
-            initializeXyoBleClientOnly()
+            //initializeXyoBleClientOnly()
             //initializeXyoBleServerOnly()
             //initializeXyoBleOnly()
             ui {

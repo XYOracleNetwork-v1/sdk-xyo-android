@@ -79,13 +79,13 @@ class TcpIpClientFragment : Fragment() {
         (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
 
             network.client.listeners["sample"] = object : XyoBoundWitnessTarget.Listener() {
-                override fun boundWitnessStarted(target: XyoBoundWitnessTarget) {
-                    super.boundWitnessStarted(target)
-                    addStatus("Bound Witness Started")
+                override fun boundWitnessStarted(source: Any?, target: XyoBoundWitnessTarget) {
+                    super.boundWitnessStarted(source, target)
+                    addStatus("Bound Witness Started [${source?.javaClass?.name}]")
                 }
 
-                override fun boundWitnessCompleted(target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
-                    super.boundWitnessCompleted(target, boundWitness, error)
+                override fun boundWitnessCompleted(source: Any?, target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
+                    super.boundWitnessCompleted(source, target, boundWitness, error)
                     val index = target.relayNode.originState.index.valueCopy.toList().toString()
                     if (error == null) {
                         addStatus("Bound Witness Completed $index [${boundWitness?.completed}]")
