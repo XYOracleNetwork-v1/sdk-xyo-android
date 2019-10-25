@@ -10,6 +10,9 @@
 
 -   [Title](#sdk-xyo-android)
 -   [Description](#description)
+-   [Gradle Build](#gradle-build)
+-   [Maven Build](#maven-build)
+-   [Examples](#examples)
 -   [Usage](#usage)
 -   [Architecture](#architecture)
 -   [Maintainers](#maintainers)
@@ -22,7 +25,25 @@
 A high-level SDK for interacting with the XYO network.
 Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 
-## Start Here 
+## Gradle Build
+
+```gradle
+    compile 'network.xyo:sdk-xyo-android:3.0.114'
+```
+
+## Maven Build
+
+```maven
+<dependency>
+  <groupId>network.xyo</groupId>
+  <artifactId>sdk-xyo-android</artifactId>
+  <version>3.0.114</version>
+  <type>pom</type>
+</dependency>
+
+```
+
+## Examples 
 
 Copy this code to test. Look below for specific usage. 
 
