@@ -8,7 +8,7 @@ before_script:
   - chmod +x ./gradlew
 
 script:
-  - ./gradlew assembleRelease
+  - ./gradlew install
 
 deploy:
   provider: script
