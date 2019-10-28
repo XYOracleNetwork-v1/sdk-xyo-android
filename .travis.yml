@@ -8,7 +8,7 @@ before_script:
   - chmod +x ./gradlew
 
 script:
-  - ./gradlew installDebugAndroidTest
+  - ./gradlew installDebug
 
 deploy:
   provider: script
