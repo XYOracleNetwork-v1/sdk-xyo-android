@@ -6,9 +6,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
-import network.xyo.modbluetoothkotlin.XyoBleSdk
-import network.xyo.modbluetoothkotlin.advertiser.XyoBluetoothAdvertiser
-import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
