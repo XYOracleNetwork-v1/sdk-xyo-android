@@ -18,7 +18,6 @@ import network.xyo.sdkcorekotlin.heuristics.XyoHeuristicGetter
 import network.xyo.sdkobjectmodelkotlin.structure.XyoObjectStructure
 import java.nio.ByteBuffer
 import network.xyo.sdkcorekotlin.schemas.*
-import network.xyo.sdkcorekotlin.heuristics.*
 import network.xyo.sdkobjectmodelkotlin.structure.XyoIterableStructure
 
 @kotlin.ExperimentalUnsignedTypes
