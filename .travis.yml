@@ -3,18 +3,12 @@ android:
   components:
     - build-tools-29.0.2
     - android-29
-addons:
-sonarcloud:
-  organization: xyo-network
-  token: 
-    secure: "EHK4mMaAEVuZSpFQM1Yn8J9LovVXKbpalphaSXYB8dbwRyO8KdDdjV+Hu+8+ASK9a/T9X9VzppzdUvwhTJAW93Glbm/FgQxOjIluiqP8eIUp2YDhukhSzycF/MuZtTESQga4l69gSkJ4XqGo+XnCYW4YQgGSpNV4YnDDZ7MGcdtBxzlZDXuqKNwtcTZ2hoxLwFvQvefSTCE44XE8md5PvpIYGgAcPm8lVeW1kS93nriG2iL9TI0w9gYILEGvRaGcqVK/a5Fzq/T5ilES9dE7lD01ERPybB6ZD3VvbmKpJhPxJJVl8oPD+qJDbV69uo7SuGVpyVqjNMPu7FHgKgA6wBO2c0CbUUSKTRPQyRkAPdQNTMwft6Eve/bBiyjPTunrccoKHQu6VKmgrNVWyPf7qEK61Zr7VPifu2wbJw7DxiFXodPS/rGl5Oeeu4m9pNtn79nsPZyB7tD7aB6WOzSoAmrUV/ozrteMVGzeIkZdUjAiIUNFxpzOSxbvzwCBU9v0e7K19jFWovada+TCdhguJqkIgBp25i9Yb93dQp3N4XUoTSe9i0209Imq1rNyOEcBXm7PxSGR2R7cqSOPoTce2LeIHDb8k1CLNhLAWvrf2EnM+x4wK3XkEF8RBMOokym1GRlMMnycdyXP7PGYZSzNQNxCJLwuCR+OcbdAgnkKtVc="
-
+  
 before_script:
   - chmod +x ./gradlew
 
 script:
   - ./gradlew assembleRelease
-  - ./gradlew sonarqube
 
 deploy:
   provider: script
