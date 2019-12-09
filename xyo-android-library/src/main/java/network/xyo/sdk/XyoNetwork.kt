@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import network.xyo.base.XYBase
 
 abstract class XyoNetwork(val type: Type): XYBase() {

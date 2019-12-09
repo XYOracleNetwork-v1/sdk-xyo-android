@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import network.xyo.base.XYBase
 
 class XyoNode(val networks: Map<String, XyoNetwork>): XYBase() {

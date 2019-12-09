@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

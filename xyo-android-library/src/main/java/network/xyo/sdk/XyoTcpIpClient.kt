@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import android.net.Uri
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

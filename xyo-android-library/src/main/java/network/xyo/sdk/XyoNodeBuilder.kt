@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import android.content.Context
 import network.xyo.base.XYBase
 import network.xyo.sdkcorekotlin.crypto.signing.XyoSigner
