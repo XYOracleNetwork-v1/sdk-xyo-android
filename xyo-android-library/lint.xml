@@ -1,0 +1,5 @@
+<lint>
+  <issue id="InvaildPackage">
+    <ignore path="**/jdk15on-1.64.jar">
+  </issue>
+</lint>
