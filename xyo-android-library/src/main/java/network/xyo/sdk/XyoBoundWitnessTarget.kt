@@ -28,7 +28,7 @@ abstract class XyoBoundWitnessTarget(
         }
     }
 
-    //the interaction listener
+    // the interaction listener
     val listeners = mutableMapOf<String, Listener>()
 
     fun boundWitnessStarted(source: Any?) {
@@ -37,7 +37,7 @@ abstract class XyoBoundWitnessTarget(
         }
     }
 
-    fun boundWitnessCompleted(source: Any?, boundWitness: XyoBoundWitness?, error:String?) {
+    fun boundWitnessCompleted(source: Any?, boundWitness: XyoBoundWitness?, error: String?) {
         listeners.forEach {
             it.value.boundWitnessCompleted(source, this, boundWitness, error)
         }

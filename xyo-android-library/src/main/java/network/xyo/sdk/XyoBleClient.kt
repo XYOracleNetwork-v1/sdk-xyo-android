@@ -1,5 +1,6 @@
 package network.xyo.sdk
 import android.content.Context
+import java.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -16,7 +17,6 @@ import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
-import java.util.*
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoBleClient(

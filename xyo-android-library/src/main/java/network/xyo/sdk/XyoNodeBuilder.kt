@@ -1,5 +1,7 @@
 package network.xyo.sdk
 import android.content.Context
+import java.lang.Exception
+import java.nio.ByteBuffer
 import network.xyo.base.XYBase
 import network.xyo.sdkcorekotlin.crypto.signing.XyoSigner
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
@@ -14,8 +16,6 @@ import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageBridgeQueueRepos
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginBlockRepository
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginStateRepository
 import network.xyo.sdkcorekotlin.schemas.XyoSchemas
-import java.lang.Exception
-import java.nio.ByteBuffer
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoNodeBuilder : XYBase() {
@@ -260,7 +260,7 @@ class XyoNodeBuilder : XYBase() {
     }
 
     private fun setDefaultStorage(context: Context) {
-        setStorage(XyoSnappyDbStorageProvider(context))
+        setStorage(XyoSnappyDBStorageProvider(context))
     }
 
     companion object {

@@ -1,14 +1,14 @@
 package network.xyo.sdk
 import android.content.Context
 import android.util.Base64
-import com.snappydb.DB
-import com.snappydb.DBFactory
-import com.snappydb.SnappydbException
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import network.xyo.sdkcorekotlin.persist.XyoStorageException
 import network.xyo.sdkcorekotlin.persist.XyoKeyValueStore
+import com.snappydb.DB
+import com.snappydb.DBFactory
+import com.snappydb.SnappydbException
 
 /**
  * A key value store implementation of the XyoStorageProviderInterface, in android using SnappyDB.
@@ -17,7 +17,7 @@ import network.xyo.sdkcorekotlin.persist.XyoKeyValueStore
  *
  * @param context The android context to open the SnappyDB with.
  */
-open class XyoSnappyDbStorageProvider(private var context: Context) : XyoKeyValueStore {
+open class XyoSnappyDBStorageProvider(private var context: Context) : XyoKeyValueStore {
 
     private val db = DBFactory.open(context)
     // TODO -DB is not being closed

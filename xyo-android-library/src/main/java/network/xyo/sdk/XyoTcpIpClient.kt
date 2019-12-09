@@ -22,8 +22,8 @@ class XyoTcpIpClient(
 ) : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     init {
-        relayNode.addListener("XyoTcpIpClient", object: XyoNodeListener() {
-            override fun onBoundWitnessEndSuccess(boundWitness : XyoBoundWitness) {
+        relayNode.addListener("XyoTcpIpClient", object : XyoNodeListener() {
+            override fun onBoundWitnessEndSuccess(boundWitness: XyoBoundWitness) {
                 super.onBoundWitnessEndSuccess(boundWitness)
                 if (autoBridge) {
                     GlobalScope.launch {
@@ -85,6 +85,6 @@ class XyoTcpIpClient(
     }
 
     override var scan: Boolean
-        get() {return false}
+        get() { return false }
         set(_) { }
 }
