@@ -4,11 +4,11 @@ import android.util.Base64
 import com.snappydb.DB
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
+import kotlinx.coroutines.async
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import network.xyo.sdkcorekotlin.persist.XyoStorageException
 import network.xyo.sdkcorekotlin.persist.XyoKeyValueStore
+import network.xyo.sdkcorekotlin.persist.XyoStorageException
 
 /**
  * A key value store implementation of the XyoStorageProviderInterface, in android using SnappyDB.
