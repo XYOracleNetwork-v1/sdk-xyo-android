@@ -8,7 +8,7 @@ class XyoBleNetwork(
     context: Context,
     relayNode: XyoRelayNode,
     procedureCatalog: XyoProcedureCatalog,
-    override val client:XyoBleClient = XyoBleClient(
+    override val client: XyoBleClient = XyoBleClient(
         context,
         relayNode,
         procedureCatalog,
@@ -17,7 +17,7 @@ class XyoBleNetwork(
         acceptBridging = false,
         scan = true
     ),
-    override val server:XyoBleServer = XyoBleServer(
+    override val server: XyoBleServer = XyoBleServer(
         context,
         relayNode,
         procedureCatalog,
@@ -25,5 +25,4 @@ class XyoBleNetwork(
         acceptBridging = false,
         listen = true
     )
-) : XyoNetwork(Type.BluetoothLE) {
-}
+) : XyoNetwork(Type.BluetoothLE)

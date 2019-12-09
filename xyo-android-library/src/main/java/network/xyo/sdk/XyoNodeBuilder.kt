@@ -18,7 +18,7 @@ import java.lang.Exception
 import java.nio.ByteBuffer
 
 @kotlin.ExperimentalUnsignedTypes
-class XyoNodeBuilder: XYBase() {
+class XyoNodeBuilder : XYBase() {
     private var networks = mutableMapOf<String, XyoNetwork>()
     private var storage: XyoKeyValueStore? = null
     private var listener: XyoBoundWitnessTarget.Listener? = null
@@ -160,7 +160,7 @@ class XyoNodeBuilder: XYBase() {
 
     private fun setDefaultBlockRepository() {
         storage?.let { storage ->
-            hashingProvider?.let {hashingProvider ->
+            hashingProvider?.let { hashingProvider ->
                 blockRepository = XyoStorageOriginBlockRepository(storage, hashingProvider)
                 return
             }
@@ -191,7 +191,7 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultRelayNode() {
-        blockRepository?.let {blockRepository ->
+        blockRepository?.let { blockRepository ->
             stateRepository?.let { stateRepository ->
                 bridgeQueueRepository?.let { bridgeQueueRepository ->
                     hashingProvider?.let { hashingProvider ->
@@ -229,7 +229,7 @@ class XyoNodeBuilder: XYBase() {
         }
     }
 
-    private suspend fun restoreAndInitBlockStorage () {
+    private suspend fun restoreAndInitBlockStorage() {
         relayNode!!.let { relayNode ->
             relayNode.originBlocksToBridge.removeWeight = 2
             relayNode.originBlocksToBridge.sendLimit = 38
@@ -247,7 +247,7 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultNetworks(context: Context) {
-        relayNode?.let {relayNode ->
+        relayNode?.let { relayNode ->
             procedureCatalog?.let { procedureCatalog ->
                 addNetwork("ble", XyoBleNetwork(context, relayNode, procedureCatalog))
                 addNetwork("tcpip", XyoTcpIpNetwork(relayNode, procedureCatalog))

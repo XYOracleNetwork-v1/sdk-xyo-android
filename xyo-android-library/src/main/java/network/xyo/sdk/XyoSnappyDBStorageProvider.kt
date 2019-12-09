@@ -20,12 +20,12 @@ import network.xyo.sdkcorekotlin.persist.XyoKeyValueStore
 open class XyoSnappyDbStorageProvider(private var context: Context) : XyoKeyValueStore {
 
     private val db = DBFactory.open(context)
-    //TODO -DB is not being closed
-    //TODO - use sync blocks - snappyDB is not thread safe
-    //TODO - move save functions here instead of using getDB ?
+    // TODO -DB is not being closed
+    // TODO - use sync blocks - snappyDB is not thread safe
+    // TODO - move save functions here instead of using getDB ?
 
-    //get an instance of the opened DB
-    fun getDB() : DB? {
+    // get an instance of the opened DB
+    fun getDB(): DB? {
         return db
     }
 
@@ -64,7 +64,6 @@ open class XyoSnappyDbStorageProvider(private var context: Context) : XyoKeyValu
                     return getKey(i.next(1)[0])
                 }
             }
-
         } catch (dbException: SnappydbException) {
             return@async arrayOf<ByteArray>().iterator()
         }
@@ -98,7 +97,6 @@ open class XyoSnappyDbStorageProvider(private var context: Context) : XyoKeyValu
     private fun getKey(string: String): ByteArray {
         return Base64.decode(string, 0)
     }
-
 
     companion object {
         const val ARCHIVIST_LIST = "archlist"

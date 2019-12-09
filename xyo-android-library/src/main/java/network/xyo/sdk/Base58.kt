@@ -112,11 +112,11 @@ fun String.fromBase58(): ByteArray {
  * in the specified base, by the given divisor. The given number is modified in-place
  * to contain the quotient, and the return value is the remainder.
  *
- * @param number     the number to divide
+ * @param number the number to divide
  * @param firstDigit the index within the array of the first non-zero digit
  * (this is used for optimization by skipping the leading zeros)
- * @param base       the base in which the number's digits are represented (up to 256)
- * @param divisor    the number to divide by (up to 256)
+ * @param base the base in which the number's digits are represented (up to 256)
+ * @param divisor the number to divide by (up to 256)
  * @return the remainder of the division operation
  */
 @kotlin.ExperimentalUnsignedTypes

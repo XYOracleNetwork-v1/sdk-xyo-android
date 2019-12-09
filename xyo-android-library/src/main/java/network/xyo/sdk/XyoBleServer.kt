@@ -1,10 +1,8 @@
 package network.xyo.sdk
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
 import network.xyo.modbluetoothkotlin.XyoBleSdk
 import network.xyo.modbluetoothkotlin.advertiser.XyoBluetoothAdvertiser
 import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
@@ -31,7 +29,7 @@ class XyoBleServer(
     lateinit var server: XyoBluetoothServer
 
     var listen: Boolean
-        get() {return advertiser?.started ?: false}
+        get() { return advertiser?.started ?: false }
         set(value) {
             runBlocking {
                 advertiser?.let { advertiser ->
@@ -59,7 +57,7 @@ class XyoBleServer(
         advertiser = XyoBleSdk.advertiser(context)
         server = XyoBleSdk.server(context)
         var errorMessage: String? = null
-        server.listener = object: XyoBluetoothServer.Listener {
+        server.listener = object : XyoBluetoothServer.Listener {
             override fun onPipe(pipe: XyoNetworkPipe) {
                 log.info("onPipe")
                 GlobalScope.launch {

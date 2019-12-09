@@ -7,7 +7,7 @@ import network.xyo.sdkcorekotlin.node.XyoRelayNode
 abstract class XyoBoundWitnessTarget(
     val relayNode: XyoRelayNode,
     val procedureCatalog: XyoProcedureCatalog
-): XYBase() {
+) : XYBase() {
 
     val publicKey: String?
         get() {
@@ -18,12 +18,12 @@ abstract class XyoBoundWitnessTarget(
             return relayNode.originState.signers.first().publicKey.bytesCopy.toBase58String()
         }
 
-    open class Listener: XYBase() {
+    open class Listener : XYBase() {
         open fun boundWitnessStarted(source: Any?, target: XyoBoundWitnessTarget) {
             log.info("boundWitnessStarted")
         }
 
-        open fun boundWitnessCompleted(source: Any?, target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error:String?) {
+        open fun boundWitnessCompleted(source: Any?, target: XyoBoundWitnessTarget, boundWitness: XyoBoundWitness?, error: String?) {
             log.info("boundWitnessCompleted")
         }
     }
@@ -43,9 +43,9 @@ abstract class XyoBoundWitnessTarget(
         }
     }
 
-    //accept bound witnesses that have bridges payloads
+    // accept bound witnesses that have bridges payloads
     abstract var acceptBridging: Boolean
 
-    //when auto bound witnessing, should we bridge our chain
+    // when auto bound witnessing, should we bridge our chain
     abstract var autoBridge: Boolean
 }

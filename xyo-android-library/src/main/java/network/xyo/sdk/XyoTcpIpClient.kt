@@ -19,12 +19,11 @@ class XyoTcpIpClient(
     override var autoBridge: Boolean,
     override var acceptBridging: Boolean,
     autoBoundWitness: Boolean
-)
-    : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
+) : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     init {
         relayNode.addListener("XyoTcpIpClient", object: XyoNodeListener() {
-            override fun onBoundWitnessEndSuccess(boundWitness: XyoBoundWitness) {
+            override fun onBoundWitnessEndSuccess(boundWitness : XyoBoundWitness) {
                 super.onBoundWitnessEndSuccess(boundWitness)
                 if (autoBridge) {
                     GlobalScope.launch {
@@ -87,5 +86,5 @@ class XyoTcpIpClient(
 
     override var scan: Boolean
         get() {return false}
-        set(_) {}
+        set(_) { }
 }

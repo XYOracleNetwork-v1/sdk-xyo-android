@@ -26,4 +26,7 @@ jobs:
             - Second Change
           draft: false
           prerelease: false
-          run: mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=GITHUB_TOKEN
+      - name: Maven build
+        run: mvn -B package --file ./xyo-android-library/build.gradle
+      - name: deploy
+        run: mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=GITHUB_TOKEN
