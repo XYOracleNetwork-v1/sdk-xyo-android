@@ -1,5 +1,7 @@
 package network.xyo.sdk
 import android.net.Uri
+import java.io.IOException
+import java.net.Socket
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -9,8 +11,6 @@ import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.network.tcp.XyoTcpPipe
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
-import java.io.IOException
-import java.net.Socket
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoTcpIpClient(
