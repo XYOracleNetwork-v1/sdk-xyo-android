@@ -64,7 +64,7 @@ android {
         htmlReport false
         abortOnError true
         warningsAsErrors true
-        disable "HardwareIds", "MissingPermission", "InvalidPackage"
+        disable "HardwareIds", "MissingPermission"
     }
 
     buildTypes {
@@ -147,7 +147,7 @@ dependencies {
     implementation 'network.xyo:sdk-ble-android:3.0.1103'
     implementation 'network.xyo:sdk-core-kotlin:3.0.33'
     implementation 'com.snappydb:snappydb-lib:0.5.2'
-    implementation 'org.bouncycastle:bcpkix-jdk15on:1.64'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.58'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile).all { task ->
