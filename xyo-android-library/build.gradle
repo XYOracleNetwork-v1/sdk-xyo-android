@@ -64,8 +64,7 @@ android {
         htmlReport false
         abortOnError true
         warningsAsErrors true
-        disable "HardwareIds", "MissingPermission"
-        lintConfig file("./lint.xml")
+        disable "HardwareIds", "MissingPermission", "InvalidPackage"
     }
 
     buildTypes {
