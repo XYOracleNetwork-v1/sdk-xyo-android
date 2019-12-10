@@ -64,7 +64,7 @@ android {
         htmlReport false
         abortOnError true
         warningsAsErrors true
-        disable "HardwareIds", "MissingPermission", "TrustAllX509TrustManager", "InvalidPackage"
+        disable "HardwareIds", "MissingPermission", "InvalidPackage", "TrustAllX509TrustManager", "InvalidPackage"
     }
 
     buildTypes {
