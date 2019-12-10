@@ -1,6 +1,7 @@
 package network.xyo.sdk
-
 import android.content.Context
+import java.lang.Exception
+import java.nio.ByteBuffer
 import network.xyo.base.XYBase
 import network.xyo.sdkcorekotlin.crypto.signing.XyoSigner
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
@@ -15,11 +16,9 @@ import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageBridgeQueueRepos
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginBlockRepository
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginStateRepository
 import network.xyo.sdkcorekotlin.schemas.XyoSchemas
-import java.lang.Exception
-import java.nio.ByteBuffer
 
 @kotlin.ExperimentalUnsignedTypes
-class XyoNodeBuilder: XYBase() {
+class XyoNodeBuilder : XYBase() {
     private var networks = mutableMapOf<String, XyoNetwork>()
     private var storage: XyoKeyValueStore? = null
     private var listener: XyoBoundWitnessTarget.Listener? = null
@@ -161,7 +160,7 @@ class XyoNodeBuilder: XYBase() {
 
     private fun setDefaultBlockRepository() {
         storage?.let { storage ->
-            hashingProvider?.let {hashingProvider ->
+            hashingProvider?.let { hashingProvider ->
                 blockRepository = XyoStorageOriginBlockRepository(storage, hashingProvider)
                 return
             }
@@ -192,7 +191,7 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultRelayNode() {
-        blockRepository?.let {blockRepository ->
+        blockRepository?.let { blockRepository ->
             stateRepository?.let { stateRepository ->
                 bridgeQueueRepository?.let { bridgeQueueRepository ->
                     hashingProvider?.let { hashingProvider ->
@@ -230,7 +229,7 @@ class XyoNodeBuilder: XYBase() {
         }
     }
 
-    private suspend fun restoreAndInitBlockStorage () {
+    private suspend fun restoreAndInitBlockStorage() {
         relayNode!!.let { relayNode ->
             relayNode.originBlocksToBridge.removeWeight = 2
             relayNode.originBlocksToBridge.sendLimit = 38
@@ -248,7 +247,7 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultNetworks(context: Context) {
-        relayNode?.let {relayNode ->
+        relayNode?.let { relayNode ->
             procedureCatalog?.let { procedureCatalog ->
                 addNetwork("ble", XyoBleNetwork(context, relayNode, procedureCatalog))
                 addNetwork("tcpip", XyoTcpIpNetwork(relayNode, procedureCatalog))
@@ -261,7 +260,7 @@ class XyoNodeBuilder: XYBase() {
     }
 
     private fun setDefaultStorage(context: Context) {
-        setStorage(XyoSnappyDbStorageProvider(context))
+        setStorage(XyoSnappyDBStorageProvider(context))
     }
 
     companion object {
