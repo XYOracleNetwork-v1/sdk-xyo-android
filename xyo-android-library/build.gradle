@@ -65,6 +65,7 @@ android {
         abortOnError true
         warningsAsErrors true
         disable "HardwareIds", "MissingPermission"
+    }
 
     buildTypes {
         release {
