@@ -20,12 +20,6 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
       - name: Maven build
         run: mvn -B package --file ./xyo-android-library/build.gradle
       - name: deploy

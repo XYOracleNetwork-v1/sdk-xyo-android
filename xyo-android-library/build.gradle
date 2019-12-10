@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+apply plugin: 'groovy'
 
 group = 'network.xyo'
 
@@ -85,6 +86,12 @@ android {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/XYOracleNetwork/sdk-xyo-android")
+        }
+    }
     publications {
         Production(MavenPublication) {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
@@ -107,28 +114,6 @@ publishing {
             }
         }
     }
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    dryRun = false
-    override = false
-    publish = true
-    pkg {
-        repo = 'xyo'
-        name = 'sdk-xyo-android'
-        userOrg = 'xyoraclenetwork'
-        licenses = ['LGPL-3.0']
-        desc = 'Android Base Classes'
-        vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
-
-        version {
-            name = verString
-            vcsTag = verString
-        }
-    }
-    publications = ['Production']
 }
 
 ktlint {

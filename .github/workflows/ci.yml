@@ -4,12 +4,10 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: pre-build
-      run:  chmod +x ./gradlew
-    - name: build
-      run: ./gradlew assemble
+      - uses: actions/checkout@v1
+      - name: pre-build
+        run:  chmod +x ./gradlew
+      - name: build
+        run: ./gradlew assemble
