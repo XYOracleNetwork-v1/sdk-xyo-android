@@ -12,4 +12,4 @@ jobs:
     - name: pre-build
       run:  chmod +x ./gradlew
     - name: build
-      run: ./gradlew build
+      run: ./gradlew assemble
