@@ -1,6 +1,7 @@
 package network.xyo.sdk
-
 import android.net.Uri
+import java.io.IOException
+import java.net.Socket
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -10,8 +11,6 @@ import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.network.tcp.XyoTcpPipe
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
-import java.io.IOException
-import java.net.Socket
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoTcpIpClient(
@@ -20,11 +19,10 @@ class XyoTcpIpClient(
     override var autoBridge: Boolean,
     override var acceptBridging: Boolean,
     autoBoundWitness: Boolean
-)
-    : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
+) : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     init {
-        relayNode.addListener("XyoTcpIpClient", object: XyoNodeListener() {
+        relayNode.addListener("XyoTcpIpClient", object : XyoNodeListener() {
             override fun onBoundWitnessEndSuccess(boundWitness: XyoBoundWitness) {
                 super.onBoundWitnessEndSuccess(boundWitness)
                 if (autoBridge) {
@@ -87,6 +85,6 @@ class XyoTcpIpClient(
     }
 
     override var scan: Boolean
-        get() {return false}
-        set(_) {}
+        get() { return false }
+        set(_) { }
 }

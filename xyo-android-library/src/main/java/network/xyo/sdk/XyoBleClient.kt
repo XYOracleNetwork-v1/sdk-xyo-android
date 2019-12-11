@@ -1,6 +1,6 @@
 package network.xyo.sdk
-
 import android.content.Context
+import java.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -17,9 +17,6 @@ import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
-import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.locks.ReentrantLock
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoBleClient(
@@ -30,8 +27,7 @@ class XyoBleClient(
     acceptBridging: Boolean,
     autoBoundWitness: Boolean,
     scan: Boolean
-)
-    : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
+) : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
     override var autoBridge: Boolean = false
     override var acceptBridging: Boolean = false
@@ -41,14 +37,14 @@ class XyoBleClient(
 
     val minBWTimeGap = 10 * 1000
 
-    var lastBoundWitnessTime = Date().time - minBWTimeGap //ten seconds ago
+    var lastBoundWitnessTime = Date().time - minBWTimeGap // ten seconds ago
 
     var scanner: XYSmartScanModern
 
     private val boundWitnessMutex = Mutex()
 
     override var scan: Boolean
-        get() {return scanner.started()}
+        get() { return scanner.started() }
         set(value) {
             GlobalScope.launch {
                 if (value && !scanner.started()) {
@@ -59,7 +55,7 @@ class XyoBleClient(
             }
         }
 
-    private val scannerListener = object: XYSmartScan.Listener() {
+    private val scannerListener = object : XYSmartScan.Listener() {
         override fun detected(device: XYBluetoothDevice) {
             super.detected(device)
             if (this@XyoBleClient.autoBoundWitness) {

@@ -1,5 +1,4 @@
 package network.xyo.sdk
-
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
@@ -7,14 +6,14 @@ import network.xyo.sdkcorekotlin.node.XyoRelayNode
 class XyoTcpIpNetwork(
     relayNode: XyoRelayNode,
     procedureCatalog: XyoProcedureCatalog,
-    override val client:XyoTcpIpClient = XyoTcpIpClient(
+    override val client: XyoTcpIpClient = XyoTcpIpClient(
         relayNode,
         procedureCatalog,
         autoBoundWitness = true,
         autoBridge = true,
         acceptBridging = false
     ),
-    override val server:XyoTcpIpServer = XyoTcpIpServer(
+    override val server: XyoTcpIpServer = XyoTcpIpServer(
         relayNode,
         procedureCatalog,
         autoBridge = true,
