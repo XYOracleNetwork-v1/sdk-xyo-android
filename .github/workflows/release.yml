@@ -7,20 +7,19 @@ on:
 
 jobs: 
   build: 
-    name: Create Release
     runs-on: ubuntu-latest
     steps: 
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v1
+      - run: |
+              chmod +x ./gradlew
+              ./gradlew assembleRelease
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v1  
         with:
+          registry-url: https://maven.pkg.github.com
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-      - name: Maven build
-        run: mvn -B package --file ./xyo-android-library/build.gradle
-      - name: deploy
-        run: mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=GITHUB_TOKEN
+      - run: mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=${{ secrets.GITHUB_TOKEN }}
