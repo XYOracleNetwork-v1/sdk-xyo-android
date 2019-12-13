@@ -21,4 +21,5 @@ jobs:
       - run: | 
               ./gradlew clean
               ./gradlew :xyo-android-library:assembleReleaseFinal
-              ./gradlew publish
+              mvn -B package --file pom-default.xml
+              mvn deploy -Dregistry=https://maven.pkg.github.com/sdk-xyo-android -Dtoken=$GITHUB_TOKEN

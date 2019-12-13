@@ -1,2 +1,2 @@
 include ':xyo-android-sample', ':xyo-android-library'
-
+rootProject.name='sdk-xyo-android'
