@@ -94,7 +94,7 @@ publishing {
     publications {
         Production(MavenPublication) {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar") {
-                builtBy("assembleRelease")
+                builtBy("./gradlew assembleRelease")
             }
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
