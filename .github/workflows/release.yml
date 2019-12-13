@@ -19,4 +19,4 @@ jobs:
           release_name: Release ${{ github.ref }}
           java-version: 11
       - run: | 
-              ./gradlew publish
+              ./gradlew clean assembleRelease publish
