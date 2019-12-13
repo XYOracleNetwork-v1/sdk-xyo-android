@@ -17,13 +17,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps: 
+      - name: Checkout code
       - uses: actions/checkout@v1
+      - name: Set up Java 
       - uses: actions/setup-java@v1
         with:
           registry-url: https://maven.pkg.github.com
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           java-version: 1.8
-      - run: | 
-              ./gradlew :xyo-android-library:assembleRelease
-              mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=${{ secrets.GITHUB_TOKEN }}
+      - name: Publish
+          env: 
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+      - run: ./gradlew publish
