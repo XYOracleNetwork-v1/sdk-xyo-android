@@ -19,7 +19,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           java-version: 11
       - run: | 
+              chmod +x ./gradlew
               ./gradlew clean
               ./gradlew :xyo-android-library:assembleReleaseFinal
-              mvn -B package --file pom-default.xml
-              mvn deploy -Dregistry=https://maven.pkg.github.com/sdk-xyo-android -Dtoken=$GITHUB_TOKEN
+              ./gradlew publish
