@@ -19,7 +19,4 @@ jobs:
           release_name: Release ${{ github.ref }}
           java-version: 11
       - run: | 
-              chmod +x ./gradlew
-              ./gradlew clean
-              ./gradlew :xyo-android-library:assembleReleaseFinal
               ./gradlew publish
