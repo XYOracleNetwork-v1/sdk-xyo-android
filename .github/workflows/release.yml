@@ -19,11 +19,12 @@ jobs:
     steps: 
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           registry-url: https://maven.pkg.github.com
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           java-version: 1.8
       - run: | 
-              ./gradlew :xyo-android-library:assembleRelease
-              mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=${{ secrets.GITHUB_TOKEN }}
+              ./gradlew publish
