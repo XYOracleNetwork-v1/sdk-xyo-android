@@ -25,5 +25,5 @@ jobs:
           release_name: Release ${{ github.ref }}
           java-version: 1.8
       - run: | 
-              mvn -B package --file pom.xml
+              mvn -B package
               mvn deploy -Dregistry=https://maven.pkg.github.com/XYOracleNetwork -Dtoken=${{ secrets.GITHUB_TOKEN }}
