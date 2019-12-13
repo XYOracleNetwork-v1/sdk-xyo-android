@@ -20,5 +20,5 @@ jobs:
           java-version: 11
       - run: | 
               ./gradlew clean
-              ./gradlew assembleReleaseFinal
+              ./gradlew :xyo-android-library:assembleReleaseFinal
               ./gradlew publish
