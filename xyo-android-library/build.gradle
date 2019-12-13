@@ -92,7 +92,7 @@ publishing {
     }
     publications {
         Production(MavenPublication) {
-            artifact("$buildDir/outputs/aar/xyo-android-library-release.aar") {
+            artifact("${buildDir}/outputs/aar/xyo-android-library-release.aar") {
                task assembleReleaseFinal
             }
             groupId 'network.xyo'
