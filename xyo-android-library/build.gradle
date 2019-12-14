@@ -97,9 +97,9 @@ publishing {
     publications {
         Production(MavenPublication) {
             artifact("${buildDir}/outputs/aar/xyo-android-library-release.aar")
-            groupId 'XYOracleNetwork'
-            artifactId 'sdk-xyo-android'
-            version verString
+            // groupId 'XYOracleNetwork'
+            // artifactId 'sdk-xyo-android'
+            // version verString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             // pom.withXml {
