@@ -20,9 +20,9 @@ jobs:
       - name: Install
         run: ./gradlew install
       - name: Build
-        run: ./gradlew :base-android-library:assembleRelease
+        run: ./gradlew :xyo-android-library:assembleRelease
       - name: Publish
         env: 
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-        run: ./gradlew :base-android-library:bintrayUpload
+        run: ./gradlew :xyo-android-library:bintrayUpload
