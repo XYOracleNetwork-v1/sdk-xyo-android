@@ -4,7 +4,7 @@
 
 # sdk-xyo-android
 [ ![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion)
-[![Build Status](https://travis-ci.com/XYOracleNetwork/sdk-xyo-android.svg?token=DwLaRUVjarU2ZypyaHXe&branch=master)](https://travis-ci.com/XYOracleNetwork/sdk-xyo-android)
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade)
 
 ## Table of Contents
@@ -29,7 +29,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.0.115'
+    compile 'network.xyo:sdk-xyo-android:3.0.181'
 ```
 
 ## Maven Build
