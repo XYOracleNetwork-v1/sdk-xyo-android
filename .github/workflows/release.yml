@@ -17,10 +17,12 @@ jobs:
           java-version: 1.8
       - name: Permission for gradlew
         run: chmod +x gradlew
+      - name: Install
+        run: ./gradlew install
       - name: Build
-        run: ./gradlew assembleRelease
+        run: ./gradlew :base-android-library:assembleRelease
       - name: Publish
         env: 
-          GITHUB_USERNAME: ${{ secrets.USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        run: gradle publish
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew :base-android-library:bintrayUpload
