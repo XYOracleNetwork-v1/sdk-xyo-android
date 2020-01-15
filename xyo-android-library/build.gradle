@@ -29,20 +29,26 @@ configurations {
 
 def majorVersion = 3
 def minorVersion = 0
+def code = 182
 
-Properties versionProps = new Properties()
-def versionPropsFile = file('version.properties')
-if (versionPropsFile.exists())
-    versionProps.load(new FileInputStream(versionPropsFile))
-def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
 def verString = majorVersion + '.' + minorVersion + '.' + code
+
+task version(type: VersionTask) 
+class VersionTask extends DefaultTask {
+    def majorVersion = 2
+    def minorVersion = 1
+    def code = 279
+
+    def verString = majorVersion + '.' + minorVersion + '.' + code
+    @TaskAction
+    def version() {
+        println verString
+    }
+}
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
-
-    versionProps['VERSION_CODE'] = code.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
 
     compileOptions {
         sourceCompatibility = 1.8
@@ -142,9 +148,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'network.xyo:sdk-base-android:2.1.114'
+    implementation 'network.xyo:sdk-base-android:2.1.183'
     implementation 'network.xyo:sdk-xyobleinterface-android:2.1.573'
-    implementation 'network.xyo:sdk-ble-android:3.0.1103'
+    implementation 'network.xyo:sdk-ble-android:3.0.1104'
     implementation 'network.xyo:sdk-core-kotlin:3.0.33'
     implementation 'com.snappydb:snappydb-lib:0.5.2'
     api 'org.bouncycastle:bcpkix-jdk15on:1.64'
