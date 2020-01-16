@@ -10,14 +10,33 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    steps: 
+    steps:
       - uses: actions/checkout@master
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: pre-build
+        run: chmod +x gradlew
+      - name: install
+        run: ./gradlew install
+      - name: bump version
+        run: ./gradlew version
+        id: release_version
+      - name: assemble
+        run: ./gradlew :xyo-android-library:assembleRelease
+      - name: bintray upload
+        env: 
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew :xyo-android-library:bintrayUpload
+        
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
-          CUSTOM_TAG: 3.0.182
+          CUSTOM_TAG: ${{ steps.release_version.outputs }}
+          DEFAULT_BUMP: patch
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
