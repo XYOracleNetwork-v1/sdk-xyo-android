@@ -27,19 +27,12 @@ configurations {
     localImplementation
 }
 
-def majorVersion = 3
-def minorVersion = 0
-def code = 182
-
-def verString = majorVersion + '.' + minorVersion + '.' + code
+def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion + 1)
 
 task version(type: VersionTask) 
 class VersionTask extends DefaultTask {
-    def majorVersion = 2
-    def minorVersion = 1
-    def code = 279
 
-    def verString = majorVersion + '.' + minorVersion + '.' + code
+    def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion + 1)
     @TaskAction
     def version() {
         println verString
@@ -62,8 +55,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code
-        versionName majorVersion + "." + minorVersion + "." + code
+        versionCode project.majorVersion * 100000000 + project.minorVersion * 1000000 + project.patchVersion
+        versionName project.majorVersion + "." + project.minorVersion + "." + project.patchVersion
     }
 
     lintOptions {
