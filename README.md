@@ -29,7 +29,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.0.181'
+    compile 'network.xyo:sdk-xyo-android:3.0.182'
 ```
 
 ## Maven Build
@@ -232,7 +232,7 @@ To use the sample app to measure functionality
 - Click on `Open an existing Android Studio Project`
 - Navigate to `<path to the sdk-xyo-android>/xyo-android-sample` in your file explorer
 
-Once you open the sample in Android Studio it will go through the build process.
+Once you open the sample in Android Studio it will execute the build.
 
 You can then run the app in a simulator of your choice or an Android device. 
 

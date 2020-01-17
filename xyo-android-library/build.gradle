@@ -27,22 +27,21 @@ configurations {
     localImplementation
 }
 
-def majorVersion = 3
-def minorVersion = 0
+def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion + 1)
 
-Properties versionProps = new Properties()
-def versionPropsFile = file('version.properties')
-if (versionPropsFile.exists())
-    versionProps.load(new FileInputStream(versionPropsFile))
-def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
-def verString = majorVersion + '.' + minorVersion + '.' + code
+task version(type: VersionTask) 
+class VersionTask extends DefaultTask {
+
+    def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion + 1)
+    @TaskAction
+    def version() {
+        println verString
+    }
+}
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
-
-    versionProps['VERSION_CODE'] = code.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
 
     compileOptions {
         sourceCompatibility = 1.8
@@ -56,8 +55,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code
-        versionName majorVersion + "." + minorVersion + "." + code
+        versionCode project.majorVersion * 100000000 + project.minorVersion * 1000000 + project.patchVersion
+        versionName project.majorVersion + "." + project.minorVersion + "." + project.patchVersion
     }
 
     lintOptions {
@@ -96,7 +95,7 @@ publishing {
             pom.withXml {
                 //def dependenciesNode = asNode().appendNode('dependencies')
                 //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                configurations.implementation.allDependencies.each {
                     if (it.name != 'unspecified') {
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
@@ -137,14 +136,13 @@ ktlint {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.61"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'network.xyo:sdk-base-android:2.1.114'
-    implementation 'network.xyo:sdk-xyobleinterface-android:2.1.573'
-    implementation 'network.xyo:sdk-ble-android:3.0.1103'
+    implementation 'network.xyo:sdk-base-android:2.1.268'
+    implementation 'network.xyo:sdk-ble-android:3.0.1104'
     implementation 'network.xyo:sdk-core-kotlin:3.0.33'
     implementation 'com.snappydb:snappydb-lib:0.5.2'
     api 'org.bouncycastle:bcpkix-jdk15on:1.64'
