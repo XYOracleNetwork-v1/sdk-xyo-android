@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
@@ -22,10 +23,6 @@ buildscript {
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
-
-configurations {
-    localImplementation
-}
 
 def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion + 1)
 
