@@ -46,7 +46,7 @@ allprojects {
 project.ext {
     majorVersion = 3
     minorVersion = 1
-    patchVersion = 2
+    patchVersion = 3
 }
 
 task clean(type: Delete) {
