@@ -3,9 +3,8 @@
 [![logo]](https://xyo.network)
 
 # sdk-xyo-android
-[ ![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade)
+![](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/CI/badge.svg?branch=develop) [![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg)](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade) [![Known Vulnerabilities](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android/badge.svg?targetFile=xyo-android-library/build.gradle)](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android?targetFile=xyo-android-library/build.gradle)
 
 ## Table of Contents
 
