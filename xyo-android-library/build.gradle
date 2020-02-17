@@ -24,16 +24,16 @@ buildscript {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
+version = '3.1.7'
 
 task version(type: VersionTask) 
 class VersionTask extends DefaultTask {
-
-    def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
-    @TaskAction
-    def version() {
-        println verString
-    }
+    def ver = buildFile.getText().find(version)
+    def (major, minor, patch) = ver.tokenize('.')
+    int newPatch = patch.toInteger() + 1
+    String newVersion = major + "." + minor + "." + newPatch
+    String updatedVersion = buildFile.getText().replaceFirst("version='"+v+"'","version='"+newVersion+"'")
+    buildFile.setText(updatedVersion)
 }
 
 android {
@@ -86,7 +86,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version verString
+            version currentVerString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -120,8 +120,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = verString
-            vcsTag = verString
+            name = version
+            vcsTag = version
         }
     }
     publications = ['Production']
