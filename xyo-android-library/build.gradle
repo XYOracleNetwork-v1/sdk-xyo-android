@@ -28,10 +28,12 @@ def verString = project.majorVersion + '.' + project.minorVersion + '.' + (proje
 
 task version(type: VersionTask) 
 class VersionTask extends DefaultTask {
-    def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
+    def newPatch = (project.patchVersion + 1)
+    def verString = project.majorVersion + '.' + project.minorVersion + '.' + newPatch
     @TaskAction
     def version() {
         println verString
+        project.patchVersion = newPatch
     }
 }
 
