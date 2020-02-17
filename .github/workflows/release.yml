@@ -20,7 +20,7 @@ jobs:
       - name: install
         run: ./gradlew install
       - name: bump version
-        run: ./gradlew version
+        run: ./gradlew versionBump
         id: release_version
       - name: assemble
         run: ./gradlew :xyo-android-library:assembleRelease
