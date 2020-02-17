@@ -24,76 +24,14 @@ buildscript {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-class Version {
+def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
 
-    private int major
-    private int minor
-    private int patch
-    private int code
-
-    Version(int code, String version) {
-        this.code = code
-
-        def (major, minor, patch) = version.tokenize('.')
-        this.major = major.toInteger()
-        this.minor = minor.toInteger()
-        this.patch = patch.toInteger()
-    }
-
-    @SuppressWarnings("unused")
-    void bumpMajor() {
-        major += 1
-        minor = 0
-        patch = 0
-
-        code += 1
-    }
-
-    @SuppressWarnings("unused")
-    void bumpMinor() {
-        minor += 1
-        patch = 0
-
-        code += 1
-    }
-
-    @SuppressWarnings("unused")
-    void bumpPatch() {
-        patch += 1
-        code += 1
-    }
-
-    String getName() { "$major.$minor.$patch" }
-
-    int getCode() { code }
-}
-
-tasks.addRule("Pattern: bump<TYPE>Version") { String taskName ->
-    if (taskName.matches("bump(Major|Minor|Patch)Version")) {
-        task(taskName) {
-            doLast {
-                String type = (taskName - 'bump' - 'Version')
-
-                println "Bumping ${type.toLowerCase()} version…"
-
-                int oldVersionCode = android.defaultConfig.versionCode
-                String oldVersionName = android.defaultConfig.versionName
-
-                version = new Version(oldVersionCode, oldVersionName)
-                version."bump$type"()
-
-                String newVersionName = version.getName()
-                String newVersionCode = version.getCode()
-
-                println "$oldVersionName ($oldVersionCode) → $newVersionName ($newVersionCode)"
-
-                def updated = buildFile.getText()
-                updated = updated.replaceFirst("versionName '$oldVersionName'", "versionName '$newVersionName'")
-                updated = updated.replaceFirst("versionCode $oldVersionCode", "versionCode $newVersionCode")
-
-                buildFile.setText(updated)
-            }
-        }
+task version(type: VersionTask) 
+class VersionTask extends DefaultTask {
+    def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
+    @TaskAction
+    def version() {
+        println verString
     }
 }
 
@@ -113,8 +51,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode 4
-        versionName '3.1.8'
+        versionCode project.majorVersion * 100000000 + project.minorVersion * 1000000 + project.patchVersion
+        versionName project.majorVersion + "." + project.minorVersion + "." + project.patchVersion
     }
 
     lintOptions {
@@ -181,8 +119,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = android.defaultConfig.versionName
-            vcsTag = android.defaultConfig.versionName
+            name = verString
+            vcsTag = verString
         }
     }
     publications = ['Production']
