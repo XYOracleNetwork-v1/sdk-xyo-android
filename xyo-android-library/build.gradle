@@ -26,10 +26,9 @@ apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 version = '3.1.7'
 
-task version(type: VersionTask) 
-class VersionTask extends DefaultTask {
-    def ver = buildFile.getText().find(version)
-    def (major, minor, patch) = ver.tokenize('.')
+tasks.register("version") {
+    def v = buildFile.getText().find(version)
+    def (major, minor, patch) = v.tokenize('.')
     int newPatch = patch.toInteger() + 1
     String newVersion = major + "." + minor + "." + newPatch
     String updatedVersion = buildFile.getText().replaceFirst("version='"+v+"'","version='"+newVersion+"'")
@@ -86,7 +85,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version currentVerString
+            version version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
