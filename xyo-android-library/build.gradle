@@ -181,8 +181,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = version
-            vcsTag = version
+            name = android.defaultConfig.versionName
+            vcsTag = android.defaultConfig.versionName
         }
     }
     publications = ['Production']
