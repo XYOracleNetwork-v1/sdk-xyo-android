@@ -43,6 +43,12 @@ allprojects {
     }
 }
 
+project.ext {
+    majorVersion = 3
+    minorVersion = 1
+    patchVersion = 9
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
