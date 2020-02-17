@@ -29,7 +29,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.1.7'
+    compile 'network.xyo:sdk-xyo-android:3.1.8'
 ```
 
 ## Maven Build
