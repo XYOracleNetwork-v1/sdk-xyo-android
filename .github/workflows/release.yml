@@ -20,7 +20,9 @@ jobs:
       - name: install
         run: ./gradlew install
       - name: bump version
-        run: ./gradlew version
+        run: |
+          ./gradlew version
+          echo "##[set-output name=version;]$(./gradlew printVersion)"
         id: release_version
       - name: assemble
         run: ./gradlew :xyo-android-library:assembleRelease
@@ -35,7 +37,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          tag_name: ${{ release_version }}
+          tag_name: ${{ steps.release_version.outputs.version }}
           release_name: Release ${{ github.ref }}
           draft: true
           prerelease: false
