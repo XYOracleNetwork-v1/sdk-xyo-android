@@ -42,11 +42,11 @@ class VersionTask extends DefaultTask {
     }
 
 task versionOutput(type: Exec) {
-    workingDir './gradlew'
-    executable 'bumpVersion'
+    workingDir '../gradlew'
+    commandLine './gradlew', 'versionOutput'
     standardOutput = new ByteArrayOutputStream()
     ext.output = {
-        return standardOutput.toString()
+        return standardOutput.toString(tasks.bumpVersion.newVerString)
     }
 }
 
