@@ -43,6 +43,10 @@ class VersionTask extends DefaultTask {
     }
 }
 
+task printVersion {
+    println verString
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -59,8 +63,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode project.majorVersion * 100000000 + project.minorVersion * 1000000 + project.patchVersion
-        versionName project.majorVersion + "." + project.minorVersion + "." + project.patchVersion
+        versionCode project.ext.majorVersion * 100000000 + project.ext.minorVersion * 1000000 + project.ext.patchVersion
+        versionName project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
     }
 
     lintOptions {
@@ -93,7 +97,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version version
+            version verString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
