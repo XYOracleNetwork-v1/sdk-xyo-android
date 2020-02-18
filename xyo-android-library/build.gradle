@@ -38,8 +38,13 @@ class VersionTask extends DefaultTask {
     def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + newPatch
     @TaskAction
     def version() {
+        project.ext.patchVersion = newPatch
         println verString
     }
+}
+
+task printVersion {
+    println verString
 }
 
 android {
@@ -92,7 +97,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version version
+            version verString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
