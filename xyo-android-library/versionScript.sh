@@ -1,1 +1,1 @@
-./gradlew bumpVersion
+../gradlew bumpVersion
