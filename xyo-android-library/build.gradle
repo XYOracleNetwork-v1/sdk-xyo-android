@@ -22,26 +22,24 @@ buildscript {
     }
 }
 
-project.ext {
-    majorVersion = 3
-    minorVersion = 1
-    patchVersion = 9
-}
-
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + (project.ext.patchVersion + 1)
-
-task version(type: VersionTask) 
-class VersionTask extends DefaultTask {
-    def newPatch = (project.ext.patchVersion)
-    def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + newPatch
-    @TaskAction
-    def version() {
-        project.ext.patchVersion = newPatch
-        println verString
-    }
+project.ext {
+    major = 3
+    minor = 1
+    patch = 10
 }
+
+task bumpVersion(type: VersionTask)
+class VersionTask extends DefaultTask {
+    def newPatch = (project.ext.patch + 1)
+    def newVerString = project.ext.major + '.' + project.ext.minor + '.' + newPatch
+    @TaskAction
+    def bumpVersion() {
+        project.ext.patch = newPatch
+        println newVerString
+        }
+    }
 
 android {
     compileSdkVersion 29
@@ -59,8 +57,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode project.ext.majorVersion * 100000000 + project.ext.minorVersion * 1000000 + project.ext.patchVersion
-        versionName project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
+        versionCode project.ext.major * 100000000 + project.ext.minor * 1000000 + project.ext.patch
+        versionName project.ext.major + "." + project.ext.minor + "." + project.ext.patch
     }
 
     lintOptions {
@@ -93,7 +91,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version verString
+            version tasks.bumpVersion.newVerString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -127,8 +125,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = verString
-            vcsTag = verString
+            name = tasks.bumpVersion.newVerString
+            vcsTag = tasks.bumpVersion.newVerString
         }
     }
     publications = ['Production']
