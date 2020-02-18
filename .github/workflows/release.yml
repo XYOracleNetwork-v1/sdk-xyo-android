@@ -21,7 +21,7 @@ jobs:
         run: ./gradlew install
       - name: bump version
         run: |
-          echo "::set-output name=version::$(./gradlew printVersion)"
+          echo "::set-output name=version::$(./gradlew version)"
         id: release_version
       - name: assemble
         run: ./gradlew :xyo-android-library:assembleRelease
