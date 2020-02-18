@@ -21,7 +21,6 @@ jobs:
         run: ./gradlew install
       - name: bump version
         run: |
-          ./gradlew version
           echo "::set-output name=version::$(./gradlew printVersion)"
         id: release_version
       - name: assemble
