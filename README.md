@@ -29,7 +29,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.1.18'
+    compile 'network.xyo:sdk-xyo-android:3.1.20'
 ```
 
 ## Maven Build
@@ -38,7 +38,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
 <dependency>
   <groupId>network.xyo</groupId>
   <artifactId>sdk-xyo-android</artifactId>
-  <version>3.1.18</version>
+  <version>3.1.20</version>
   <type>pom</type>
 </dependency>
 
