@@ -22,18 +22,24 @@ buildscript {
     }
 }
 
+project.ext {
+    majorVersion = 3
+    minorVersion = 1
+    patchVersion = 9
+}
+
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-def verString = project.majorVersion + '.' + project.minorVersion + '.' + (project.patchVersion)
+def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + (project.ext.patchVersion)
 
 task version(type: VersionTask) 
 class VersionTask extends DefaultTask {
-    def newPatch = (project.patchVersion + 1)
-    def verString = project.majorVersion + '.' + project.minorVersion + '.' + newPatch
+    def newPatch = (project.ext.patchVersion + 1)
+    def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + newPatch
     @TaskAction
     def version() {
+        project.ext.patchVersion = newPatch
         println verString
-        project.patchVersion = newPatch
     }
 }
 
