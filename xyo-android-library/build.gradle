@@ -30,11 +30,11 @@ project.ext {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + (project.ext.patchVersion)
+def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + (project.ext.patchVersion + 1)
 
 task version(type: VersionTask) 
 class VersionTask extends DefaultTask {
-    def newPatch = (project.ext.patchVersion + 1)
+    def newPatch = (project.ext.patchVersion)
     def verString = project.ext.majorVersion + '.' + project.ext.minorVersion + '.' + newPatch
     @TaskAction
     def version() {
