@@ -42,7 +42,7 @@ class VersionTask extends DefaultTask {
     }
 
 task versionOutput(type: Exec) {
-    commandLine 'sh', './gradlew versionOutput'
+    commandLine 'sh', './versionScript.sh'
     standardOutput = new ByteArrayOutputStream()
     ext.output = {
         return standardOutput.toString(tasks.bumpVersion.newVerString)
