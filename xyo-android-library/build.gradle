@@ -27,7 +27,7 @@ apply plugin: "org.jlleitschuh.gradle.ktlint"
 project.ext {
     major = 3
     minor = 1
-    patch = 14 
+    patch = 15 
 }
 
 task bumpVersion(type: VersionTask)
@@ -42,9 +42,8 @@ class VersionTask extends DefaultTask {
     }
 
 task versionOutput(type: Exec) {
-    executable './gradlew'
-    args 'bumpVersion'
-    commandLine './gradlew', 'bumpVersion'
+    workingDir './gradlew'
+    executable 'bumpVersion'
     standardOutput = new ByteArrayOutputStream()
     ext.output = {
         return standardOutput.toString()
