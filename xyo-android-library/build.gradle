@@ -43,7 +43,7 @@ def increaseVersionCode() {
 
                 versionProps['VERSION_CODE'] = code.toString()
                 versionProps.store(versionPropsFile.newWriter(), null)
-                verString = project.ext.major + '.' + project.ext.minor + '.' + code
+                project.ext.verString = project.ext.major + '.' + project.ext.minor + '.' + code
             } else {
                 throw new GradleException("Could not read version.properties!")
             }
@@ -52,7 +52,7 @@ def increaseVersionCode() {
 }
 
 task printVersion {
-    println verString
+    println project.ext.verString
 }
 
 android {
@@ -122,7 +122,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version verString
+            version project.ext.verString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -156,8 +156,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = verString
-            vcsTag = verString
+            name = project.ext.verString
+            vcsTag = project.ext.verString
         }
     }
     publications = ['Production']
