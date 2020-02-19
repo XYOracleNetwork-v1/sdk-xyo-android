@@ -24,7 +24,6 @@ jobs:
       - name: bump version
         run: |
           echo "##[set-output name=version;]$(gradle -q printVersion)"
-          ./gradlew bumpVersion
         id: release_version
       - name: bintray upload
         env: 
