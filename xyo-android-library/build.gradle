@@ -43,6 +43,15 @@ if ('assembleRelease' in runTasks) {
 
 def verString = majorVersion + '.' + minorVersion + '.' + code
 
+task versionOutput(type: Exec) {
+    commandLine 'sh'
+    executable './versionScript.sh'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString(verString)
+    }
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
