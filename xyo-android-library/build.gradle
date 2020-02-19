@@ -35,12 +35,12 @@ def increment = 0
 
 def runTasks = gradle.startParameter.taskNames
 
-if ('assembleRelease' in runTasks) {
+if (':xyo-android-library:assembleRelease' in runTasks) {
     increment = 1
 }
 
 def majorVersion = 3
-def minorVersion = 0
+def minorVersion = 1
 def patch = versionProps['VERSION_PATCH'].toInteger() + increment
 
 def verString = majorVersion + '.' + minorVersion + '.' + patch
