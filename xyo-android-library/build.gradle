@@ -24,40 +24,37 @@ buildscript {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-project.ext {
-    major = 3
-    minor = 1
-    verString = ''
+
+Properties versionProps = new Properties()
+def versionPropsFile = file('version.properties')
+
+if (versionPropsFile.exists())
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+def increment = 0
+
+def runTasks = gradle.startParameter.taskNames
+
+if ('assembleRelease' in runTasks) {
+    increment = 1
 }
 
-def increaseVersionCode() {
-    def versionPropsFile = file('version.properties')
-    gradle.taskGraph.whenReady { taskGraph ->
-        if (taskGraph.hasTask(assembleRelease)) {
-            if (versionPropsFile.canRead()) {
-                def Properties versionProps = new Properties()
+def majorVersion = 3
+def minorVersion = 0
+def patch = versionProps['VERSION_PATCH'].toInteger() + increment
 
-                versionProps.load(new FileInputStream(versionPropsFile))
-
-                def code = versionProps['VERSION_CODE'].toInteger() + 1
-
-                versionProps['VERSION_CODE'] = code.toString()
-                versionProps.store(versionPropsFile.newWriter(), null)
-                project.ext.verString = project.ext.major + '.' + project.ext.minor + '.' + code
-            } else {
-                throw new GradleException("Could not read version.properties!")
-            }
-        }
-    }
-}
+def verString = majorVersion + '.' + minorVersion + '.' + patch
 
 task printVersion {
-    println project.ext.verString
+    println verString
 }
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+
+    versionProps['VERSION_PATCH'] = patch.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)    
 
     compileOptions {
         sourceCompatibility = 1.8
@@ -67,30 +64,13 @@ android {
         }
     }
 
-    def versionPropsFile = file('version.properties')
-
-    if (versionPropsFile.canRead()) {
-        def Properties versionProps = new Properties()
-
-        versionProps.load(new FileInputStream(versionPropsFile))
-
-        def code = versionProps['VERSION_CODE'].toInteger()
-        versionProps['VERSION_CODE']=code.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
-
-        defaultConfig {
-            minSdkVersion 21
-            targetSdkVersion 29
-            defaultPublishConfig 'release'
-            versionCode project.ext.major * 100000000 + project.ext.minor * 1000000 + code
-            versionName project.ext.major + "." + project.ext.minor + "." + code
-        }
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        defaultPublishConfig 'release'
+        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + patch
+        versionName majorVersion + "." + minorVersion + "." + patch
     }
-    else {
-        throw new GradleException("Could not read version.properties!")
-    }
-
-    increaseVersionCode()
 
     lintOptions {
         htmlReport false
@@ -122,7 +102,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version project.ext.verString
+            version verString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -156,8 +136,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = project.ext.verString
-            vcsTag = project.ext.verString
+            name = verString
+            vcsTag = verString
         }
     }
     publications = ['Production']
