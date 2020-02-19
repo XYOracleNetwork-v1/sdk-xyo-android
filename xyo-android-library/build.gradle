@@ -30,6 +30,8 @@ project.ext {
     verString = ''
 }
 
+def versionPropsFile = file('version.properties')
+
 def increaseVersionCode() {
     gradle.taskGraph.whenReady { taskGraph ->
         if (taskGraph.hasTask(assembleRelease)) {
@@ -66,13 +68,12 @@ android {
             allWarningsAsErrors = false
         }
     }
-    def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
         def Properties versionProps = new Properties()
 
         versionProps.load(new FileInputStream(versionPropsFile))
-        
+
         def code = versionProps['VERSION_CODE'].toInteger()
         versionProps['VERSION_CODE']=code.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
