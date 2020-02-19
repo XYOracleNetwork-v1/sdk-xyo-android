@@ -24,33 +24,23 @@ buildscript {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-
-def majorVersion = 3
-def minorVersion = 1
-
-Properties versionProps = new Properties()
-def versionPropsFile = file('version.properties')
-if (versionPropsFile.exists()) {
-    versionProps.load(new FileInputStream(versionPropsFile))
+project.ext {
+    major = 3
+    minor = 1
+    patch = 21
 }
 
-def code = versionProps['VERSION_CODE']
-
-def runTasks = gradle.startParameter.taskNames
-if ('assembleRelease' in runTasks) {
-    code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
-}
-
-def verString = majorVersion + '.' + minorVersion + '.' + code
-
-task versionOutput(type: Exec) {
-    commandLine 'sh'
-    executable './versionScript.sh'
-    standardOutput = new ByteArrayOutputStream()
-    ext.output = {
-        return standardOutput.toString(verString)
+task bumpVersion(type: VersionTask)
+class VersionTask extends DefaultTask {
+    def newPatch = (project.ext.patch + 1)
+    def newVerString = project.ext.major + '.' + project.ext.minor + '.' + newPatch
+    @TaskAction
+    def bumpVersion() {
+        project.ext.patch = newPatch
+        return newVerString
+        println newVerString
+        }
     }
-}
 
 android {
     compileSdkVersion 29
@@ -64,15 +54,12 @@ android {
         }
     }
 
-    versionProps['VERSION_CODE'] = code.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
         defaultPublishConfig 'release'
-        versionCode = majorVersion * 100000000 + minorVersion * 1000000 + code.toInteger()
-        versionName majorVersion + "." + minorVersion + "." + code
+        versionCode project.ext.major * 100000000 + project.ext.minor * 1000000 + project.ext.patch
+        versionName project.ext.major + "." + project.ext.minor + "." + project.ext.patch
     }
 
     lintOptions {
@@ -105,7 +92,7 @@ publishing {
             artifact("$buildDir/outputs/aar/xyo-android-library-release.aar")
             groupId 'network.xyo'
             artifactId 'sdk-xyo-android'
-            version verString
+            version tasks.bumpVersion.newVerString
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -139,8 +126,8 @@ bintray {
         vcsUrl = 'https://github.com/xyoraclenetwork/sdk-xyo-android.git'
 
         version {
-            name = verString
-            vcsTag = verString
+            name = tasks.bumpVersion.newVerString
+            vcsTag = tasks.bumpVersion.newVerString
         }
     }
     publications = ['Production']
