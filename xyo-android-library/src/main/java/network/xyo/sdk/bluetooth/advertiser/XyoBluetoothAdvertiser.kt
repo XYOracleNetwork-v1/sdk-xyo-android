@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.advertiser
+package network.xyo.sdk.bluetooth.advertiser
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.AdvertiseData
@@ -7,7 +7,7 @@ import android.os.ParcelUuid
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.gatt.server.XYBluetoothAdvertiser
 import network.xyo.ble.generic.gatt.server.XYIBeaconAdvertiseDataCreator
-import network.xyo.modbluetoothkotlin.XyoUuids
+import network.xyo.sdk.bluetooth.XyoUuids
 import java.nio.ByteBuffer
 
 /**

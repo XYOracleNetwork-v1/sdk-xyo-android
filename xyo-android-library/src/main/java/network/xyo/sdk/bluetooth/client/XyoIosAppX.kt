@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.client
+package network.xyo.sdk.bluetooth.client
 
 import android.bluetooth.BluetoothDevice
 import android.content.Context

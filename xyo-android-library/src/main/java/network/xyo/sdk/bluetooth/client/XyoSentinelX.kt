@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.client
+package network.xyo.sdk.bluetooth.client
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattCharacteristic
@@ -18,7 +18,7 @@ import network.xyo.ble.generic.services.standard.BatteryService
 import network.xyo.ble.generic.services.standard.DeviceInformationService
 import network.xyo.ble.services.dialog.SpotaService
 import network.xyo.ble.services.xy.PrimaryService
-import network.xyo.modbluetoothkotlin.XyoUuids
+import network.xyo.sdk.bluetooth.XyoUuids
 import java.io.ByteArrayInputStream
 import java.nio.ByteBuffer
 import java.util.*

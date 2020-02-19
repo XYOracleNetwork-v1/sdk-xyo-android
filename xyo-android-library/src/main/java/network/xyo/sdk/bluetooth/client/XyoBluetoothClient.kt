@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.client
+package network.xyo.sdk.bluetooth.client
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
@@ -15,9 +15,9 @@ import network.xyo.ble.generic.devices.XYCreator
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothGattCallback
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYScanResult
-import network.xyo.modbluetoothkotlin.XyoUuids
-import network.xyo.modbluetoothkotlin.packet.XyoBluetoothIncomingPacket
-import network.xyo.modbluetoothkotlin.packet.XyoBluetoothOutgoingPacket
+import network.xyo.sdk.bluetooth.XyoUuids
+import network.xyo.sdk.bluetooth.packet.XyoBluetoothIncomingPacket
+import network.xyo.sdk.bluetooth.packet.XyoBluetoothOutgoingPacket
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import java.nio.ByteBuffer
 import java.util.*
