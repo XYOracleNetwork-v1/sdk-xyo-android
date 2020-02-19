@@ -21,7 +21,7 @@ jobs:
         run: ./gradlew install
       - name: bump version
         run: |
-          echo "##[set-output name=version;]$(./gradlew bumpVersion)"
+          echo "##[set-output name=version;]$(gradle -q printVersion)"
           ./gradlew bumpVersion
         id: release_version
       - name: assemble

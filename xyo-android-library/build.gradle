@@ -27,7 +27,7 @@ apply plugin: "org.jlleitschuh.gradle.ktlint"
 project.ext {
     major = 3
     minor = 1
-    patch = 21
+    patch = 22
 }
 
 task bumpVersion(type: VersionTask)
@@ -37,10 +37,12 @@ class VersionTask extends DefaultTask {
     @TaskAction
     def bumpVersion() {
         project.ext.patch = newPatch
-        return newVerString
-        println newVerString
         }
     }
+
+task printVersion {
+    println tasks.bumpVersion.newVerString
+}
 
 android {
     compileSdkVersion 29
