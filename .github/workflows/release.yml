@@ -19,12 +19,12 @@ jobs:
         run: chmod +x gradlew
       - name: install
         run: ./gradlew install
+      - name: assemble
+        run: ./gradlew :xyo-android-library:assembleRelease
       - name: bump version
         run: |
           echo "##[set-output name=version;]$(./gradlew versionOutput)"
         id: release_version
-      - name: assemble
-        run: ./gradlew :xyo-android-library:assembleRelease
       - name: bintray upload
         env: 
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
