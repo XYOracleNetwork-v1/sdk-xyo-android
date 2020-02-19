@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.client
+package network.xyo.sdk.bluetooth.client
 
 import android.bluetooth.BluetoothDevice
 import android.content.Context
@@ -10,7 +10,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @kotlin.ExperimentalUnsignedTypes
-open class XyoBridgeX: XyoBluetoothClient {
+open class XyoAndroidAppX: XyoBluetoothClient{
 
     constructor(context: Context, scanResult: XYScanResult, hash: String) : super(context, scanResult, hash)
 
@@ -20,9 +20,9 @@ open class XyoBridgeX: XyoBluetoothClient {
 
         fun enable(enable: Boolean) {
             if (enable) {
-                xyoManufactureIdToCreator[XyoBluetoothClientDeviceType.BridgeX.raw] = this
+                xyoManufactureIdToCreator[XyoBluetoothClientDeviceType.AndroidAppX.raw] = this
             } else {
-                xyoManufactureIdToCreator.remove(XyoBluetoothClientDeviceType.BridgeX.raw)
+                xyoManufactureIdToCreator.remove(XyoBluetoothClientDeviceType.AndroidAppX.raw)
             }
         }
 
@@ -35,9 +35,9 @@ open class XyoBridgeX: XyoBluetoothClient {
         ) {
             val hash = hashFromScanResult(scanResult)
             val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                XyoBridgeX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+                XyoAndroidAppX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
             } else {
-                XyoBridgeX(context, scanResult, hash)
+                XyoAndroidAppX(context, scanResult, hash)
             }
             val foundDevice = foundDevices[hash]
             if (foundDevice != null) {

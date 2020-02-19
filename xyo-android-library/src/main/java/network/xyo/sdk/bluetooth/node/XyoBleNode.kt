@@ -1,12 +1,12 @@
-package network.xyo.modbluetoothkotlin.node
+package network.xyo.sdk.bluetooth.node
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
-import network.xyo.modbluetoothkotlin.client.XyoBluetoothClient
-import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
+import network.xyo.sdk.bluetooth.client.XyoBluetoothClient
+import network.xyo.sdk.bluetooth.server.XyoBluetoothServer
 import network.xyo.sdkcorekotlin.hashing.XyoHash
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe

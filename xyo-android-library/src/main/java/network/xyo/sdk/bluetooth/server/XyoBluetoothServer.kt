@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.server
+package network.xyo.sdk.bluetooth.server
 
 import android.bluetooth.*
 import android.util.Log
@@ -10,11 +10,10 @@ import network.xyo.ble.generic.gatt.server.XYBluetoothDescriptor
 import network.xyo.ble.generic.gatt.server.XYBluetoothGattServer
 import network.xyo.ble.generic.gatt.server.XYBluetoothService
 import network.xyo.ble.generic.gatt.server.responders.XYBluetoothWriteResponder
-import network.xyo.modbluetoothkotlin.XyoUuids
-import network.xyo.modbluetoothkotlin.XyoUuids.NOTIFY_DESCRIPTOR
-import network.xyo.modbluetoothkotlin.packet.XyoBluetoothIncomingPacket
-import network.xyo.modbluetoothkotlin.packet.XyoBluetoothOutgoingPacket
-import network.xyo.modbluetoothkotlin.packet.XyoInputStream
+import network.xyo.sdk.bluetooth.XyoUuids
+import network.xyo.sdk.bluetooth.XyoUuids.NOTIFY_DESCRIPTOR
+import network.xyo.sdk.bluetooth.packet.XyoBluetoothOutgoingPacket
+import network.xyo.sdk.bluetooth.packet.XyoInputStream
 import network.xyo.sdkcorekotlin.network.XyoAdvertisePacket
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import network.xyo.sdkobjectmodelkotlin.structure.XyoObjectStructure

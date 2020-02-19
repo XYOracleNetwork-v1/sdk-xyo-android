@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin
+package network.xyo.sdk.bluetooth
 
 import java.util.*
 

@@ -1,11 +1,11 @@
-package network.xyo.modbluetoothkotlin.client
+package network.xyo.sdk.bluetooth.client
 
 import android.bluetooth.BluetoothGatt
 import android.util.Log
 import kotlinx.coroutines.*
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
-import network.xyo.modbluetoothkotlin.XyoUuids
+import network.xyo.sdk.bluetooth.XyoUuids
 import network.xyo.sdkcorekotlin.network.XyoAdvertisePacket
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import network.xyo.sdkcorekotlin.schemas.XyoSchemas

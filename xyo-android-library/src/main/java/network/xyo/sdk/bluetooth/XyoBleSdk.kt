@@ -1,11 +1,11 @@
-package network.xyo.modbluetoothkotlin
+package network.xyo.sdk.bluetooth
 
 import android.content.Context
 import kotlinx.coroutines.sync.Mutex
 import network.xyo.ble.generic.gatt.server.XYBluetoothAdvertiser
 import network.xyo.ble.generic.gatt.server.XYBluetoothGattServer
-import network.xyo.modbluetoothkotlin.advertiser.XyoBluetoothAdvertiser
-import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
+import network.xyo.sdk.bluetooth.advertiser.XyoBluetoothAdvertiser
+import network.xyo.sdk.bluetooth.server.XyoBluetoothServer
 import java.util.*
 
 @kotlin.ExperimentalUnsignedTypes

@@ -3,9 +3,9 @@ import android.content.Context
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import network.xyo.modbluetoothkotlin.XyoBleSdk
-import network.xyo.modbluetoothkotlin.advertiser.XyoBluetoothAdvertiser
-import network.xyo.modbluetoothkotlin.server.XyoBluetoothServer
+import network.xyo.sdk.bluetooth.XyoBleSdk
+import network.xyo.sdk.bluetooth.advertiser.XyoBluetoothAdvertiser
+import network.xyo.sdk.bluetooth.server.XyoBluetoothServer
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog

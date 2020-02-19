@@ -1,4 +1,4 @@
-package network.xyo.modbluetoothkotlin.packet
+package network.xyo.sdk.bluetooth.packet
 
 class XyoInputStream {
     private val donePackets = ArrayList<ByteArray>()

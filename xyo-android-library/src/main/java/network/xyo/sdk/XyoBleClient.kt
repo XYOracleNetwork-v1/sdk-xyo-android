@@ -8,9 +8,9 @@ import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.ble.generic.scanner.XYSmartScanModern
-import network.xyo.modbluetoothkotlin.client.XyoBluetoothClient
-import network.xyo.modbluetoothkotlin.client.XyoBridgeX
-import network.xyo.modbluetoothkotlin.client.XyoSentinelX
+import network.xyo.sdk.bluetooth.client.XyoBluetoothClient
+import network.xyo.sdk.bluetooth.client.XyoBridgeX
+import network.xyo.sdk.bluetooth.client.XyoSentinelX
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
