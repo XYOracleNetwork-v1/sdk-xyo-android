@@ -35,7 +35,7 @@ def increment = 0
 
 def runTasks = gradle.startParameter.taskNames
 
-if (':xyo-android-library:assembleRelease' in runTasks) {
+if (':xyo-android-library:assemble' in runTasks) {
     increment = 1
 }
 
