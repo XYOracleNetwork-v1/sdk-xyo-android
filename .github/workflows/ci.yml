@@ -14,7 +14,7 @@ jobs:
     - name: pre-build
       run:  chmod +x ./gradlew
     - name: build
-      run: ./gradlew clean assemble
+      run: ./gradlew :xyo-android-library:clean assemble
     - name: check in local changes
       run: |       
         git status
