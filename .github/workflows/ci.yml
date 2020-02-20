@@ -18,7 +18,7 @@ jobs:
     - name: check in local changes
       run: |       
         git status
-        git add version.properties
+        git add xyo-android-library/version.properties
     - name: commit file
       run: |
         git config --local user.email "action@github.com"
