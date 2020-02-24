@@ -1,0 +1,31 @@
+name: Prepare Release
+
+on:
+  push: 
+    branches: 
+      - 'release'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: pre-build
+      run:  chmod +x ./gradlew
+    - name: build
+      run: ./gradlew :xyo-android-library:assemble
+    - name: check in local changes
+      run: |       
+        git status
+        git add xyo-android-library/version.properties
+    - name: commit file
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "version bump" -a
+    - name: push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: 'release' 
