@@ -71,6 +71,7 @@ class XyoBleServer(
                     val bw = relayNode.boundWitness(handler, procedureCatalog).await()
                     relayNode.removeListener("XyoBleServer")
                     boundWitnessCompleted(null, bw, errorMessage)
+                    pipe.close().await()
                     return@launch
                 }
             }

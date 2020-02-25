@@ -242,33 +242,39 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
         ) {
             val hash = hashFromScanResult(scanResult)
 
+            val existingDevice = globalDevices[hash]
+            if (existingDevice != null) {
+                log.info("Device Found: $hash")
+                existingDevice.rssi = scanResult.rssi
+                existingDevice.updateBluetoothDevice(scanResult.device)
+            } else {
+                log.info("Device Creating: $hash")
+                val ad = scanResult.scanRecord?.getManufacturerSpecificData(0x4c)
 
-            val ad = scanResult.scanRecord?.getManufacturerSpecificData(0x4c)
+                if (ad?.size == 23) {
+                    val id = ad[19]
 
-            if (ad?.size == 23) {
-                val id = ad[19]
+                    // masks the byte with 00111111 - AT: Is this a Check if is Xyo Enabled Device?
+                    if (xyoManufactureIdToCreator.containsKey(id and DEVICE_TYPE_MASK)) {
+                        xyoManufactureIdToCreator[id and DEVICE_TYPE_MASK]?.getDevicesFromScanResult(context, scanResult, globalDevices, foundDevices)
+                        return
+                    } else {
+                        log.info("Not an Xyo Device - Not Creating: $hash")
 
-                // masks the byte with 00111111
-                if (xyoManufactureIdToCreator.containsKey(id and DEVICE_TYPE_MASK)) {
-                    xyoManufactureIdToCreator[id and DEVICE_TYPE_MASK]?.getDevicesFromScanResult(context, scanResult, globalDevices, foundDevices)
-                    return
+                        /*
+                        val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            XyoBluetoothClient(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+                        } else {
+                            XyoBluetoothClient(context, scanResult, hash)
+                        }
+
+                        foundDevices[hash] = createdDevice
+                        globalDevices[hash] = createdDevice
+                         */
+                    }
                 }
             }
 
-            val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                XyoBluetoothClient(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
-            } else {
-                XyoBluetoothClient(context, scanResult, hash)
-            }
-
-            val foundDevice = foundDevices[hash]
-            if (foundDevice != null) {
-                foundDevice.rssi = scanResult.rssi
-                foundDevice.updateBluetoothDevice(scanResult.device)
-            } else {
-                foundDevices[hash] = createdDevice
-                globalDevices[hash] = createdDevice
-            }
         }
     }
 }
