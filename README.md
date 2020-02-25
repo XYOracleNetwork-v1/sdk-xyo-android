@@ -244,6 +244,8 @@ This sample app includes client bridging and bound witnessing with a BLE server 
 
 ## Contributing
 
+Please note that any contributions must clear the `release` branch. 
+
 ## License
 
 See the [LICENSE](LICENSE) file for license details.
