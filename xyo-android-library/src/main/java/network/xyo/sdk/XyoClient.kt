@@ -10,4 +10,7 @@ abstract class XyoClient(
 ) : XyoBoundWitnessTarget(relayNode, procedureCatalog) {
     // this is not a parameter since scanning has to start off of false
     open var scan: Boolean = false
+    open var deviceCount = 0
+    open var xyoDeviceCount = 0
+    open var nearbyXyoDeviceCount = 0
 }

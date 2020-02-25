@@ -18,14 +18,13 @@ import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 @kotlin.ExperimentalUnsignedTypes
 class BleServerFragment : Fragment() {
 
+    var statusText = ""
+
     fun addStatus(status: String) {
-        ui {
-            text_ble_server?.let {
-                val sb = StringBuilder()
-                sb.append(it.text)
-                sb.append("\r\n")
-                sb.append(status)
-                it.text = sb.toString()
+        statusText = "${statusText}\r\n$status"
+        text_ble_server?.let {
+            ui {
+                it.text = statusText
             }
         }
     }

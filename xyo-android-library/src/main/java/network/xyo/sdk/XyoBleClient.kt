@@ -8,9 +8,7 @@ import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.ble.generic.scanner.XYSmartScanModern
-import network.xyo.sdk.bluetooth.client.XyoBluetoothClient
-import network.xyo.sdk.bluetooth.client.XyoBridgeX
-import network.xyo.sdk.bluetooth.client.XyoSentinelX
+import network.xyo.sdk.bluetooth.client.*
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.network.XyoNetworkHandler
@@ -31,6 +29,11 @@ class XyoBleClient(
 
     override var autoBridge: Boolean = false
     override var acceptBridging: Boolean = false
+
+    override var deviceCount = 0
+    override var xyoDeviceCount = 0
+    override var nearbyXyoDeviceCount = 0
+
     var supportBridgeX = false
     var supportSentinelX = false
     var minimumRssi = -70
@@ -56,6 +59,23 @@ class XyoBleClient(
         }
 
     private val scannerListener = object : XYSmartScan.Listener() {
+        override fun entered(device: XYBluetoothDevice) {
+            super.entered(device)
+            deviceCount++
+            if (device is XyoBluetoothClient) {
+                log.info("Xyo Device Entered: ${device.id}")
+                xyoDeviceCount++
+            }
+        }
+
+        override fun exited(device: XYBluetoothDevice) {
+            super.exited(device)
+            deviceCount--
+            if (device is XyoBluetoothClient) {
+                log.info("Xyo Device Exited: ${device.id}")
+                xyoDeviceCount--
+            }
+        }
         override fun detected(device: XYBluetoothDevice) {
             super.detected(device)
             if (this@XyoBleClient.autoBoundWitness) {
@@ -78,6 +98,7 @@ class XyoBleClient(
                                     return
                                 }
                             }
+                            nearbyXyoDeviceCount++
                             GlobalScope.launch {
                                 tryBoundWitnessWithDevice(client)
                             }
@@ -133,6 +154,8 @@ class XyoBleClient(
         XyoBluetoothClient.enable(true)
         XyoBridgeX.enable(true)
         XyoSentinelX.enable(true)
+        XyoIosAppX.enable(true)
+        XyoAndroidAppX.enable(true)
         XyoSha256WithSecp256K.enable()
         this.scanner = XYSmartScanModern(context)
         this.scanner.addListener("xyo_client", this.scannerListener)
