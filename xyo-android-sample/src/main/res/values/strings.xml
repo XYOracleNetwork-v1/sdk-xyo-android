@@ -10,4 +10,7 @@
     <string name="scan">Scan</string>
     <string name="listen">Listen</string>
     <string name="public_key">Public Key: </string>
+    <string name="detected_devices">Detected Devices:</string>
+    <string name="detected_xyo_devices">Detected XYO Devices:</string>
+    <string name="nearby_xyo_devices">Nearby XYO Devices:</string>
 </resources>

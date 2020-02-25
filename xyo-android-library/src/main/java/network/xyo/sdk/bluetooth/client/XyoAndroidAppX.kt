@@ -34,16 +34,16 @@ open class XyoAndroidAppX: XyoBluetoothClient{
                         XYBluetoothDevice>
         ) {
             val hash = hashFromScanResult(scanResult)
-            val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                XyoAndroidAppX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+            val existingDevice = globalDevices[hash]
+            if (existingDevice != null) {
+                existingDevice.rssi = scanResult.rssi
+                existingDevice.updateBluetoothDevice(scanResult.device)
             } else {
-                XyoAndroidAppX(context, scanResult, hash)
-            }
-            val foundDevice = foundDevices[hash]
-            if (foundDevice != null) {
-                foundDevice.rssi = scanResult.rssi
-                foundDevice.updateBluetoothDevice(scanResult.device)
-            } else {
+                val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    XyoAndroidAppX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+                } else {
+                    XyoAndroidAppX(context, scanResult, hash)
+                }
                 foundDevices[hash] = createdDevice
                 globalDevices[hash] = createdDevice
             }

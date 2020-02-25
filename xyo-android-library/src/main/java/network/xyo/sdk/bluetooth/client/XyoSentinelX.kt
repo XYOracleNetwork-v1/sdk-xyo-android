@@ -206,16 +206,16 @@ open class XyoSentinelX : XyoBluetoothClient {
                         XYBluetoothDevice>
         ) {
             val hash = hashFromScanResult(scanResult)
-            val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                XyoSentinelX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+            val existingDevice = globalDevices[hash]
+            if (existingDevice != null) {
+                existingDevice.rssi = scanResult.rssi
+                existingDevice.updateBluetoothDevice(scanResult.device)
             } else {
-                XyoSentinelX(context, scanResult, hash)
-            }
-            val foundDevice = foundDevices[hash]
-            if (foundDevice != null) {
-                foundDevice.rssi = scanResult.rssi
-                foundDevice.updateBluetoothDevice(scanResult.device)
-            } else {
+                val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    XyoSentinelX(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
+                } else {
+                    XyoSentinelX(context, scanResult, hash)
+                }
                 foundDevices[hash] = createdDevice
                 globalDevices[hash] = createdDevice
             }

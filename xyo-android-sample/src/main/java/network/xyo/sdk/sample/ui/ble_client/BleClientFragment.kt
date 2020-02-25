@@ -1,5 +1,6 @@
 package network.xyo.sdk.sample.ui.ble_client
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 import kotlinx.android.synthetic.main.fragment_ble_client.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import network.xyo.sdk.sample.R
 import network.xyo.sdk.XyoBleNetwork
 import network.xyo.sdk.XyoBoundWitnessTarget
@@ -18,6 +22,13 @@ import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 @kotlin.ExperimentalUnsignedTypes
 class BleClientFragment : Fragment() {
 
+    var deviceCount = 0
+    var xyoDeviceCount = 0
+    var nearbyXyoDeviceCount = 0
+
+    var autoUpdateUi = false
+    var statusText = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,40 +37,62 @@ class BleClientFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_ble_client, container, false)
     }
 
-    fun addStatus(status: String) {
-        ui {
-            text_ble_client?.let {
-                val sb = StringBuilder()
-                sb.append(it.text)
-                sb.append("\r\n")
-                sb.append(status)
-                it.text = sb.toString()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        autoUpdateUi = true
+        GlobalScope.launch {
+            while(autoUpdateUi) {
+                this@BleClientFragment.updateUI()
+                delay(1000)
             }
         }
     }
 
-    fun updateUI() {
+    override fun onDetach() {
+        autoUpdateUi = false
+        super.onDetach()
+    }
+
+    fun addStatus(status: String) {
+        statusText = "${statusText}\r\n$status"
+        text_ble_client?.let {
+            ui {
+                it.text = statusText
+            }
+        }
+    }
+
+    private fun updateUI() {
         ui {
-            (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-                acceptBridging.isChecked = network.client.acceptBridging
-                acceptBridging.setOnCheckedChangeListener { _, isChecked ->
-                    network.client.acceptBridging = isChecked
-                }
+            if (!(this@BleClientFragment.isDetached)) {
+                (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+                    acceptBridging?.isChecked = network.client.acceptBridging
+                    acceptBridging?.setOnCheckedChangeListener { _, isChecked ->
+                        network.client.acceptBridging = isChecked
+                    }
 
-                autoBoundWitness.isChecked = network.client.autoBoundWitness
-                autoBoundWitness.setOnCheckedChangeListener { _, isChecked ->
-                    network.client.autoBoundWitness = isChecked
-                }
+                    autoBoundWitness?.isChecked = network.client.autoBoundWitness
+                    autoBoundWitness?.setOnCheckedChangeListener { _, isChecked ->
+                        network.client.autoBoundWitness = isChecked
+                    }
 
-                autoBridge.isChecked = network.client.autoBridge
-                autoBridge.setOnCheckedChangeListener { _, isChecked ->
-                    network.client.autoBridge = isChecked
-                }
+                    autoBridge?.isChecked = network.client.autoBridge
+                    autoBridge?.setOnCheckedChangeListener { _, isChecked ->
+                        network.client.autoBridge = isChecked
+                    }
 
-                scan.isChecked = network.client.scan
-                scan.setOnCheckedChangeListener { _, isChecked ->
-                    network.client.scan = isChecked
+                    scan?.isChecked = network.client.scan
+                    scan?.setOnCheckedChangeListener { _, isChecked ->
+                        network.client.scan = isChecked
+                    }
+
+                    deviceCount = network.client.deviceCount
+                    xyoDeviceCount = network.client.xyoDeviceCount
+                    nearbyXyoDeviceCount = network.client.nearbyXyoDeviceCount
                 }
+                detected_devices?.text = deviceCount.toString()
+                detected_xyo_devices?.text = xyoDeviceCount.toString()
+                nearby_xyo_devices?.text = nearbyXyoDeviceCount.toString()
             }
         }
     }

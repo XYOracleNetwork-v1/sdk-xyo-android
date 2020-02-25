@@ -1,0 +1,20 @@
+name: Build
+
+on:
+  push: 
+    branches: 
+      - 'develop'
+  pull_request: 
+    branches: 
+      - 'master'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: pre-build
+      run:  chmod +x ./gradlew
+    - name: build
+      run: ./gradlew clean assemble

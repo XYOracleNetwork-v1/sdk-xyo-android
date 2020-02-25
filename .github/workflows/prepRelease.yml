@@ -1,16 +1,16 @@
-name: CI
+name: Prepare Release
 
 on:
   push: 
     branches: 
-      - 'develop'
+      - 'release'
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: pre-build
       run:  chmod +x ./gradlew
     - name: build
@@ -28,4 +28,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: 'develop' 
+        branch: 'release' 
