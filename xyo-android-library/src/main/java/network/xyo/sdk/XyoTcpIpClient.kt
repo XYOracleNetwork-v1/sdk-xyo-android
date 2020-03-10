@@ -67,7 +67,7 @@ class XyoTcpIpClient(
         return errorMessage ?: networkErrorMessage
     }
 
-    fun startBridge() {
+    suspend fun startBridge() {
         var bw: XyoBoundWitness? = null
         val uri = Uri.parse(bridge)
 
