@@ -54,7 +54,7 @@ class XyoTcpIpClient(
         return errorMessage ?: networkErrorMessage
     }
 
-    suspend fun checkBw() {
+    suspend fun checkBw(): XyoBoundWitness? {
         var bw: XyoBoundWitness? = null
         knownBridges.forEach { bridge ->
             log.info("Trying to bridge: $bridge")
