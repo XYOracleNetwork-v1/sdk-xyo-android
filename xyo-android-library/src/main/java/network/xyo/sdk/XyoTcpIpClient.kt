@@ -39,11 +39,6 @@ class XyoTcpIpClient(
     suspend fun bridge(): String? {
         var errorMessage: String? = null
         var networkErrorMessage: String? = null
-        bridgeCheck()
-        return errorMessage ?: networkErrorMessage
-    }
-
-    suspend fun bridgeCheck() {
         if (bridgeMutex.tryLock()) {
             log.info("bridge - started: [${knownBridges?.size}]")
             knownBridges?.let { knownBridges ->
@@ -86,8 +81,9 @@ class XyoTcpIpClient(
             }
             bridgeMutex.unlock()
         }
+        return errorMessage ?: networkErrorMessage
     }
-
+    
     override var scan: Boolean
         get() { return false }
         set(_) { }
