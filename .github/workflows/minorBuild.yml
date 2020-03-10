@@ -3,7 +3,9 @@ name: Minor Branch Build
 on:
   push: 
     branches-ignore:
-      - ['develop', 'release', 'master']
+      - 'develop'
+      - 'release'
+      - 'master'
 
 jobs:
   build:
