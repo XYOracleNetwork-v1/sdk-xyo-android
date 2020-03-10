@@ -123,12 +123,12 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
 
 
         /**
-         * Sends data to the other end of the pipe, in this case a BLE central/client. This function wraps sendAwait
-         * with device connection functionality (e.g. listening for disconnects).
+         * Sends data to a BLE central/client through a pipe. This function wraps
+         * with device connection functionality (e.g. listening for disconnects) asynchronously.
          *
-         * @param data The data to send at the other end of the pipe.
+         * @param data Data to send at the other end of the pipe.
          * @param waitForResponse If set to true, will wait for a response after sending the data.
-         * @return The differed response from the party at the other end of the pipe. If waitForResponse is set to
+         * @return The deferred response from the party at the other end of the pipe. If waitForResponse is set to
          * true. The method will return null. Will also return null if there is an error.
          */
         override fun send(data: ByteArray, waitForResponse: Boolean): Deferred<ByteArray?> {
@@ -211,12 +211,12 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
 
 
     /**
-     * Sends a packet to the central by sending notifications one after each other. The notifications will chunk the
+     * Sends a packet to central by sending notifications one at a time. Notifications will chunk the
      * data accordingly at the size of the MTU.
      *
      * @param outgoingPacket The packet to send to the other end of the pipe (BLE Central)
-     * @param characteristic The characteristic to notify that has changed.
-     * @param bluetoothDevice The bluetooth device to send the data to.
+     * @param characteristic The characteristic to notify has changed.
+     * @param bluetoothDevice The bluetooth device to send data to.
      */
     private suspend fun sendPacket(outgoingPacket: ByteArray, characteristic: XYBluetoothCharacteristic, bluetoothDevice: BluetoothDevice) = suspendCancellableCoroutine<XYBluetoothResult<ByteArray>?> { cont ->
         val key = "sendPacket $this ${Math.random()}"

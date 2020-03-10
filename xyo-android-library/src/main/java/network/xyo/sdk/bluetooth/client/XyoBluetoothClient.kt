@@ -111,9 +111,9 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
 
 
     /**
-     * Reads an incoming packet by listening for notifications. This function must be invoked before any notifications
-     * are sent or else will return null. Timeout of the first notification is defined with FIRST_NOTIFY_TIMEOUT, in
-     * milliseconds and notification delta timeout is defined as NOTIFY_TIMEOUT in milliseconds.
+     * Listens for notifications to read incoming packets. This must be invoked before notifications
+     * are sent. Timeout of the first notification is defined with FIRST_NOTIFY_TIMEOUT, in
+     * milliseconds and the notification timeout delta is defined as NOTIFY_TIMEOUT in milliseconds.
      *
      * @return A deferred ByteArray of the value read. If there was an error or timeout, will return null.
      */
