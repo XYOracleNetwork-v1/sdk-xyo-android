@@ -52,24 +52,7 @@ class XyoTcpIpClient(
                         boundWitnessStarted(bridge)
                         try {
                             if (bw == null) {
-                                val uri = Uri.parse(bridge)
-
-                                log.info("Trying to bridge [info]: ${uri.host}:${uri.port}")
-
-                                val socket = Socket(uri.host, uri.port)
-                                val pipe = XyoTcpPipe(socket, null)
-                                val handler = XyoNetworkHandler(pipe)
-
-                                log.info("Starting Bridge BoundWitness")
-                                relayNode.addListener("XyoTcpIpClient-bridge", object : XyoNodeListener() {
-                                    override fun onBoundWitnessEndFailure(error: Exception?) {
-                                        errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
-                                    }
-                                })
-                                bw = relayNode.boundWitness(handler, procedureCatalog).await()
-                                relayNode.removeListener("XyoTcpIpClient-bridge")
-                                pipe.close().await()
-                                log.info("Bridge Result: $bw")
+                                startBridge()
                             }
                         } catch (e: IOException) {
                             log.info("Bridging Excepted $e")
@@ -82,6 +65,28 @@ class XyoTcpIpClient(
             bridgeMutex.unlock()
         }
         return errorMessage ?: networkErrorMessage
+    }
+
+    fun startBridge() {
+        var bw: XyoBoundWitness? = null
+        val uri = Uri.parse(bridge)
+
+        log.info("Trying to bridge [info]: ${uri.host}:${uri.port}")
+
+        val socket = Socket(uri.host, uri.port)
+        val pipe = XyoTcpPipe(socket, null)
+        val handler = XyoNetworkHandler(pipe)
+
+        log.info("Starting Bridge BoundWitness")
+        relayNode.addListener("XyoTcpIpClient-bridge", object : XyoNodeListener() {
+            override fun onBoundWitnessEndFailure(error: Exception?) {
+                errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
+            }
+        })
+        bw = relayNode.boundWitness(handler, procedureCatalog).await()
+        relayNode.removeListener("XyoTcpIpClient-bridge")
+        pipe.close().await()
+        log.info("Bridge Result: $bw")
     }
     
     override var scan: Boolean
