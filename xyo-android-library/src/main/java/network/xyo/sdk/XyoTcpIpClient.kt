@@ -84,6 +84,10 @@ class XyoTcpIpClient(
         return errorMessage ?: networkErrorMessage
     }
 
+    fun startBridge() {
+        
+    }
+    
     override var scan: Boolean
         get() { return false }
         set(_) { }
