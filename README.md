@@ -4,8 +4,7 @@
 
 # sdk-xyo-android
 
-[![CI](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/CI/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ACI+branch%3Adevelop) [![Release](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/Release/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ARelease+branch%3Amaster) [ ![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion) [![](https://jitpack.io/v/XYOracleNetwork/sdk-xyo-android.svg)](https://jitpack.io/#XYOracleNetwork/sdk-xyo-android)
- [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade) [![BCH compliance](https://bettercodehub.com/edge/badge/XYOracleNetwork/sdk-xyo-android?branch=master)](https://bettercodehub.com/) [![Maintainability](https://api.codeclimate.com/v1/badges/9380b23945bb43599ab4/maintainability)](https://codeclimate.com/github/XYOracleNetwork/sdk-xyo-android/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android/badge.svg?targetFile=xyo-android-library/build.gradle)](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android?targetFile=xyo-android-library/build.gradle)
+[![CI](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/Build/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ACI+branch%3Adevelop) [![Release](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/Release/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ARelease+branch%3Amaster) [![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade) [![BCH compliance](https://bettercodehub.com/edge/badge/XYOracleNetwork/sdk-xyo-android?branch=master)](https://bettercodehub.com/) [![Maintainability](https://api.codeclimate.com/v1/badges/9380b23945bb43599ab4/maintainability)](https://codeclimate.com/github/XYOracleNetwork/sdk-xyo-android/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android/badge.svg?targetFile=xyo-android-library/build.gradle)](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android?targetFile=xyo-android-library/build.gradle)
 
 ## Table of Contents
 
@@ -24,12 +23,12 @@
 ## Description 
 
 A high-level SDK for interacting with the XYO network.
-Including BLE, TCP/IP, Bound Witnessing, and Bridging. 
+Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk-core-kotlin` for integration with your app project.
 
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.1.26'
+    compile 'network.xyo:sdk-xyo-android:3.1.31'
 ```
 
 ## Maven Build
