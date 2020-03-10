@@ -50,14 +50,13 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
     }
 
     /**
-     * Sends data to the other end of the pipe and waits for a response if the waitForResponse flag is set to
-     * true. NOTE: The send and recive are abstracted away from the caller, this means that this may not be the
-     * exact bytes going over the wire.
+     * Sends data and waits for a response if the waitForResponse flag is set to true. 
+     * NOTE: The send and recieve are abstracted away from the caller, thus the exact bytes transferred is unclear.
      *
-     * @param data The data to send to the other end of the pipe.
+     * @param data Data to send to the other end of the pipe.
      * @param waitForResponse If this flag is set, this function will wait for a response. If not, will return
      * null.
-     * @return A differed ByteArray of the response of the server. If waitForResponse is null, will return null.
+     * @return A deferred ByteArray of the response of the server. If waitForResponse is null, will return null.
      */
     override fun send(data: ByteArray, waitForResponse: Boolean) = GlobalScope.async {
         Log.i(TAG, "send: started")
