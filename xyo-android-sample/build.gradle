@@ -48,8 +48,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    implementation 'network.xyo:sdk-base-android:2.1.268'
-    implementation 'network.xyo:sdk-ble-android:3.0.1104'
-    implementation 'network.xyo:sdk-core-kotlin:3.0.33'
+    implementation 'network.xyo:sdk-base-android:2.1.288'
+    implementation 'network.xyo:sdk-ble-android:3.1.1144'
+    implementation 'network.xyo:sdk-core-kotlin:3.0.42'
     implementation project(':xyo-android-library')
 }
