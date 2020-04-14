@@ -1,5 +1,8 @@
+@file:Suppress("SpellCheckingInspection")
+
 package network.xyo.sdk
 import android.content.Context
+import android.util.Log
 import java.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,7 +45,7 @@ class XyoBleClient(
 
     var lastBoundWitnessTime = Date().time - minBWTimeGap // ten seconds ago
 
-    var scanner: XYSmartScanModern
+    private var scanner: XYSmartScanModern
 
     private val boundWitnessMutex = Mutex()
 
@@ -77,7 +80,9 @@ class XyoBleClient(
             }
         }
         override fun detected(device: XYBluetoothDevice) {
+            val tag = "Device? "
             super.detected(device)
+            Log.i(tag, "$device")
             if (this@XyoBleClient.autoBoundWitness) {
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
                     (device as? XyoBluetoothClient)?.let { client ->
