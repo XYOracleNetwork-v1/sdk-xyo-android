@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package network.xyo.sdk
 import android.content.Context
 import android.util.Log
@@ -43,7 +45,7 @@ class XyoBleClient(
 
     var lastBoundWitnessTime = Date().time - minBWTimeGap // ten seconds ago
 
-    var scanner: XYSmartScanModern
+    private var scanner: XYSmartScanModern
 
     private val boundWitnessMutex = Mutex()
 
