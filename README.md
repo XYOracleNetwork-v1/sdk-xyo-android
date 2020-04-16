@@ -6,6 +6,8 @@
 
 [![CI](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/Build/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ACI+branch%3Adevelop) [![Release](https://github.com/XYOracleNetwork/sdk-xyo-android/workflows/Release/badge.svg)](https://github.com/XYOracleNetwork/sdk-xyo-android/actions?query=workflow%3ARelease+branch%3Amaster) [![Download](https://api.bintray.com/packages/xyoraclenetwork/xyo/sdk-xyo-android/images/download.svg) ](https://bintray.com/xyoraclenetwork/xyo/sdk-xyo-android/_latestVersion) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9712b501940e45428072255a283fa23a)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=XYOracleNetwork/sdk-xyo-android&amp;utm_campaign=Badge_Grade) [![BCH compliance](https://bettercodehub.com/edge/badge/XYOracleNetwork/sdk-xyo-android?branch=master)](https://bettercodehub.com/) [![Maintainability](https://api.codeclimate.com/v1/badges/9380b23945bb43599ab4/maintainability)](https://codeclimate.com/github/XYOracleNetwork/sdk-xyo-android/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android/badge.svg?targetFile=xyo-android-library/build.gradle)](https://snyk.io/test/github/XYOracleNetwork/sdk-xyo-android?targetFile=xyo-android-library/build.gradle)
 
+> The XYO Foundation provides this source code available in our efforts to advance the understanding of the XYO Procotol and its possible uses. We continue to maintain this software in the interest of developer education. Usage of this source code is not intended for production.
+
 ## Table of Contents
 
 -   [Title](#sdk-xyo-android)
