@@ -50,48 +50,62 @@ class XyoBleClient(
     private val boundWitnessMutex = Mutex()
 
     override var scan: Boolean
-        get() { return scanner.started() }
+        get() {
+//            val tag = "TAG "
+//            Log.i(tag, "Does this scan??")
+            return scanner.started()
+        }
         set(value) {
             GlobalScope.launch {
                 if (value && !scanner.started()) {
+                    val tag = "TAG "
+                    Log.i(tag, "Does this trigger a start??")
                     scanner.start()
+                    Log.i(tag, "Is this scanner working?? $scanner")
                 } else if (!value && scanner.started()) {
+                    val tag = "TAG "
+                    Log.i(tag, "Does this trigger a stop??")
                     scanner.stop()
                 }
             }
         }
 
     private val scannerListener = object : XYSmartScan.Listener() {
+//        override fun onStart
         override fun entered(device: XYBluetoothDevice) {
+            val tag = "TAG "
             super.entered(device)
             deviceCount++
-            if (device is XyoBluetoothClient) {
-                log.info("Xyo Device Entered: ${device.id}")
-                xyoDeviceCount++
-            }
+            Log.i(tag,"Xyo Device Entered: ${device.id}")
+            xyoDeviceCount++
         }
 
         override fun exited(device: XYBluetoothDevice) {
+            val tag = "TAG "
             super.exited(device)
             deviceCount--
-            if (device is XyoBluetoothClient) {
-                log.info("Xyo Device Exited: ${device.id}")
-                xyoDeviceCount--
-            }
+            Log.i(tag, "Xyo Device Exited: ${device.id}")
+            xyoDeviceCount--
         }
         override fun detected(device: XYBluetoothDevice) {
-            val tag = "Device? "
+            val tag = "TAG "
             super.detected(device)
-            Log.i(tag, "$device")
+            Log.i(tag, "do we even get a device here? $device")
+            Log.i(tag, "are we detecting anything??")
             if (this@XyoBleClient.autoBoundWitness) {
+                Log.i(tag, "hello ?? $autoBoundWitness")
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
+                    Log.i(tag, "hello again ???")
                     (device as? XyoBluetoothClient)?.let { client ->
+                        Log.i(tag, "Hello again again???")
                         device.rssi?.let { rssi ->
+                            Log.i(tag, "Hello wtf 3???")
                             if (rssi < minimumRssi) {
                                 log.info("Rssi too low: $rssi")
                                 return
                             }
                             (client as? XyoBridgeX)?.let {
+                                Log.i(tag, "Hello one more time???")
                                 if (!supportBridgeX) {
                                     log.info("BridgeX not Supported: $rssi")
                                     return
@@ -116,9 +130,12 @@ class XyoBleClient(
 
     suspend fun tryBoundWitnessWithDevice(device: XyoBluetoothClient) {
         if (boundWitnessMutex.tryLock()) {
+            val tag = "TAG "
+            Log.i(tag, "is there a bound witness attempt here?")
             boundWitnessStarted(device)
 
             var errorMessage: String? = null
+            Log.i(tag, errorMessage)
 
             val result = device.connection {
                 val pipe = device.createPipe()
