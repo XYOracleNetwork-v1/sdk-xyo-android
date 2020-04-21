@@ -135,7 +135,6 @@ class XyoBleClient(
             boundWitnessStarted(device)
 
             var errorMessage: String? = null
-            Log.i(tag, errorMessage)
 
             val result = device.connection {
                 val pipe = device.createPipe()

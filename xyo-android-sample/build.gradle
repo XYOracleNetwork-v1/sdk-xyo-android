@@ -21,6 +21,13 @@ android {
         targetCompatibility = 1.8
     }
 
+    lintOptions {
+        htmlReport false
+        abortOnError true
+        warningsAsErrors true
+        disable "HardwareIds", "MissingPermission"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
