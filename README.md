@@ -25,6 +25,8 @@
 A high-level SDK for interacting with the XYO network.
 Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk-core-kotlin` for integration with your app project.
 
+> As you are developing on the SDK, be sure to keep an eye out for updates, as they may include core and ble updates 
+
 ## Gradle Build
 
 ```gradle
