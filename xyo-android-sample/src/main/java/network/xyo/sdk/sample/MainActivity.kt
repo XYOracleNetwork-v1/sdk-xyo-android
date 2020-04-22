@@ -3,6 +3,7 @@ package network.xyo.sdk.sample
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.util.Log
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +28,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlobalScope.launch {
-            initializeXyoSimpleWithGps()
+//            initializeXyoSimpleWithGps()
             //initializeXyoSimple()
-            //initializeXyoBleClientOnly()
+//            initializeXyoBleClientOnly()
             //initializeXyoBleServerOnly()
-            //initializeXyoBleOnly()
+            initializeXyoBleOnly()
             ui {
                 setContentView(R.layout.activity_main)
                 val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -85,11 +86,14 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun initializeXyoBleClientOnly() {
         val builder = XyoNodeBuilder()
+        val tag = "TAG: "
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
+            Log.i(tag, "Ble? Hello? ")
             network.client.autoBridge = true
             network.client.autoBoundWitness = true
             network.client.scan = true
+            Log.i(tag, "Client Scan? $network.client.scan ")
             network.server.autoBridge = false
             network.server.listen = false
         }
