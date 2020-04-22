@@ -44,7 +44,7 @@ android {
 
     configurations {
         all {
-            exclude module: 'commons-logging'
+            exclude group: 'org.json', module: 'json'
         }
     }
 }

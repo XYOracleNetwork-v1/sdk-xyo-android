@@ -39,7 +39,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk
 <dependency>
   <groupId>network.xyo</groupId>
   <artifactId>sdk-xyo-android</artifactId>
-  <version>3.1.26</version>
+  <version>3.1.33</version>
   <type>pom</type>
 </dependency>
 
