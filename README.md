@@ -25,10 +25,12 @@
 A high-level SDK for interacting with the XYO network.
 Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk-core-kotlin` for integration with your app project.
 
+> As you are developing on the SDK, be sure to keep an eye out for updates, as they may include core and ble updates 
+
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.1.31'
+    compile 'network.xyo:sdk-xyo-android:3.1.34'
 ```
 
 ## Maven Build
@@ -37,10 +39,31 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk
 <dependency>
   <groupId>network.xyo</groupId>
   <artifactId>sdk-xyo-android</artifactId>
-  <version>3.1.26</version>
+  <version>3.1.34</version>
   <type>pom</type>
 </dependency>
 
+```
+
+## Permissions and Set Up
+
+When using Android Studio and an Android device to test BLE Client and Server be sure to enable permissions and add an initialization function in your `MainActivity` 
+
+`AndroidManifest.xml`
+
+```xml
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+```
+
+`MainActivity.kt`
+
+```kotlin
+GlobalScope.launch {
+  // place initialization function here for node build needed
+  // you can look at the sample app for code example
+}
 ```
 
 ## Examples 
