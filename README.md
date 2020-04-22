@@ -30,7 +30,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk
 ## Gradle Build
 
 ```gradle
-    compile 'network.xyo:sdk-xyo-android:3.1.33'
+    compile 'network.xyo:sdk-xyo-android:3.1.34'
 ```
 
 ## Maven Build
@@ -39,7 +39,7 @@ Including BLE, TCP/IP, Bound Witnessing, and Bridging. Use this instead of `sdk
 <dependency>
   <groupId>network.xyo</groupId>
   <artifactId>sdk-xyo-android</artifactId>
-  <version>3.1.33</version>
+  <version>3.1.34</version>
   <type>pom</type>
 </dependency>
 
