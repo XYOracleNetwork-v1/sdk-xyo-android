@@ -1,7 +1,7 @@
 package network.xyo.sdk
 import android.net.Uri
 import java.io.IOException
-import java.net.Socket
+import java.net.Socket 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -11,6 +11,7 @@ import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.network.tcp.XyoTcpPipe
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
+import java.nio.ByteBuffer
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoTcpIpClient(
@@ -25,7 +26,7 @@ class XyoTcpIpClient(
         relayNode.addListener("XyoTcpIpClient", object : XyoNodeListener() {
             override fun onBoundWitnessEndSuccess(boundWitness: XyoBoundWitness) {
                 super.onBoundWitnessEndSuccess(boundWitness)
-                if (autoBridge) {
+                if (autoBridge && ByteBuffer.wrap((relayNode.stateRepository.getIndex()?.valueCopy)).int % 5 == 0) {
                     GlobalScope.launch {
                         this@XyoTcpIpClient.bridge()
                     }
