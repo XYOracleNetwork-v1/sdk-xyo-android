@@ -58,13 +58,8 @@ class XyoBleClient(
         set(value) {
             GlobalScope.launch {
                 if (value && !scanner.started()) {
-                    val tag = "TAG "
-                    Log.i(tag, "Does this trigger a start??")
                     scanner.start()
-                    Log.i(tag, "Is this scanner working?? $scanner")
                 } else if (!value && scanner.started()) {
-                    val tag = "TAG "
-                    Log.i(tag, "Does this trigger a stop??")
                     scanner.stop()
                 }
             }
@@ -88,24 +83,16 @@ class XyoBleClient(
             xyoDeviceCount--
         }
         override fun detected(device: XYBluetoothDevice) {
-            val tag = "TAG "
             super.detected(device)
-            Log.i(tag, "do we even get a device here? $device")
-            Log.i(tag, "are we detecting anything??")
             if (this@XyoBleClient.autoBoundWitness) {
-                Log.i(tag, "hello ?? $autoBoundWitness")
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
-                    Log.i(tag, "hello again ???")
                     (device as? XyoBluetoothClient)?.let { client ->
-                        Log.i(tag, "Hello again again???")
                         device.rssi?.let { rssi ->
-                            Log.i(tag, "Hello wtf 3???")
                             if (rssi < minimumRssi) {
                                 log.info("Rssi too low: $rssi")
                                 return
                             }
                             (client as? XyoBridgeX)?.let {
-                                Log.i(tag, "Hello one more time???")
                                 if (!supportBridgeX) {
                                     log.info("BridgeX not Supported: $rssi")
                                     return
@@ -130,8 +117,6 @@ class XyoBleClient(
 
     suspend fun tryBoundWitnessWithDevice(device: XyoBluetoothClient) {
         if (boundWitnessMutex.tryLock()) {
-            val tag = "TAG "
-            Log.i(tag, "is there a bound witness attempt here?")
             boundWitnessStarted(device)
 
             var errorMessage: String? = null
