@@ -260,7 +260,6 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
                     } else {
                         log.info("Not an Xyo Device - Not Creating: $hash")
 
-                        /*
                         val createdDevice = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             XyoBluetoothClient(context, scanResult, hash, BluetoothDevice.TRANSPORT_LE)
                         } else {
@@ -269,11 +268,9 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
 
                         foundDevices[hash] = createdDevice
                         globalDevices[hash] = createdDevice
-                         */
                     }
                 }
             }
-
         }
     }
 }
