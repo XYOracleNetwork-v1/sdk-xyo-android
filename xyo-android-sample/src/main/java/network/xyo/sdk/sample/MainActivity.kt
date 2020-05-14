@@ -1,5 +1,6 @@
 package network.xyo.sdk.sample
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -7,6 +8,7 @@ import android.util.Log
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,31 +25,66 @@ import network.xyo.sdkobjectmodelkotlin.structure.XyoIterableStructure
 
 @kotlin.ExperimentalUnsignedTypes
 class MainActivity : AppCompatActivity() {
-
     lateinit var node: XyoNode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GlobalScope.launch {
-//            initializeXyoSimpleWithGps()
-            //initializeXyoSimple()
-//            initializeXyoBleClientOnly()
-            //initializeXyoBleServerOnly()
-            initializeXyoBleOnly()
-            ui {
-                setContentView(R.layout.activity_main)
-                val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-                val navController = findNavController(R.id.nav_host_fragment)
-                // Passing each menu ID as a set of Ids because each
-                // menu should be considered as top level destinations.
-                val appBarConfiguration = AppBarConfiguration(
-                    setOf(
-                        R.id.navigation_ble_client, R.id.navigation_ble_server, R.id.navigation_tcpip_client, R.id.navigation_tcpip_server
-                    )
+        checkPermissions()
+    }
+
+    private fun checkPermissions () {
+        // check if we already have the permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+
+            // if we do, continue the setup process
+            setupNodeAndUI()
+            return
+        }
+
+        // if we do not, request the permission
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+    }
+
+
+    // this gets called when the user takes action on a permission request
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode != 1) {
+            return
+        }
+
+        // recheck the permissions
+        checkPermissions()
+    }
+
+    private fun setupNodeAndUI () = GlobalScope.launch {
+            // initializeXyoSimpleWithGps()
+            // initializeXyoSimple()
+            // initializeXyoBleClientOnly()
+            // initializeXyoBleServerOnly()
+        initializeXyoBleOnly()
+        ui {
+
+            setContentView(R.layout.activity_main)
+            val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+            val navController = findNavController(R.id.nav_host_fragment)
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.navigation_ble_client, R.id.navigation_ble_server, R.id.navigation_tcpip_client, R.id.navigation_tcpip_server
                 )
-                setupActionBarWithNavController(navController, appBarConfiguration)
-                navView.setupWithNavController(navController)
-            }
+            )
+            setupActionBarWithNavController(navController, appBarConfiguration)
+            navView.setupWithNavController(navController)
         }
     }
 
