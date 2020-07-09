@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupNodeAndUI () = GlobalScope.launch {
             // initializeXyoSimpleWithGps()
             // initializeXyoSimple()
-             initializeXyoBleClientOnly()
+//             initializeXyoBleClientOnly()
             // initializeXyoBleServerOnly()
-//        initializeXyoBleOnly()
+        initializeXyoBleOnly()
         ui {
 
             setContentView(R.layout.activity_main)
