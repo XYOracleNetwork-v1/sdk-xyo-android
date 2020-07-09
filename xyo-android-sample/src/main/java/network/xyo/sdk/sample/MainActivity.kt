@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupNodeAndUI () = GlobalScope.launch {
             // initializeXyoSimpleWithGps()
             // initializeXyoSimple()
-            // initializeXyoBleClientOnly()
+             initializeXyoBleClientOnly()
             // initializeXyoBleServerOnly()
-        initializeXyoBleOnly()
+//        initializeXyoBleOnly()
         ui {
 
             setContentView(R.layout.activity_main)
@@ -162,6 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun initializeXyoBleOnly() {
         val builder = XyoNodeBuilder()
+        val tag = "TAG: "
         node = builder.build(this)
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
             network.client.autoBridge = false

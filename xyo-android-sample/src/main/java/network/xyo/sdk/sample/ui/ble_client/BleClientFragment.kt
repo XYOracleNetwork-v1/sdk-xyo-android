@@ -1,5 +1,6 @@
 package network.xyo.sdk.sample.ui.ble_client
 
+import android.util.Log
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -63,6 +64,8 @@ class BleClientFragment : Fragment() {
     }
 
     private fun updateUI() {
+        val deviceCountTag = "Device Count from fragment "
+        val tag2 = "Nearby Device Count from fragment "
         ui {
             if (!(this@BleClientFragment.isDetached)) {
                 (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
@@ -88,9 +91,11 @@ class BleClientFragment : Fragment() {
 
                     deviceCount = network.client.deviceCount
                     xyoDeviceCount = network.client.xyoDeviceCount
+                    Log.i(deviceCountTag, xyoDeviceCount.toString())
                     nearbyXyoDeviceCount = network.client.nearbyXyoDeviceCount
                 }
                 detected_devices?.text = deviceCount.toString()
+                Log.i(tag2, deviceCount.toString())
                 detected_xyo_devices?.text = xyoDeviceCount.toString()
                 nearby_xyo_devices?.text = nearbyXyoDeviceCount.toString()
             }

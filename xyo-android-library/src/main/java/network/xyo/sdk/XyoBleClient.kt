@@ -69,6 +69,8 @@ class XyoBleClient(
 //        override fun onStart
         override fun entered(device: XYBluetoothDevice) {
             val tag = "TAG "
+            val tag2 = "constructor? "
+            Log.i(tag2, super.entered(device).toString())
             super.entered(device)
             deviceCount++
             Log.i(tag,"Xyo Device Entered: ${device.id}")
