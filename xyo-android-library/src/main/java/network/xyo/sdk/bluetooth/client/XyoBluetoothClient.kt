@@ -246,6 +246,7 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
             if (existingDevice != null) {
                 existingDevice.rssi = scanResult.rssi
                 existingDevice.updateBluetoothDevice(scanResult.device)
+                Log.i(TAG, "$existingDevice")
             } else {
                 log.info("Device Creating: $hash")
                 val ad = scanResult.scanRecord?.getManufacturerSpecificData(0x4c)

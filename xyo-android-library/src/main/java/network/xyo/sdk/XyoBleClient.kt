@@ -51,8 +51,8 @@ class XyoBleClient(
 
     override var scan: Boolean
         get() {
-//            val tag = "TAG "
-//            Log.i(tag, "Does this scan??")
+//            val tag = "SCANNER "
+//            Log.i(tag, scanner.started().toString())
             return scanner.started()
         }
         set(value) {
@@ -85,7 +85,9 @@ class XyoBleClient(
             xyoDeviceCount--
         }
         override fun detected(device: XYBluetoothDevice) {
+            val tag = "DEVICE detection "
             super.detected(device)
+            Log.i(tag, device.toString())
             if (this@XyoBleClient.autoBoundWitness) {
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
                     (device as? XyoBluetoothClient)?.let { client ->

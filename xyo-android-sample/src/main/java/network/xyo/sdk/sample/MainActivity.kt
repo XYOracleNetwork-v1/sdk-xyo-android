@@ -162,8 +162,9 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun initializeXyoBleOnly() {
         val builder = XyoNodeBuilder()
-        val tag = "TAG: "
+        val tag = "What does the node look like?: "
         node = builder.build(this)
+        Log.i(tag, node.toString())
         (node.networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
             network.client.autoBridge = false
             network.client.autoBoundWitness = false
