@@ -108,7 +108,7 @@ class XyoBleClient(
                                     return
                                 }
                             }
-                            nearbyXyoDeviceCount++
+                            xyoDeviceCount++
                             GlobalScope.launch {
                                 tryBoundWitnessWithDevice(client)
                             }

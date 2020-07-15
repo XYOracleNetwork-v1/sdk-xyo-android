@@ -241,6 +241,7 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
                         XYBluetoothDevice>
         ) {
             val hash = hashFromScanResult(scanResult)
+            Log.i(TAG, "$hash")
 
             val existingDevice = globalDevices[hash]
             if (existingDevice != null) {
