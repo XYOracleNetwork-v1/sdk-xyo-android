@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNodeAndUI () = GlobalScope.launch {
             // initializeXyoSimpleWithGps()
             // initializeXyoSimple()
-            // initializeXyoBleClientOnly()
+//             initializeXyoBleClientOnly()
             // initializeXyoBleServerOnly()
         initializeXyoBleOnly()
         ui {
@@ -123,14 +123,11 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun initializeXyoBleClientOnly() {
         val builder = XyoNodeBuilder()
-        val tag = "TAG: "
         node = builder.build(this)
         (node.networks["ble"] as? XyoBleNetwork)?.let { network ->
-            Log.i(tag, "Ble? Hello? ")
             network.client.autoBridge = true
             network.client.autoBoundWitness = true
             network.client.scan = true
-            Log.i(tag, "Client Scan? $network.client.scan ")
             network.server.autoBridge = false
             network.server.listen = false
         }

@@ -7,10 +7,10 @@ import java.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
 import network.xyo.ble.generic.scanner.XYSmartScanModern
+import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.sdk.bluetooth.client.*
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
@@ -51,8 +51,8 @@ class XyoBleClient(
 
     override var scan: Boolean
         get() {
-//            val tag = "TAG "
-//            Log.i(tag, "Does this scan??")
+//            val tag = "SCANNER "
+//            Log.i(tag, scanner.started().toString())
             return scanner.started()
         }
         set(value) {
@@ -69,6 +69,8 @@ class XyoBleClient(
 //        override fun onStart
         override fun entered(device: XYBluetoothDevice) {
             val tag = "TAG "
+            val tag2 = "constructor? "
+            Log.i(tag2, super.entered(device).toString())
             super.entered(device)
             deviceCount++
             Log.i(tag,"Xyo Device Entered: ${device.id}")
@@ -83,7 +85,9 @@ class XyoBleClient(
             xyoDeviceCount--
         }
         override fun detected(device: XYBluetoothDevice) {
+            val tag = "DEVICE detection "
             super.detected(device)
+            Log.i(tag, device.toString())
             if (this@XyoBleClient.autoBoundWitness) {
                 if (Date().time - lastBoundWitnessTime > minBWTimeGap) {
                     (device as? XyoBluetoothClient)?.let { client ->
@@ -104,7 +108,7 @@ class XyoBleClient(
                                     return
                                 }
                             }
-                            nearbyXyoDeviceCount++
+                            xyoDeviceCount++
                             GlobalScope.launch {
                                 tryBoundWitnessWithDevice(client)
                             }

@@ -53,8 +53,21 @@ android:layout_height="match_parent">
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/listen"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textAlignment="textEnd"
+        android:text="@string/bound_witness_results"/>
+    <TextView
+        android:id="@+id/bound_witness_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textAlignment="textEnd"
+        android:text=""/>
 </LinearLayout>
+
 
 <ScrollView
     android:layout_width="match_parent"
