@@ -177,7 +177,7 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
     companion object : XYCreator() {
         const val TAG = "XyoBluetoothClient"
         const val FIRST_NOTIFY_TIMEOUT = 12_000
-        const val NOTIFY_TIMEOUT = 10_000
+        const val NOTIFY_TIMEOUT = 9_000
         const val MAX_MTU = 512
         const val DEFAULT_MTU = 22
 

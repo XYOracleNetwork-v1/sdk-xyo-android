@@ -1,12 +1,15 @@
 package network.xyo.sdk
 import android.content.Context
-import java.lang.Exception
-import java.nio.ByteBuffer
+import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import androidx.core.content.ContextCompat
 import network.xyo.base.XYBase
 import network.xyo.sdkcorekotlin.crypto.signing.XyoSigner
 import network.xyo.sdkcorekotlin.crypto.signing.ecdsa.secp256k.XyoSha256WithSecp256K
 import network.xyo.sdkcorekotlin.hashing.XyoBasicHashBase
 import network.xyo.sdkcorekotlin.hashing.XyoHash
+import network.xyo.sdkcorekotlin.heuristics.XyoHeuristicGetter
 import network.xyo.sdkcorekotlin.heuristics.XyoUnixTime
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalogFlags
@@ -16,6 +19,10 @@ import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageBridgeQueueRepos
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginBlockRepository
 import network.xyo.sdkcorekotlin.persist.repositories.XyoStorageOriginStateRepository
 import network.xyo.sdkcorekotlin.schemas.XyoSchemas
+import network.xyo.sdkobjectmodelkotlin.structure.XyoIterableStructure
+import network.xyo.sdkobjectmodelkotlin.structure.XyoObjectStructure
+import java.nio.ByteBuffer
+
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoNodeBuilder : XYBase() {
@@ -29,6 +36,7 @@ class XyoNodeBuilder : XYBase() {
     private var stateRepository: XyoStorageOriginStateRepository? = null
     private var bridgeQueueRepository: XyoStorageBridgeQueueRepository? = null
     private var hashingProvider: XyoHash.XyoHashProvider? = null
+    lateinit var node: XyoNode
     private var knownBridges = mutableListOf<String>()
 
     fun addNetwork(name: String, network: XyoNetwork) {
@@ -229,10 +237,13 @@ class XyoNodeBuilder : XYBase() {
         }
     }
 
+
+
     private suspend fun restoreAndInitBlockStorage() {
         relayNode!!.let { relayNode ->
             relayNode.originBlocksToBridge.removeWeight = 2
             relayNode.originBlocksToBridge.sendLimit = 38
+
             relayNode.addHeuristic("TIME", XyoUnixTime.getter)
 
             val currentSigner = getSigner()

@@ -18,6 +18,7 @@ import network.xyo.sdk.XyoSdk
 import network.xyo.sdk.sample.ui
 
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
+import java.util.*
 
 @kotlin.ExperimentalUnsignedTypes
 class BleClientFragment : Fragment() {
@@ -43,7 +44,7 @@ class BleClientFragment : Fragment() {
         GlobalScope.launch {
             while(autoUpdateUi) {
                 this@BleClientFragment.updateUI()
-                delay(1000)
+                delay(900)
             }
         }
     }
@@ -129,8 +130,7 @@ class BleClientFragment : Fragment() {
                     }
                     addStatus("- - - - - -")
                 }
-            }
-
+                }
             ui {
                 text_ble_client.text = ""
                 publicKey.text = network.client.publicKey

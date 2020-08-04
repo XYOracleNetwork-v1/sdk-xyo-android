@@ -34,6 +34,7 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
 
         val rssi = client.rssi
 
+
         if (rssi != null) {
             val encodedRssi = XyoObjectStructure.newInstance(XyoSchemas.RSSI, byteArrayOf(rssi.toByte()))
             toReturn.add(encodedRssi)
