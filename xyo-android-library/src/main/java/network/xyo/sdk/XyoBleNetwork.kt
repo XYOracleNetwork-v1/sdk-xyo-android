@@ -13,8 +13,8 @@ class XyoBleNetwork(
         relayNode,
         procedureCatalog,
         autoBoundWitness = true,
-        autoBridge = false,
-        acceptBridging = false,
+        autoBridge = true,
+        acceptBridging = true,
         scan = true
     ),
     override val server: XyoBleServer = XyoBleServer(
@@ -23,6 +23,6 @@ class XyoBleNetwork(
         procedureCatalog,
         autoBridge = false,
         acceptBridging = false,
-        listen = true
+        listen = false
     )
 ) : XyoNetwork(Type.BluetoothLE)

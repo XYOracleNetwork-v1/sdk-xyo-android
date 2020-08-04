@@ -67,7 +67,7 @@ class XyoBluetoothAdvertiser(
         advertiser.advertisingData = advertiseData
         advertiser.advertisingResponse = responseData
         advertiser.changeContactable(true)
-        advertiser.changeAdvertisingMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+        advertiser.changeAdvertisingMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
         advertiser.changeAdvertisingTxLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
     }
 
@@ -79,7 +79,7 @@ class XyoBluetoothAdvertiser(
 
         advertiser.advertisingData = advertiseData
         advertiser.changeContactable(true)
-        advertiser.changeAdvertisingMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+        advertiser.changeAdvertisingMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
         advertiser.changeAdvertisingTxLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
     }
 

@@ -11,17 +11,17 @@ class XyoTcpIpNetwork(
         procedureCatalog,
         autoBoundWitness = true,
         autoBridge = true,
-        acceptBridging = false
+        acceptBridging = true
     ),
     override val server: XyoTcpIpServer = XyoTcpIpServer(
         relayNode,
         procedureCatalog,
-        autoBridge = true,
+        autoBridge = false,
         acceptBridging = false,
         listen = false
     )
 ) : XyoNetwork(Type.TcpIp) {
     init {
-        client.knownBridges = client.knownBridges ?: listOf("ws://alpha-peers.xyo.network:11000")
+        client.knownBridges = client.knownBridges ?: listOf("ws://alpha-peers.xyo.network:11000","ws://54.89.226.87:11000")
     }
 }

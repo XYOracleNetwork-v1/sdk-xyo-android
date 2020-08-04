@@ -65,11 +65,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNodeAndUI () = GlobalScope.launch {
-            // initializeXyoSimpleWithGps()
+             initializeXyoSimpleWithGps()
             // initializeXyoSimple()
             // initializeXyoBleClientOnly()
             // initializeXyoBleServerOnly()
-        initializeXyoBleOnly()
+            // initializeXyoBleOnly()
         ui {
 
             setContentView(R.layout.activity_main)
@@ -101,8 +101,7 @@ class MainActivity : AppCompatActivity() {
             object: XyoHeuristicGetter {
                 override fun getHeuristic(): XyoObjectStructure? {
                     val locationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-                    if (ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    if (ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                         val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 

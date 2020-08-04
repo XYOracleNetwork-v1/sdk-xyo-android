@@ -30,20 +30,20 @@ class XyoBleClient(
     scan: Boolean
 ) : XyoClient(relayNode, procedureCatalog, autoBoundWitness) {
 
-    override var autoBridge: Boolean = false
-    override var acceptBridging: Boolean = false
+    override var autoBridge: Boolean = true
+    override var acceptBridging: Boolean = true
 
     override var deviceCount = 0
     override var xyoDeviceCount = 0
     override var nearbyXyoDeviceCount = 0
 
-    var supportBridgeX = false
-    var supportSentinelX = false
-    var minimumRssi = -70
+    var supportBridgeX = true
+    var supportSentinelX = true
+    var minimumRssi = -95
 
-    val minBWTimeGap = 10 * 1000
+    val minBWTimeGap = 10 * 900
 
-    var lastBoundWitnessTime = Date().time - minBWTimeGap // ten seconds ago
+    var lastBoundWitnessTime = Date().time - minBWTimeGap // five seconds ago
 
     private var scanner: XYSmartScanModern
 
@@ -66,7 +66,7 @@ class XyoBleClient(
         }
 
     private val scannerListener = object : XYSmartScan.Listener() {
-//        override fun onStart
+        //override fun onStart
         override fun entered(device: XYBluetoothDevice) {
             val tag = "TAG "
             super.entered(device)
@@ -93,12 +93,14 @@ class XyoBleClient(
                                 return
                             }
                             (client as? XyoBridgeX)?.let {
+                                log.info("BridgeX rssi: $rssi");
                                 if (!supportBridgeX) {
                                     log.info("BridgeX not Supported: $rssi")
                                     return
                                 }
                             }
                             (client as? XyoSentinelX)?.let {
+                                log.info("SenX rssi: $rssi");
                                 if (!supportSentinelX) {
                                     log.info("SentinelX not Supported: $rssi")
                                     return
