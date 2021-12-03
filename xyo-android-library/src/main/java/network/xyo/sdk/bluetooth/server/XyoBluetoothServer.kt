@@ -359,7 +359,6 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
             override fun onReadRequest(device: BluetoothDevice?, offset: Int): XYBluetoothGattServer.XYReadRequest? {
                 return XYBluetoothGattServer.XYReadRequest(byteArrayOf(0x00, 0x00), 0)
             }
-
         }
 
         private val bluetoothWriteCharacteristic = XYBluetoothCharacteristic(

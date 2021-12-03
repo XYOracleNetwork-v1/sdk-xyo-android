@@ -13,13 +13,7 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:9.0.0"
-    }
 }
-
-apply plugin: "org.jlleitschuh.gradle.ktlint"
-
 
 Properties versionProps = new Properties()
 def versionPropsFile = file('version.properties')
@@ -27,17 +21,9 @@ def versionPropsFile = file('version.properties')
 if (versionPropsFile.exists())
     versionProps.load(new FileInputStream(versionPropsFile))
 
-def increment = 0
-
-def runTasks = gradle.startParameter.taskNames
-
-if (':xyo-android-library:assemble' in runTasks) {
-    increment = 1
-}
-
 def majorVersion = 3
 def minorVersion = 1
-def patch = versionProps['VERSION_PATCH'].toInteger() + increment
+def patch = 44
 
 def verString = majorVersion + '.' + minorVersion + '.' + patch
 
@@ -75,8 +61,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
         }
     }
 
@@ -112,10 +100,6 @@ publishing {
     }
 }
 
-ktlint {
-    disabledRules = ["no-wildcard-imports"]
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.0"
@@ -126,5 +110,4 @@ dependencies {
     api 'com.github.xyoraclenetwork:sdk-ble-android:4.1.2'
     api 'com.github.xyoraclenetwork:sdk-core-kotlin:3.1.4'
     implementation 'com.snappydb:snappydb-lib:0.5.2'
-    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.70'
 }
