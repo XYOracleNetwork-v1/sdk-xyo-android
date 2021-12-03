@@ -29,15 +29,15 @@ open class XyoSnappyDBStorageProvider(private var context: Context) : XyoKeyValu
         return db
     }
 
-    override fun containsKey(key: ByteArray): Deferred<Boolean> = GlobalScope.async {
+    override suspend fun containsKey(key: ByteArray): Boolean {
         try {
-            return@async db.exists(makeKey(key))
+            return db.exists(makeKey(key))
         } catch (dbException: SnappydbException) {
             throw XyoStorageException("Failed to read: $dbException")
         }
     }
 
-    override fun delete(key: ByteArray) = GlobalScope.async {
+    override suspend fun delete(key: ByteArray) {
         try {
             db.del(makeKey(key))
         } catch (dbException: SnappydbException) {
@@ -45,11 +45,11 @@ open class XyoSnappyDBStorageProvider(private var context: Context) : XyoKeyValu
         }
     }
 
-    override fun getAllKeys(): Deferred<Iterator<ByteArray>> = GlobalScope.async {
+    override suspend fun getAllKeys(): Iterator<ByteArray> {
         try {
             val i = db.allKeysIterator()
 
-            return@async object : Iterator<ByteArray> {
+            return object : Iterator<ByteArray> {
                 override fun hasNext(): Boolean {
                     val hasNext = i.hasNext()
 
@@ -65,20 +65,21 @@ open class XyoSnappyDBStorageProvider(private var context: Context) : XyoKeyValu
                 }
             }
         } catch (dbException: SnappydbException) {
-            return@async arrayOf<ByteArray>().iterator()
+            return arrayOf<ByteArray>().iterator()
         }
     }
 
-    override fun read(key: ByteArray): Deferred<ByteArray?> = GlobalScope.async {
+    override suspend fun read(key: ByteArray): ByteArray? {
+        var result: ByteArray? = null
         try {
-            return@async db.getBytes(makeKey(key))
+            result = db.getBytes(makeKey(key))
         } catch (dbException: SnappydbException) {
-            return@async null
-//            throw XyoStorageException("Failed to read: $dbException")
+
         }
+        return result
     }
 
-    override fun write(key: ByteArray, value: ByteArray) = GlobalScope.async {
+    override suspend fun write(key: ByteArray, value: ByteArray) {
         try {
             db.put(makeKey(key), value)
         } catch (dbException: SnappydbException) {

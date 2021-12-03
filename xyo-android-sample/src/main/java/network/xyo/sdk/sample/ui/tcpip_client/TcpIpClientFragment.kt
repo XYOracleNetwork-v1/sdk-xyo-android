@@ -5,57 +5,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_tcpip_client.*
 import network.xyo.sdk.XyoBoundWitnessTarget
 import network.xyo.sdk.XyoSdk
 import network.xyo.sdk.XyoTcpIpNetwork
-import network.xyo.sdk.sample.R
+import network.xyo.sdk.sample.databinding.FragmentTcpipClientBinding
 import network.xyo.sdk.sample.ui
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
 @kotlin.ExperimentalUnsignedTypes
 class TcpIpClientFragment : Fragment() {
 
+    private var _binding: FragmentTcpipClientBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tcpip_client, container, false)
+        _binding = FragmentTcpipClientBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     fun addStatus(status: String) {
         ui {
-            text_tcpip_client?.let {
-                val sb = StringBuilder()
-                sb.append(it.text)
-                sb.append("\r\n")
-                sb.append(status)
-                it.text = sb.toString()
-            }
+            val sb = StringBuilder()
+            sb.append(binding.textTcpipClient.text)
+            sb.append("\r\n")
+            sb.append(status)
+            binding.textTcpipClient.text = sb.toString()
         }
     }
 
     fun updateUI() {
         ui {
             (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.let { network ->
-                acceptBridging.isChecked = network.client.acceptBridging
-                acceptBridging.setOnCheckedChangeListener { _, isChecked ->
+                binding.acceptBridging.isChecked = network.client.acceptBridging
+                binding.acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.client.acceptBridging = isChecked
                 }
 
-                autoBoundWitness.isChecked = network.client.autoBoundWitness
-                autoBoundWitness.setOnCheckedChangeListener { _, isChecked ->
+                binding.autoBoundWitness.isChecked = network.client.autoBoundWitness
+                binding.autoBoundWitness.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBoundWitness = isChecked
                 }
 
-                autoBridge.isChecked = network.client.autoBridge
-                autoBridge.setOnCheckedChangeListener { _, isChecked ->
+                binding.autoBridge.isChecked = network.client.autoBridge
+                binding.autoBridge.setOnCheckedChangeListener { _, isChecked ->
                     network.client.autoBridge = isChecked
                 }
 
-                scan.isChecked = network.client.scan
-                scan.setOnCheckedChangeListener { _, isChecked ->
+                binding.scan.isChecked = network.client.scan
+                binding.scan.setOnCheckedChangeListener { _, isChecked ->
                     network.client.scan = isChecked
                 }
             }
@@ -69,7 +71,7 @@ class TcpIpClientFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        _binding = null
         (XyoSdk.nodes[0].networks["tcpip"] as? XyoTcpIpNetwork)?.client?.listeners?.remove("sample")
     }
 
@@ -98,8 +100,8 @@ class TcpIpClientFragment : Fragment() {
             }
 
             ui {
-                text_tcpip_client.text = ""
-                publicKey.text = network.client.publicKey
+                binding.textTcpipClient.text = ""
+                binding.publicKey.text = network.client.publicKey
             }
         }
     }

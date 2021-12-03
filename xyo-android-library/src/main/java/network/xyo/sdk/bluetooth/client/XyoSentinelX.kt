@@ -7,12 +7,15 @@ import android.os.Build
 import kotlinx.coroutines.*
 import network.xyo.ble.devices.xy.XY4BluetoothDevice
 import network.xyo.ble.devices.xy.XYFinderBluetoothDevice
+import network.xyo.ble.devices.xy.XYFinderBluetoothDeviceStayAwake
 import network.xyo.ble.firmware.XYBluetoothDeviceUpdate
 import network.xyo.ble.firmware.XYOtaFile
 import network.xyo.ble.firmware.XYOtaUpdate
+import network.xyo.ble.firmware.XYOtaUpdateListener
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.devices.XYCreator
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
+import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResultErrorCode
 import network.xyo.ble.generic.scanner.XYScanResult
 import network.xyo.ble.generic.services.standard.BatteryService
 import network.xyo.ble.generic.services.standard.DeviceInformationService
@@ -95,7 +98,7 @@ open class XyoSentinelX : XyoBluetoothClient {
      * @param newPassword The password to change on the remote device.
      * @return An XYBluetoothError if there was an issue writing the packet.
      */
-    suspend fun changePassword(password: ByteArray, newPassword: ByteArray): XYBluetoothResult.ErrorCode {
+    suspend fun changePassword(password: ByteArray, newPassword: ByteArray): XYBluetoothResultErrorCode {
         val encoded = ByteBuffer.allocate(2 + password.size + newPassword.size)
                 .put((password.size + 1).toByte())
                 .put(password)
@@ -112,7 +115,7 @@ open class XyoSentinelX : XyoBluetoothClient {
      * @param password The password of the device to so it can write the boundWitnessData
      * @return An XYBluetoothError if there was an issue writing the packet.
      */
-    suspend fun changeBoundWitnessData(password: ByteArray, boundWitnessData: ByteArray): XYBluetoothResult.ErrorCode {
+    suspend fun changeBoundWitnessData(password: ByteArray, boundWitnessData: ByteArray): XYBluetoothResultErrorCode {
         val encoded = ByteBuffer.allocate(3 + password.size + boundWitnessData.size)
                 .put((password.size + 1).toByte())
                 .put(password)
@@ -161,11 +164,11 @@ open class XyoSentinelX : XyoBluetoothClient {
     }
 
     suspend fun stayAwake() = connection {
-        return@connection primary.stayAwake.set(XYFinderBluetoothDevice.StayAwake.On.state)
+        return@connection primary.stayAwake.set(XYFinderBluetoothDeviceStayAwake.On.state)
     }
 
     suspend fun fallAsleep() = connection {
-        return@connection primary.stayAwake.set(XYFinderBluetoothDevice.StayAwake.Off.state)
+        return@connection primary.stayAwake.set(XYFinderBluetoothDeviceStayAwake.Off.state)
     }
 
     suspend fun batteryLevel() = connection {
@@ -177,7 +180,7 @@ open class XyoSentinelX : XyoBluetoothClient {
      * @param fileByteArray the firmware as a ByteArray
      * @param listener listener for progress, failed, completed
      */
-    fun updateFirmware(fileByteArray: ByteArrayInputStream, listener: XYOtaUpdate.Listener) {
+    fun updateFirmware(fileByteArray: ByteArrayInputStream, listener: XYOtaUpdateListener) {
         val otaFile = fileByteArray.let { XYOtaFile.getByStream(it) }
         val updater = XYBluetoothDeviceUpdate(spotaService, this, otaFile)
         updater.addListener("SentinelXDevice", listener)

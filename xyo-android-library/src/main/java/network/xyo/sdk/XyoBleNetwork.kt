@@ -1,8 +1,10 @@
 package network.xyo.sdk
 import android.content.Context
+import kotlinx.coroutines.InternalCoroutinesApi
 import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
+@InternalCoroutinesApi
 @kotlin.ExperimentalUnsignedTypes
 class XyoBleNetwork(
     context: Context,

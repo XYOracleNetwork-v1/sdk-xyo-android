@@ -5,6 +5,8 @@ import android.util.Log
 import kotlinx.coroutines.*
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
+import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResultErrorCode
+import network.xyo.ble.generic.listeners.XYBluetoothDeviceListener
 import network.xyo.sdk.bluetooth.XyoUuids
 import network.xyo.sdkcorekotlin.network.XyoAdvertisePacket
 import network.xyo.sdkcorekotlin.network.XyoNetworkPipe
@@ -23,9 +25,10 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
      * Closes the pipe between parties. In this case, disconnects from the device and closes the GATT. This should
      * be called after the pipe is finished being used.
      */
-    override fun close(): Deferred<Any?> = GlobalScope.async {
+    override suspend fun close(): Boolean {
         Log.i(TAG, "close: started")
         client.disconnect()
+        return true
     }
 
     override fun getNetworkHeuristics(): Array<XyoObjectStructure> {
@@ -58,9 +61,9 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
      * null.
      * @return A deferred ByteArray of the response of the server. If waitForResponse is null, will return null.
      */
-    override fun send(data: ByteArray, waitForResponse: Boolean) = GlobalScope.async {
+    override suspend fun send(data: ByteArray, waitForResponse: Boolean): ByteArray? {
         Log.i(TAG, "send: started")
-        return@async suspendCoroutine<ByteArray?> { cont ->
+        return suspendCoroutine { cont ->
             val disconnectKey = this.toString() + Math.random().toString()
 
             val sendAndReceive = GlobalScope.async {
@@ -69,7 +72,7 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
                 val packetError = client.chunkSend(data, XyoUuids.XYO_PIPE, XyoUuids.XYO_SERVICE, 4)
 
                 Log.i(TAG, "Sent entire packet to the server.")
-                if (packetError == XYBluetoothResult.ErrorCode.None) {
+                if (packetError == XYBluetoothResultErrorCode.None) {
                     Log.i(TAG, "Sent entire packet to the server (good).")
                     var valueIn: ByteArray? = null
 
@@ -89,7 +92,7 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
 
             // add the disconnect listener
             client.log.info("Adding disconnect listener.")
-            client.addListener(disconnectKey, object : XYBluetoothDevice.Listener() {
+            client.addListener(disconnectKey, object : XYBluetoothDeviceListener() {
                 override fun connectionStateChanged(device: XYBluetoothDevice, newState: Int) {
                     Log.i(TAG, "send: connectionStateChanged: $newState")
                     when (newState) {
@@ -104,7 +107,7 @@ class XyoBluetoothClientPipe(val client: XyoBluetoothClient) : XyoNetworkPipe {
                                 client.log.info("Canceling send and receive.")
 
                                 cont.resume(null)
-                                coroutineContext.cancel()
+                                cont.context.cancel()
                                 sendAndReceive.cancel()
                             }
                         }

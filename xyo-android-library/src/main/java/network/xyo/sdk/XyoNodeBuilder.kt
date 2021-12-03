@@ -1,5 +1,6 @@
 package network.xyo.sdk
 import android.content.Context
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.Exception
 import java.nio.ByteBuffer
 import network.xyo.base.XYBase
@@ -43,6 +44,7 @@ class XyoNodeBuilder : XYBase() {
         this.listener = listener
     }
 
+    @InternalCoroutinesApi
     suspend fun build(context: Context): XyoNode {
         if (XyoSdk.nodes.isNotEmpty()) {
             throw Exception()
@@ -217,11 +219,11 @@ class XyoNodeBuilder : XYBase() {
 
     private suspend fun getSigner(): XyoSigner {
         storage!!.let { storage ->
-            val currentSigner = storage.read(SIGNER_KEY).await()
+            val currentSigner = storage.read(SIGNER_KEY)
 
             if (currentSigner == null) {
                 val newSigner = XyoSha256WithSecp256K.newInstance()
-                storage.write(SIGNER_KEY, newSigner.privateKey.bytesCopy).await()
+                storage.write(SIGNER_KEY, newSigner.privateKey.bytesCopy)
                 return newSigner
             }
 
@@ -237,15 +239,16 @@ class XyoNodeBuilder : XYBase() {
 
             val currentSigner = getSigner()
 
-            stateRepository!!.restore(arrayListOf(currentSigner)).await()
-            bridgeQueueRepository!!.restore().await()
+            stateRepository!!.restore(arrayListOf(currentSigner))
+            bridgeQueueRepository!!.restore()
 
             if (ByteBuffer.wrap((relayNode.originState.index.valueCopy)).int == 0) {
-                relayNode.selfSignOriginChain().await()
+                relayNode.selfSignOriginChain()
             }
         }
     }
 
+    @InternalCoroutinesApi
     private fun setDefaultNetworks(context: Context) {
         relayNode?.let { relayNode ->
             procedureCatalog?.let { procedureCatalog ->

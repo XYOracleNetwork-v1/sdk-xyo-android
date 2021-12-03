@@ -15,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import network.xyo.sdk.*
 import network.xyo.sdkcorekotlin.heuristics.XyoHeuristicGetter
@@ -23,6 +24,7 @@ import java.nio.ByteBuffer
 import network.xyo.sdkcorekotlin.schemas.*
 import network.xyo.sdkobjectmodelkotlin.structure.XyoIterableStructure
 
+@InternalCoroutinesApi
 @kotlin.ExperimentalUnsignedTypes
 class MainActivity : AppCompatActivity() {
     lateinit var node: XyoNode

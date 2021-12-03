@@ -7,18 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-import kotlinx.android.synthetic.main.fragment_ble_client.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import network.xyo.sdk.sample.R
 import network.xyo.sdk.XyoBleNetwork
 import network.xyo.sdk.XyoBoundWitnessTarget
 import network.xyo.sdk.XyoSdk
+import network.xyo.sdk.sample.databinding.FragmentBleClientBinding
 import network.xyo.sdk.sample.ui
 
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
+@InternalCoroutinesApi
 @kotlin.ExperimentalUnsignedTypes
 class BleClientFragment : Fragment() {
 
@@ -29,12 +31,23 @@ class BleClientFragment : Fragment() {
     var autoUpdateUi = false
     var statusText = ""
 
+    private var _binding: FragmentBleClientBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ble_client, container, false)
+        _binding = FragmentBleClientBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.client?.listeners?.remove("sample")
     }
 
     override fun onAttach(context: Context) {
@@ -55,57 +68,48 @@ class BleClientFragment : Fragment() {
 
     fun addStatus(status: String) {
         statusText = "${statusText}\r\n$status"
-        text_ble_client?.let {
-            ui {
-                it.text = statusText
-            }
+        ui {
+            binding.textBleClient.text = statusText
         }
     }
 
+    @InternalCoroutinesApi
     private fun updateUI() {
         ui {
-            if (!(this@BleClientFragment.isDetached)) {
-                (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-                    acceptBridging?.isChecked = network.client.acceptBridging
-                    acceptBridging?.setOnCheckedChangeListener { _, isChecked ->
-                        network.client.acceptBridging = isChecked
-                    }
-
-                    autoBoundWitness?.isChecked = network.client.autoBoundWitness
-                    autoBoundWitness?.setOnCheckedChangeListener { _, isChecked ->
-                        network.client.autoBoundWitness = isChecked
-                    }
-
-                    autoBridge?.isChecked = network.client.autoBridge
-                    autoBridge?.setOnCheckedChangeListener { _, isChecked ->
-                        network.client.autoBridge = isChecked
-                    }
-
-                    scan?.isChecked = network.client.scan
-                    scan?.setOnCheckedChangeListener { _, isChecked ->
-                        network.client.scan = isChecked
-                    }
-
-                    deviceCount = network.client.deviceCount
-                    xyoDeviceCount = network.client.xyoDeviceCount
-                    nearbyXyoDeviceCount = network.client.nearbyXyoDeviceCount
+            (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
+                binding.acceptBridging.isChecked = network.client.acceptBridging
+                binding.acceptBridging?.setOnCheckedChangeListener { _, isChecked ->
+                    network.client.acceptBridging = isChecked
                 }
-                detected_devices?.text = deviceCount.toString()
-                detected_xyo_devices?.text = xyoDeviceCount.toString()
-                nearby_xyo_devices?.text = nearbyXyoDeviceCount.toString()
+
+                binding.autoBoundWitness?.isChecked = network.client.autoBoundWitness
+                binding.autoBoundWitness?.setOnCheckedChangeListener { _, isChecked ->
+                    network.client.autoBoundWitness = isChecked
+                }
+
+                binding.autoBridge?.isChecked = network.client.autoBridge
+                binding.autoBridge?.setOnCheckedChangeListener { _, isChecked ->
+                    network.client.autoBridge = isChecked
+                }
+
+                binding.scan?.isChecked = network.client.scan
+                binding.scan?.setOnCheckedChangeListener { _, isChecked ->
+                    network.client.scan = isChecked
+                }
+
+                deviceCount = network.client.deviceCount
+                xyoDeviceCount = network.client.xyoDeviceCount
+                nearbyXyoDeviceCount = network.client.nearbyXyoDeviceCount
             }
+            binding.detectedDevices?.text = deviceCount.toString()
+            binding.detectedXyoDevices?.text = xyoDeviceCount.toString()
+            binding.nearbyXyoDevices?.text = nearbyXyoDeviceCount.toString()
         }
     }
 
     override fun onResume() {
         updateUI()
         super.onResume()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.client?.listeners?.remove("sample")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -132,8 +136,8 @@ class BleClientFragment : Fragment() {
             }
 
             ui {
-                text_ble_client.text = ""
-                publicKey.text = network.client.publicKey
+                binding.textBleClient.text = ""
+                binding.publicKey.text = network.client.publicKey
             }
         }
     }

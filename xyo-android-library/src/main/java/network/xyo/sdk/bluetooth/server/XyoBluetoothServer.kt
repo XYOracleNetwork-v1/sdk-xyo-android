@@ -24,6 +24,7 @@ import network.xyo.sdkobjectmodelkotlin.structure.XyoObjectStructure
  *
  * @property bluetoothServer The Bluetooth GATT server to create the pipe with.
  */
+@InternalCoroutinesApi
 class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
 
     var listener: Listener? = null
@@ -46,6 +47,7 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
     private val mtuS = SparseIntArray()
 
 
+    @OptIn(InternalCoroutinesApi::class)
     private val serverPrimaryEndpoint = object : BluetoothGattServerCallback() {
         override fun onConnectionStateChange(device: BluetoothDevice?, status: Int, newState: Int) {
             super.onConnectionStateChange(device, status, newState)
@@ -98,6 +100,7 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
      * @property writeCharacteristic The characteristic to write look for writes from the server.
      * @property catalog The catalog that the client has sent to the server on connection.
      */
+    @InternalCoroutinesApi
     inner class XyoBluetoothServerPipe(private val bluetoothDevice: BluetoothDevice,
                                        private val writeCharacteristic: XYBluetoothCharacteristic,
                                        startingData: ByteArray) : XyoNetworkPipe {
@@ -112,8 +115,9 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
         /**
          * Closes the pipe. In this case, tells the BLE GATT server to shut disconnect from the device.
          */
-        override fun close(): Deferred<Any?> = GlobalScope.async {
+        override suspend fun close(): Boolean {
             bluetoothServer.disconnect(bluetoothDevice)
+            return true
         }
 
         override fun getNetworkHeuristics(): Array<XyoObjectStructure> {
@@ -131,7 +135,7 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
          * @return The deferred response from the party at the other end of the pipe. If waitForResponse is set to
          * true. The method will return null. Will also return null if there is an error.
          */
-        override fun send(data: ByteArray, waitForResponse: Boolean): Deferred<ByteArray?> {
+        override suspend fun send(data: ByteArray, waitForResponse: Boolean): ByteArray? {
             val inputStream = XyoInputStream()
 
             return GlobalScope.async {
@@ -190,7 +194,7 @@ class XyoBluetoothServer(private val bluetoothServer: XYBluetoothGattServer) {
                         }
                     }
                 }
-            }
+            }.await()
         }
 
 

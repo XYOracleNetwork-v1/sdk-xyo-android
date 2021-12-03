@@ -5,6 +5,7 @@ import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
 import android.os.ParcelUuid
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
+import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResultErrorCode
 import network.xyo.ble.generic.gatt.server.XYBluetoothAdvertiser
 import network.xyo.ble.generic.gatt.server.XYIBeaconAdvertiseDataCreator
 import network.xyo.sdk.bluetooth.XyoUuids
@@ -91,9 +92,9 @@ class XyoBluetoothAdvertiser(
         _started = false
     }
 
-    suspend fun startAdvertiser(): XYBluetoothResult<out Int>? {
+    suspend fun startAdvertiser(): XYBluetoothResult<out Int> {
         val result = advertiser.startAdvertising()
-        _started = result?.error == XYBluetoothResult.ErrorCode.None
+        _started = result.error == XYBluetoothResultErrorCode.None
         return result
     }
 

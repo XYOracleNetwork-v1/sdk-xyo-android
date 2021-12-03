@@ -14,6 +14,7 @@ import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.devices.XYCreator
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothGattCallback
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
+import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResultErrorCode
 import network.xyo.ble.generic.scanner.XYScanResult
 import network.xyo.sdk.bluetooth.XyoUuids
 import network.xyo.sdk.bluetooth.packet.XyoBluetoothIncomingPacket
@@ -85,14 +86,14 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
      * @param sizeOfSize size of the packet header size to send
      * @return An XYBluetoothError if there was an issue writing the packet.
      */
-    suspend fun chunkSend(outgoingPacket: ByteArray, characteristic: UUID, service: UUID, sizeOfSize: Int): XYBluetoothResult.ErrorCode {
+    suspend fun chunkSend(outgoingPacket: ByteArray, characteristic: UUID, service: UUID, sizeOfSize: Int): XYBluetoothResultErrorCode {
         Log.i(TAG, "chunkSend: started")
         val chunkedOutgoingPacket = XyoBluetoothOutgoingPacket(mtu, outgoingPacket, sizeOfSize)
 
-        var errorCode = XYBluetoothResult.ErrorCode.None
+        var errorCode = XYBluetoothResultErrorCode.None
 
         connection {
-            while (chunkedOutgoingPacket.canSendNext && errorCode == XYBluetoothResult.ErrorCode.None) {
+            while (chunkedOutgoingPacket.canSendNext && errorCode == XYBluetoothResultErrorCode.None) {
                 val result = findAndWriteCharacteristic(
                         service,
                         characteristic,
@@ -100,7 +101,7 @@ open class XyoBluetoothClient : XYIBeaconBluetoothDevice {
                         BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
                 )
                 delay(500)
-                if (result.error != XYBluetoothResult.ErrorCode.None) {
+                if (result.error != XYBluetoothResultErrorCode.None) {
                     errorCode = result.error
                 }
             }

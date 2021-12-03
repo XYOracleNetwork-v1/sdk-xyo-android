@@ -1,6 +1,7 @@
 package network.xyo.sdk
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import network.xyo.sdk.bluetooth.XyoBleSdk
@@ -12,6 +13,7 @@ import network.xyo.sdkcorekotlin.network.XyoProcedureCatalog
 import network.xyo.sdkcorekotlin.node.XyoNodeListener
 import network.xyo.sdkcorekotlin.node.XyoRelayNode
 
+@InternalCoroutinesApi
 @kotlin.ExperimentalUnsignedTypes
 class XyoBleServer(
     context: Context,
@@ -68,10 +70,10 @@ class XyoBleServer(
                             errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
                         }
                     })
-                    val bw = relayNode.boundWitness(handler, procedureCatalog).await()
+                    val bw = relayNode.boundWitness(handler, procedureCatalog)
                     relayNode.removeListener("XyoBleServer")
                     boundWitnessCompleted(null, bw, errorMessage)
-                    pipe.close().await()
+                    pipe.close()
                     return@launch
                 }
             }

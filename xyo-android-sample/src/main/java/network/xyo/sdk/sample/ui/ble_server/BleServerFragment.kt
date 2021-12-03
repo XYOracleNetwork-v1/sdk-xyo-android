@@ -5,24 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_ble_server.*
-import kotlinx.android.synthetic.main.fragment_ble_server.acceptBridging
-import kotlinx.android.synthetic.main.fragment_ble_server.autoBridge
+import kotlinx.coroutines.InternalCoroutinesApi
 import network.xyo.sdk.XyoBleNetwork
 import network.xyo.sdk.XyoBoundWitnessTarget
 import network.xyo.sdk.XyoSdk
-import network.xyo.sdk.sample.R
+import network.xyo.sdk.sample.databinding.FragmentBleServerBinding
 import network.xyo.sdk.sample.ui
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
 
+@InternalCoroutinesApi
 @kotlin.ExperimentalUnsignedTypes
 class BleServerFragment : Fragment() {
 
     var statusText = ""
+    private var _binding: FragmentBleServerBinding? = null
+    private val binding get() = _binding!!
 
     fun addStatus(status: String) {
         statusText = "${statusText}\r\n$status"
-        text_ble_server?.let {
+        binding.textBleServer.let {
             ui {
                 it.text = statusText
             }
@@ -34,24 +35,26 @@ class BleServerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ble_server, container, false)
+        _binding = FragmentBleServerBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     fun updateUI() {
         ui {
             (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.let { network ->
-                acceptBridging.isChecked = network.server.acceptBridging
-                acceptBridging.setOnCheckedChangeListener { _, isChecked ->
+                binding.acceptBridging.isChecked = network.server.acceptBridging
+                binding.acceptBridging.setOnCheckedChangeListener { _, isChecked ->
                     network.server.acceptBridging = isChecked
                 }
 
-                autoBridge.isChecked = network.server.autoBridge
-                autoBridge.setOnCheckedChangeListener { _, isChecked ->
+                binding.autoBridge.isChecked = network.server.autoBridge
+                binding.autoBridge.setOnCheckedChangeListener { _, isChecked ->
                     network.server.autoBridge = isChecked
                 }
 
-                listen.isChecked = network.server.listen
-                listen.setOnCheckedChangeListener { _, isChecked ->
+                binding.listen.isChecked = network.server.listen
+                binding.listen.setOnCheckedChangeListener { _, isChecked ->
                     network.server.listen = isChecked
                 }
             }
@@ -65,7 +68,7 @@ class BleServerFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        _binding = null
         (XyoSdk.nodes[0].networks["ble"] as? XyoBleNetwork)?.server?.listeners?.remove("sample")
     }
 
@@ -92,8 +95,8 @@ class BleServerFragment : Fragment() {
                     }
                 }
                 updateUI()
-                text_ble_server.text = ""
-                publicKey.text = network.server.publicKey
+                binding.textBleServer.text = ""
+                binding.publicKey.text = network.server.publicKey
             }
         }
     }

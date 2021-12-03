@@ -1,6 +1,7 @@
 package network.xyo.sdk.bluetooth
 
 import android.content.Context
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.sync.Mutex
 import network.xyo.ble.generic.gatt.server.XYBluetoothAdvertiser
 import network.xyo.ble.generic.gatt.server.XYBluetoothGattServer
@@ -10,6 +11,7 @@ import java.util.*
 
 @kotlin.ExperimentalUnsignedTypes
 class XyoBleSdk {
+    @InternalCoroutinesApi
     companion object {
         private var server: XyoBluetoothServer? = null
         private var advertiser: XyoBluetoothAdvertiser? = null

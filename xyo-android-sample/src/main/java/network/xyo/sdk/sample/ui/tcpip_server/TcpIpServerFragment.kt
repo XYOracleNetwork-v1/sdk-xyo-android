@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_tcpip_server.*
-import network.xyo.sdk.sample.R
+import network.xyo.sdk.sample.databinding.FragmentTcpipServerBinding
 import network.xyo.sdk.sample.ui
 
 class TcpIpServerFragment : Fragment() {
+
+    private var _binding: FragmentTcpipServerBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tcpip_server, container, false)
+        _binding = FragmentTcpipServerBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,7 +30,7 @@ class TcpIpServerFragment : Fragment() {
 
     fun addStatus(status: String) {
         ui {
-            text_tcpip_server?.let {
+            binding.textTcpipServer.let {
                 val sb = StringBuilder()
                 sb.append(it.text)
                 sb.append("\r\n")

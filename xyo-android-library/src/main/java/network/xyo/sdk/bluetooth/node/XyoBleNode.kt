@@ -1,10 +1,12 @@
 package network.xyo.sdk.bluetooth.node
 
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
 import network.xyo.ble.generic.scanner.XYSmartScan
+import network.xyo.ble.generic.scanner.XYSmartScanListener
 import network.xyo.sdk.bluetooth.client.XyoBluetoothClient
 import network.xyo.sdk.bluetooth.server.XyoBluetoothServer
 import network.xyo.sdkcorekotlin.hashing.XyoHash
@@ -26,7 +28,7 @@ open class XyoBleNode(private val procedureCatalog: XyoProcedureCatalog,
 
     private var canBoundWitness = true
 
-    val scanCallback = object : XYSmartScan.Listener() {
+    val scanCallback = object : XYSmartScanListener() {
         override fun entered(device: XYBluetoothDevice) {
             super.entered(device)
 
@@ -38,6 +40,7 @@ open class XyoBleNode(private val procedureCatalog: XyoProcedureCatalog,
         }
     }
 
+    @InternalCoroutinesApi
     val serverCallback = object : XyoBluetoothServer.Listener {
         override fun onPipe(pipe: XyoNetworkPipe) {
             GlobalScope.launch {
@@ -45,13 +48,13 @@ open class XyoBleNode(private val procedureCatalog: XyoProcedureCatalog,
                     canBoundWitness = false
                     val handler = XyoNetworkHandler(pipe)
 
-                    boundWitness(handler, procedureCatalog).await()
+                    boundWitness(handler, procedureCatalog)
 
                     canBoundWitness = true
                     return@launch
                 }
 
-                pipe.close().await()
+                pipe.close()
             }
         }
     }
@@ -66,7 +69,7 @@ open class XyoBleNode(private val procedureCatalog: XyoProcedureCatalog,
                 if (pipe != null) {
                     val handler = XyoNetworkHandler(pipe)
 
-                    val bw = boundWitness(handler, procedureCatalog).await()
+                    val bw = boundWitness(handler, procedureCatalog)
                     return@connection XYBluetoothResult(bw != null)
                 }
 

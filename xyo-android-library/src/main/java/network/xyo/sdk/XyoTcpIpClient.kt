@@ -67,9 +67,9 @@ class XyoTcpIpClient(
                                         errorMessage = error?.message ?: error?.toString() ?: "Unknown Error"
                                     }
                                 })
-                                bw = relayNode.boundWitness(handler, procedureCatalog).await()
+                                bw = relayNode.boundWitness(handler, procedureCatalog)
                                 relayNode.removeListener("XyoTcpIpClient-bridge")
-                                pipe.close().await()
+                                pipe.close()
                                 log.info("Bridge Result: $bw")
                             }
                         } catch (e: IOException) {

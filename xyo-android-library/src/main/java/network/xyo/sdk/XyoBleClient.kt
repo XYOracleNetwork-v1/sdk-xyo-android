@@ -9,7 +9,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import network.xyo.ble.generic.devices.XYBluetoothDevice
 import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResult
-import network.xyo.ble.generic.scanner.XYSmartScan
+import network.xyo.ble.generic.gatt.peripheral.XYBluetoothResultErrorCode
+import network.xyo.ble.generic.scanner.XYSmartScanListener
 import network.xyo.ble.generic.scanner.XYSmartScanModern
 import network.xyo.sdk.bluetooth.client.*
 import network.xyo.sdkcorekotlin.boundWitness.XyoBoundWitness
@@ -65,13 +66,13 @@ class XyoBleClient(
             }
         }
 
-    private val scannerListener = object : XYSmartScan.Listener() {
+    private val scannerListener = object : XYSmartScanListener() {
 //        override fun onStart
         override fun entered(device: XYBluetoothDevice) {
             val tag = "TAG "
             super.entered(device)
             deviceCount++
-            Log.i(tag,"Xyo Device Entered: ${device.id}")
+            Log.i(tag, "Xyo Device Entered: ${device.id}")
             xyoDeviceCount++
         }
 
@@ -133,7 +134,7 @@ class XyoBleClient(
                         }
                     })
 
-                    val bw = relayNode.boundWitness(handler, procedureCatalog).await()
+                    val bw = relayNode.boundWitness(handler, procedureCatalog)
 
                     relayNode.removeListener("tryBoundWitnessWithDevice")
 
@@ -143,7 +144,7 @@ class XyoBleClient(
                 return@connection XYBluetoothResult<XyoBoundWitness>(null)
             }
             val errorCode: String? =
-                if (result.error != XYBluetoothResult.ErrorCode.None) {
+                if (result.error != XYBluetoothResultErrorCode.None) {
                     result.error.toString()
                 } else {
                     errorMessage
