@@ -68,8 +68,8 @@ android {
 
     lintOptions {
         htmlReport false
-        abortOnError true
-        warningsAsErrors true
+        abortOnError false
+        warningsAsErrors false
         disable "HardwareIds", "MissingPermission"
     }
 
